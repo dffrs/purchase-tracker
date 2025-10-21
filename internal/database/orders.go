@@ -11,6 +11,6 @@ type OrdersModel struct {
 
 type Order struct {
 	ID        int       `json:"id"`
-	UserID    int       `json:"userId"`
+	UserID    int       `json:"userId" binding:"required"`
 	OrderDate time.Time `json:"orderDate"`
 }
