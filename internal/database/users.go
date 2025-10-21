@@ -32,7 +32,36 @@ func (u *UsersModel) Get(userID int) (*User, error) {
 }
 
 func (u *UsersModel) GetAll() ([]*User, error) {
-	return []*User{}, nil
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := "SELECT * from users"
+
+	rows, err := u.DB.QueryContext(ctx, query, nil)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	users := []*User{}
+
+	for rows.Next() {
+		user := &User{}
+
+		err := rows.Scan(user.ID, user.Name, user.Email, user.Phone, user.CreatedAt)
+		if err != nil {
+			return nil, err
+		}
+
+		users = append(users, user)
+
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return users, nil
 }
 
 func (u *UsersModel) Update(userID int) (*User, error) {
