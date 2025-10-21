@@ -21,7 +21,7 @@ func (p *ProductsModel) Insert(product *Product) error {
 	return nil
 }
 
-func (p *ProductsModel) Get() (*Product, error) {
+func (p *ProductsModel) Get(productID int) (*Product, error) {
 	return nil, nil
 }
 
@@ -33,6 +33,6 @@ func (p *ProductsModel) Update(product *Product) error {
 	return nil
 }
 
-func (p *ProductsModel) Delete(productID *Product) error {
+func (p *ProductsModel) Delete(productID int) error {
 	return nil
 }
