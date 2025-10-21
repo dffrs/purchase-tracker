@@ -16,3 +16,23 @@ type Product struct {
 	Price     float64   `json:"price" binding:"required"`
 	CreatedAT time.Time `json:"created_at"`
 }
+
+func (p *ProductsModel) Insert(product *Product) error {
+	return nil
+}
+
+func (p *ProductsModel) Get() (*Product, error) {
+	return nil, nil
+}
+
+func (p *ProductsModel) GetAll() ([]*Product, error) {
+	return nil, nil
+}
+
+func (p *ProductsModel) Update(product *Product) error {
+	return nil
+}
+
+func (p *ProductsModel) Delete(productID *Product) error {
+	return nil
+}
