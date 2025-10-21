@@ -1,6 +1,7 @@
 package database
 
 import (
+	"context"
 	"database/sql"
 	"time"
 )
@@ -18,7 +19,12 @@ type User struct {
 }
 
 func (u *UsersModel) Insert(user User) error {
-	return nil
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := "INSERT INTO users (id, name, email, phone, created_at) VALUES ($1, $2, $3, $4, $5)"
+
+	return u.DB.QueryRowContext(ctx, query, user.ID, user.Name, user.Email, user.Phone, time.Now().Unix()).Scan(&user.ID)
 }
 
 func (u *UsersModel) Get(userID int) (*User, error) {

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"purchase-tracker/internal/database"
 	"strconv"
@@ -11,7 +12,7 @@ import (
 func (app *application) getAllUsers(c *gin.Context) {
 	users, err := app.models.Users.GetAll()
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get all users"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to get all users: %s", err.Error())})
 		return
 	}
 
@@ -21,17 +22,17 @@ func (app *application) getAllUsers(c *gin.Context) {
 func (app *application) getUser(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user id"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": fmt.Sprintf("Invalid user id: %s", err.Error())})
 		return
 	}
 
 	user, err := app.models.Users.Get(id)
 	if user == nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+		c.JSON(http.StatusNotFound, gin.H{"error": fmt.Sprintf("User not found: %s", err.Error())})
 		return
 	}
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get user"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to get user: %s", err.Error())})
 		return
 	}
 
@@ -48,7 +49,7 @@ func (app *application) createUser(c *gin.Context) {
 
 	err := app.models.Users.Insert(*user)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create user"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to create user: %s", err.Error())})
 		return
 	}
 
@@ -58,13 +59,13 @@ func (app *application) createUser(c *gin.Context) {
 func (app *application) updateUser(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user id"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": fmt.Sprintf("Invalid user id: %s", err.Error())})
 		return
 	}
 
 	existingUser, err := app.models.Users.Update(id)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get user"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to get user: %s", err.Error())})
 		return
 	}
 
@@ -76,7 +77,7 @@ func (app *application) updateUser(c *gin.Context) {
 	updatedUser := &database.User{}
 
 	if err := c.ShouldBindJSON(updatedUser); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update user"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to update user: %s", err.Error())})
 		return
 	}
 
@@ -86,13 +87,13 @@ func (app *application) updateUser(c *gin.Context) {
 func (app *application) deleteUser(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user id"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": fmt.Sprintf("Invalid user id: %s", err.Error())})
 		return
 	}
 
 	err = app.models.Users.Delete(id)
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Failed to get user"})
+		c.JSON(http.StatusNotFound, gin.H{"error": fmt.Sprintf("Failed to get user: %s", err.Error())})
 		return
 	}
 
