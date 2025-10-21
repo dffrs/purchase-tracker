@@ -28,14 +28,31 @@ func (u *UsersModel) Insert(user User) error {
 }
 
 func (u *UsersModel) Get(userID int) (*User, error) {
-	return nil, nil
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	user := &User{}
+
+	query := "SELECT * FROM users WHERE id = $1"
+
+	err := u.DB.QueryRowContext(ctx, query, userID).Scan(user.ID, user.Name, user.Email, user.Phone, user.CreatedAt)
+	if err != nil {
+		// no rows ?
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
+
+		return nil, err
+	}
+
+	return user, nil
 }
 
 func (u *UsersModel) GetAll() ([]*User, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	query := "SELECT * from users"
+	query := "SELECT * FROM users"
 
 	rows, err := u.DB.QueryContext(ctx, query, nil)
 	if err != nil {
