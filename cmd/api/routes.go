@@ -11,7 +11,7 @@ func (app *application) routes() http.Handler {
 
 	v1 := g.Group("/api/v1")
 	{
-		v1.GET("/user", app.getAllUsers)
+		v1.GET("/users", app.getAllUsers)
 		v1.GET("/user/:id", app.getUser)
 		v1.PUT("/user/:id", app.updateUser)
 		v1.POST("/user", app.createUser)

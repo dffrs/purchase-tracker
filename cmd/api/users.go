@@ -29,12 +29,13 @@ func (app *application) getUser(c *gin.Context) {
 	}
 
 	user, err := app.models.Users.Get(id)
-	if user == nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": fmt.Sprintf("User not found: %s", err.Error())})
-		return
-	}
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to get user: %s", err.Error())})
+		return
+	}
+
+	if user == nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
 		return
 	}
 

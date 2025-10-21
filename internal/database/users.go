@@ -24,18 +24,19 @@ func (u *UsersModel) Insert(user *User) error {
 
 	query := "INSERT INTO users (name, email, phone, created_at) VALUES ($1, $2, $3, $4)"
 
-	return u.DB.QueryRowContext(ctx, query, user.Name, user.Email, user.Phone, time.Now().Unix()).Scan(user.ID)
+	// TODO: user.ID is being set to 0 (default value), since query does not include it (pk autoincrement)
+	return u.DB.QueryRowContext(ctx, query, &user.Name, &user.Email, &user.Phone, time.Now().Unix()).Scan(user)
 }
 
 func (u *UsersModel) Get(userID int) (*User, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	user := &User{}
+	user := new(User)
 
 	query := "SELECT * FROM users WHERE id = $1"
 
-	err := u.DB.QueryRowContext(ctx, query, userID).Scan(user.ID, user.Name, user.Email, user.Phone, user.CreatedAt)
+	err := u.DB.QueryRowContext(ctx, query, userID).Scan(&user.ID, &user.Name, &user.Email, &user.Phone, &user.CreatedAt)
 	if err != nil {
 		// no rows ?
 		if err == sql.ErrNoRows {
