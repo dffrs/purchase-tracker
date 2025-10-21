@@ -63,7 +63,7 @@ func (app *application) updateUser(c *gin.Context) {
 		return
 	}
 
-	existingUser, err := app.models.Users.Update(id)
+	existingUser, err := app.models.Users.Get(id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to get user: %s", err.Error())})
 		return
@@ -77,6 +77,13 @@ func (app *application) updateUser(c *gin.Context) {
 	updatedUser := &database.User{}
 
 	if err := c.ShouldBindJSON(updatedUser); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to bind user: %s", err.Error())})
+		return
+	}
+
+	updatedUser.ID = id
+
+	if err := app.models.Users.Update(updatedUser); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to update user: %s", err.Error())})
 		return
 	}

@@ -81,8 +81,18 @@ func (u *UsersModel) GetAll() ([]*User, error) {
 	return users, nil
 }
 
-func (u *UsersModel) Update(userID int) (*User, error) {
-	return nil, nil
+func (u *UsersModel) Update(user *User) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := "UPDATE users SET name = $1, email = $2, phone = $3 WHERE id = $4"
+
+	_, err := u.DB.ExecContext(ctx, query, user.Name, user.Email, user.Phone, user.ID)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (u *UsersModel) Delete(userID int) error {
