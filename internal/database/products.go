@@ -1,6 +1,7 @@
 package database
 
 import (
+	"context"
 	"database/sql"
 	"time"
 )
@@ -14,25 +15,102 @@ type Product struct {
 	Name      string    `json:"name" binding:"required"`
 	Code      string    `json:"code" binding:"required"`
 	Price     float64   `json:"price" binding:"required"`
-	CreatedAT time.Time `json:"created_at"`
+	CreatedAt time.Time `json:"created_at"`
 }
 
 func (p *ProductsModel) Insert(product *Product) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := "INSERT INTO products (name, code, price, created_at) VALUES ($1, $2, $3, $4)"
+
+	result, err := p.DB.ExecContext(ctx, query, product.Name, product.Code, product.Price, time.Now().Unix())
+	if err != nil {
+		return err
+	}
+
+	id, err := result.LastInsertId()
+	if err != nil {
+		return err
+	}
+
+	product.ID = int(id)
+
 	return nil
 }
 
 func (p *ProductsModel) Get(productID int) (*Product, error) {
-	return nil, nil
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	product := new(Product)
+
+	query := "SELECT * FROM products WHERE id = $1"
+
+	err := p.DB.QueryRowContext(ctx, query, productID).Scan(&product.ID, &product.Name, &product.Code, &product.Price, &product.CreatedAt)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
+		return nil, err
+	}
+
+	return product, nil
 }
 
 func (p *ProductsModel) GetAll() ([]*Product, error) {
-	return nil, nil
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := "SELECT * FROM products"
+
+	rows, err := p.DB.QueryContext(ctx, query, nil)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	products := []*Product{}
+
+	for rows.Next() {
+		product := new(Product)
+
+		rows.Scan(&product.ID, &product.Name, &product.Code, &product.Price, &product.CreatedAt)
+
+		products = append(products, product)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return products, nil
 }
 
 func (p *ProductsModel) Update(product *Product) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := "UPDATE products SET name = $1, code = $2, price = $3 WHERE id = $4"
+
+	_, err := p.DB.ExecContext(ctx, query, product.Name, product.Code, product.Price, product.ID)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
 func (p *ProductsModel) Delete(productID int) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := "DELETE FROM products WHERE id = $1"
+
+	_, err := p.DB.ExecContext(ctx, query, productID)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
