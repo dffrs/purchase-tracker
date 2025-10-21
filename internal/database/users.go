@@ -18,13 +18,13 @@ type User struct {
 	CreatedAt time.Time `json:"created_at"`
 }
 
-func (u *UsersModel) Insert(user User) error {
+func (u *UsersModel) Insert(user *User) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	query := "INSERT INTO users (id, name, email, phone, created_at) VALUES ($1, $2, $3, $4, $5)"
+	query := "INSERT INTO users (name, email, phone, created_at) VALUES ($1, $2, $3, $4)"
 
-	return u.DB.QueryRowContext(ctx, query, user.ID, user.Name, user.Email, user.Phone, time.Now().Unix()).Scan(&user.ID)
+	return u.DB.QueryRowContext(ctx, query, user.Name, user.Email, user.Phone, time.Now().Unix()).Scan(user.ID)
 }
 
 func (u *UsersModel) Get(userID int) (*User, error) {

@@ -1,10 +1,12 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"net/http"
-	"purchase-tracker/internal/database"
 	"strconv"
+
+	"purchase-tracker/internal/database"
 
 	"github.com/gin-gonic/gin"
 )
@@ -40,15 +42,19 @@ func (app *application) getUser(c *gin.Context) {
 }
 
 func (app *application) createUser(c *gin.Context) {
-	user := &database.User{}
+	user := database.User{}
 
-	if err := c.ShouldBindJSON(user); err != nil {
+	if err := c.ShouldBindJSON(&user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	err := app.models.Users.Insert(*user)
+	err := app.models.Users.Insert(&user)
 	if err != nil {
+		if err == sql.ErrNoRows {
+			c.JSON(http.StatusCreated, user)
+			return
+		}
 		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to create user: %s", err.Error())})
 		return
 	}
