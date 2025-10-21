@@ -24,8 +24,19 @@ func (u *UsersModel) Insert(user *User) error {
 
 	query := "INSERT INTO users (name, email, phone, created_at) VALUES ($1, $2, $3, $4)"
 
-	// TODO: user.ID is being set to 0 (default value), since query does not include it (pk autoincrement)
-	return u.DB.QueryRowContext(ctx, query, &user.Name, &user.Email, &user.Phone, time.Now().Unix()).Scan(user)
+	result, err := u.DB.ExecContext(ctx, query, user.Name, user.Email, user.Phone, time.Now().Unix())
+	if err != nil {
+		return err
+	}
+
+	id, err := result.LastInsertId()
+	if err != nil {
+		return nil
+	}
+
+	user.ID = int(id)
+
+	return nil
 }
 
 func (u *UsersModel) Get(userID int) (*User, error) {
