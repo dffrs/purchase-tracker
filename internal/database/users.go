@@ -96,5 +96,15 @@ func (u *UsersModel) Update(user *User) error {
 }
 
 func (u *UsersModel) Delete(userID int) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := "DELETE FROM users WHERE id = $1"
+
+	_, err := u.DB.ExecContext(ctx, query, userID)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
