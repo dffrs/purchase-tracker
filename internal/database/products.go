@@ -75,7 +75,10 @@ func (p *ProductsModel) GetAll() ([]*Product, error) {
 	for rows.Next() {
 		product := new(Product)
 
-		rows.Scan(&product.ID, &product.Name, &product.Code, &product.Price, &product.CreatedAt)
+		err := rows.Scan(&product.ID, &product.Name, &product.Code, &product.Price, &product.CreatedAt)
+		if err != nil {
+			return nil, err
+		}
 
 		products = append(products, product)
 	}
