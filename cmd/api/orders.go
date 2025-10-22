@@ -44,6 +44,16 @@ func (app *application) createOrder(c *gin.Context) {
 	c.JSON(http.StatusOK, order)
 }
 
+func (app *application) getAllOrders(c *gin.Context) {
+	orders, err := app.models.Orders.GetAllOrders()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to get all orders: %s", err.Error())})
+		return
+	}
+
+	c.JSON(http.StatusOK, orders)
+}
+
 func (app *application) getOrdersByUserID(c *gin.Context) {
 	userID, err := strconv.Atoi(c.Param("user_id"))
 	if err != nil {

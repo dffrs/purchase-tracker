@@ -37,6 +37,37 @@ func (o OrdersModel) Insert(order *Order) error {
 	return nil
 }
 
+func (o OrdersModel) GetAllOrders() ([]*Order, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := "SELECT * FROM orders"
+
+	orders := []*Order{}
+
+	rows, err := o.DB.QueryContext(ctx, query, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	for rows.Next() {
+		order := new(Order)
+
+		err := rows.Scan(&order.ID, &order.UserID, &order.OrderDate)
+		if err != nil {
+			return nil, err
+		}
+
+		orders = append(orders, order)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return orders, nil
+}
+
 func (o OrdersModel) GetOrdersByUserID(userID int) ([]*Order, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
