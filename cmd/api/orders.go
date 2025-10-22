@@ -45,7 +45,7 @@ func (app *application) createOrder(c *gin.Context) {
 }
 
 func (app *application) getOrdersByUserID(c *gin.Context) {
-	userID, err := strconv.Atoi(c.Param("id"))
+	userID, err := strconv.Atoi(c.Param("user_id"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to get user ID"})
 		return
