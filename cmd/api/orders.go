@@ -24,7 +24,7 @@ func (app *application) createOrder(c *gin.Context) {
 	}
 
 	if user == nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": fmt.Sprintf("User with '%d' not found", userID)})
+		c.JSON(http.StatusNotFound, gin.H{"error": fmt.Sprintf("User with id '%d' not found", userID)})
 		return
 	}
 

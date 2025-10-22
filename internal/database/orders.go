@@ -72,7 +72,7 @@ func (o OrdersModel) GetOrdersByUserID(userID int) ([]*Order, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	query := "SELECT orders.id, orders.user_id, orders.order_date FROM orders INNER JOIN users ON users.id = orders.user_id"
+	query := "SELECT orders.id, orders.user_id, orders.order_date FROM orders JOIN users ON users.id = orders.user_id WHERE users.id = $1"
 
 	orders := []*Order{}
 
