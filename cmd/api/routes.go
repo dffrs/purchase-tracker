@@ -26,9 +26,9 @@ func (app *application) routes() http.Handler {
 		v1.DELETE("/product/:id", app.deleteProduct)
 
 		// orders
-		v1.PUT("/order/:user_id", app.createOrder)
+		v1.POST("/order/:user_id", app.createOrder)
 		v1.GET("/order/:user_id", app.getOrdersByUserID)
-		v1.GET("/order/:order_date")
+		v1.GET("/order/date/:order_date")
 	}
 
 	return g

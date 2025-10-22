@@ -3,14 +3,15 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"purchase-tracker/internal/database"
 	"strconv"
+
+	"purchase-tracker/internal/database"
 
 	"github.com/gin-gonic/gin"
 )
 
 func (app *application) createOrder(c *gin.Context) {
-	userID, err := strconv.Atoi(c.Param("id"))
+	userID, err := strconv.Atoi(c.Param("user_id"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to get user ID"})
 		return
@@ -31,11 +32,12 @@ func (app *application) createOrder(c *gin.Context) {
 
 	if err := c.ShouldBindJSON(order); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to bind order"})
+		return
 	}
 
 	err = app.models.Orders.Insert(order)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create order"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to create order: %s", err.Error())})
 		return
 	}
 

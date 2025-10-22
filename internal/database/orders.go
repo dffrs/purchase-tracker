@@ -20,9 +20,9 @@ func (o OrdersModel) Insert(order *Order) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	query := "INSERT INTO orders (id, user_id, order_date) VALUES ($1, $2, $3)"
+	query := "INSERT INTO orders (user_id, order_date) VALUES ($1, $2)"
 
-	result, err := o.DB.ExecContext(ctx, query, order.ID, order.UserID, time.Now().Unix())
+	result, err := o.DB.ExecContext(ctx, query, order.UserID, time.Now().Unix())
 	if err != nil {
 		return err
 	}
