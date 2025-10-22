@@ -133,3 +133,17 @@ func (o OrdersModel) Update(updatedOrder *Order) error {
 
 	return nil
 }
+
+func (o OrdersModel) Delete(orderID int) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := "DELETE FROM orders WHERE id = $1"
+
+	_, err := o.DB.ExecContext(ctx, query, orderID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

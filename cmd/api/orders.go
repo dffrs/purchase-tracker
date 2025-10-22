@@ -148,3 +148,19 @@ func (app *application) updateOrder(c *gin.Context) {
 
 	c.JSON(http.StatusOK, updatedOrder)
 }
+
+func (app *application) deleteOrder(c *gin.Context) {
+	orderID, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to get order ID"})
+		return
+	}
+
+	err = app.models.Orders.Delete(orderID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to delete order"})
+		return
+	}
+
+	c.JSON(http.StatusNoContent, nil)
+}
