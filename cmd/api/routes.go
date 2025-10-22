@@ -28,6 +28,8 @@ func (app *application) routes() http.Handler {
 		// orders
 		v1.GET("/orders", app.getAllOrders)
 		v1.GET("/order/user/:user_id", app.getOrdersByUserID)
+		v1.GET("/order/:id", app.getOrder)
+		v1.PUT("/order/:id", app.updateOrder)
 		v1.POST("/order/user/:user_id", app.createOrder)
 		// TODO:
 		v1.GET("/order/date/:order_date")

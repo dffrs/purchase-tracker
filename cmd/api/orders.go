@@ -80,3 +80,71 @@ func (app *application) getOrdersByUserID(c *gin.Context) {
 
 	c.JSON(http.StatusOK, orders)
 }
+
+func (app *application) getOrder(c *gin.Context) {
+	orderID, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to get order ID"})
+		return
+	}
+
+	order, err := app.models.Orders.Get(orderID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get order by ID"})
+		return
+	}
+
+	if order == nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": fmt.Sprintf("Order with id '%d' does not exist", orderID)})
+		return
+	}
+
+	c.JSON(http.StatusOK, order)
+}
+
+func (app *application) updateOrder(c *gin.Context) {
+	orderID, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to get order ID"})
+		return
+	}
+
+	existingOrder, err := app.models.Orders.Get(orderID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get order by ID"})
+		return
+	}
+
+	if existingOrder == nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": fmt.Sprintf("Order with id '%d' does not exist", orderID)})
+		return
+	}
+
+	updatedOrder := new(database.Order)
+
+	if err := c.ShouldBindJSON(updatedOrder); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to bind order"})
+		return
+	}
+
+	user, err := app.models.Users.Get(updatedOrder.UserID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, fmt.Sprintf("Failed to get user with id '%d'", updatedOrder.UserID))
+		return
+	}
+
+	if user == nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": fmt.Sprintf("User with id '%d' does not exist", updatedOrder.UserID)})
+		return
+	}
+
+	updatedOrder.ID = existingOrder.ID
+
+	err = app.models.Orders.Update(updatedOrder)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update order"})
+		return
+	}
+
+	c.JSON(http.StatusOK, updatedOrder)
+}

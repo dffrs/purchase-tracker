@@ -98,3 +98,38 @@ func (o OrdersModel) GetOrdersByUserID(userID int) ([]*Order, error) {
 
 	return orders, nil
 }
+
+func (o OrdersModel) Get(orderID int) (*Order, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := "SELECT * FROM orders WHERE orders.id = $1"
+
+	order := new(Order)
+
+	err := o.DB.QueryRowContext(ctx, query, orderID).Scan(&order.ID, &order.UserID, &order.OrderDate)
+	if err != nil {
+		// no rows ?
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
+
+		return nil, err
+	}
+
+	return order, nil
+}
+
+func (o OrdersModel) Update(updatedOrder *Order) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := "UPDATE orders SET user_id = $1 WHERE id = $2"
+
+	_, err := o.DB.ExecContext(ctx, query, updatedOrder.UserID, updatedOrder.ID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
