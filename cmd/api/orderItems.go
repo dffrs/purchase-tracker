@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"purchase-tracker/internal/database"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -43,6 +44,27 @@ func (app *application) createOrderItems(c *gin.Context) {
 	err = app.models.OrdersItems.Insert(orderItem)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create order item"})
+		return
+	}
+
+	c.JSON(http.StatusOK, orderItem)
+}
+
+func (app *application) getOrderItems(c *gin.Context) {
+	orderItemID, err := strconv.Atoi(c.Param("order_item_id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to get order item id"})
+		return
+	}
+
+	orderItem, err := app.models.OrdersItems.Get(orderItemID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get order item"})
+		return
+	}
+
+	if orderItem == nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": fmt.Sprintf("Order item with id '%d' not found", orderItemID)})
 		return
 	}
 
