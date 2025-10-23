@@ -62,7 +62,7 @@ func (oi *OrderItemsModel) GetByOrderID(orderID int) ([]*OrdersItem, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	query := "SELECT * FROM order_items JOIN orders ON orders.id = order_items.order_id WHERE orders.id = $1"
+	query := "SELECT order_items.id, order_items.order_id, order_items.product_id, order_items.quantity FROM order_items JOIN orders ON orders.id = order_items.order_id WHERE orders.id = $1"
 
 	rows, err := oi.DB.QueryContext(ctx, query, orderID)
 	if err != nil {
@@ -74,7 +74,7 @@ func (oi *OrderItemsModel) GetByOrderID(orderID int) ([]*OrdersItem, error) {
 	for rows.Next() {
 		orderItem := new(OrdersItem)
 
-		err := rows.Scan(&orderItem.ID, &orderItem.Quantity, &orderItem.OrderID, &orderItem.ProductID)
+		err := rows.Scan(&orderItem.ID, &orderItem.OrderID, &orderItem.ProductID, &orderItem.Quantity)
 		if err != nil {
 			return nil, err
 		}
@@ -93,7 +93,7 @@ func (oi *OrderItemsModel) GetByProductID(productID int) ([]*OrdersItem, error) 
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	query := "SELECT * FROM order_items JOIN products ON products.id = order_items.product_id WHERE products.id = $1"
+	query := "SELECT order_items.id, order_items.order_id, order_items.product_id, order_items.quantity FROM order_items JOIN products ON products.id = order_items.product_id WHERE products.id = $1"
 
 	rows, err := oi.DB.QueryContext(ctx, query, productID)
 	if err != nil {
@@ -105,7 +105,7 @@ func (oi *OrderItemsModel) GetByProductID(productID int) ([]*OrdersItem, error) 
 	for rows.Next() {
 		orderItem := new(OrdersItem)
 
-		err := rows.Scan(&orderItem.ID, &orderItem.Quantity, &orderItem.OrderID, &orderItem.ProductID)
+		err := rows.Scan(&orderItem.ID, &orderItem.OrderID, &orderItem.ProductID, &orderItem.Quantity)
 		if err != nil {
 			return nil, err
 		}
