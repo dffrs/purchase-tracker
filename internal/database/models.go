@@ -6,7 +6,7 @@ type Models struct {
 	Users       UsersModel
 	Products    ProductsModel
 	Orders      OrdersModel
-	OrdersItems OrdersItemsModel
+	OrdersItems OrderItemsModel
 }
 
 func NewModels(db *sql.DB) Models {
@@ -14,6 +14,6 @@ func NewModels(db *sql.DB) Models {
 		Users:       UsersModel{DB: db},
 		Products:    ProductsModel{DB: db},
 		Orders:      OrdersModel{DB: db},
-		OrdersItems: OrdersItemsModel{DB: db},
+		OrdersItems: OrderItemsModel{DB: db},
 	}
 }

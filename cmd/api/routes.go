@@ -32,6 +32,9 @@ func (app *application) routes() http.Handler {
 		v1.PUT("/order/:id", app.updateOrder)
 		v1.POST("/order/user/:user_id", app.createOrder)
 		v1.DELETE("/order/:id", app.deleteOrder)
+
+		// order items
+		v1.POST("/orderItems", app.createOrderItems)
 	}
 
 	return g
