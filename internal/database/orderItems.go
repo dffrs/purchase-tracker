@@ -21,7 +21,7 @@ func (oi *OrderItemsModel) Insert(orderItem *OrdersItem) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	query := "INSERT INTO order_items (order_id, product_id, quantity) VALUES ($1, %2, %3)"
+	query := "INSERT INTO order_items (order_id, product_id, quantity) VALUES ($1, $2, $3)"
 
 	result, err := oi.DB.ExecContext(ctx, query, orderItem.OrderID, orderItem.ProductID, orderItem.Quantity)
 	if err != nil {
