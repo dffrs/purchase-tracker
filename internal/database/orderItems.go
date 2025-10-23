@@ -57,3 +57,65 @@ func (oi *OrderItemsModel) Get(orderItemID int) (*OrdersItem, error) {
 
 	return orderItem, nil
 }
+
+func (oi *OrderItemsModel) GetByOrderID(orderID int) ([]*OrdersItem, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := "SELECT * FROM order_items JOIN orders ON orders.id = order_items.order_id WHERE orders.id = $1"
+
+	rows, err := oi.DB.QueryContext(ctx, query, orderID)
+	if err != nil {
+		return nil, err
+	}
+
+	orderItems := []*OrdersItem{}
+
+	for rows.Next() {
+		orderItem := new(OrdersItem)
+
+		err := rows.Scan(&orderItem.ID, &orderItem.Quantity, &orderItem.OrderID, &orderItem.ProductID)
+		if err != nil {
+			return nil, err
+		}
+
+		orderItems = append(orderItems, orderItem)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return orderItems, nil
+}
+
+func (oi *OrderItemsModel) GetByProductID(productID int) ([]*OrdersItem, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := "SELECT * FROM order_items JOIN products ON products.id = order_items.product_id WHERE products.id = $1"
+
+	rows, err := oi.DB.QueryContext(ctx, query, productID)
+	if err != nil {
+		return nil, err
+	}
+
+	orderItems := []*OrdersItem{}
+
+	for rows.Next() {
+		orderItem := new(OrdersItem)
+
+		err := rows.Scan(&orderItem.ID, &orderItem.Quantity, &orderItem.OrderID, &orderItem.ProductID)
+		if err != nil {
+			return nil, err
+		}
+
+		orderItems = append(orderItems, orderItem)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return orderItems, nil
+}

@@ -70,3 +70,69 @@ func (app *application) getOrderItems(c *gin.Context) {
 
 	c.JSON(http.StatusOK, orderItem)
 }
+
+func (app *application) getOrderItemsByOrderID(c *gin.Context) {
+	orderID, err := strconv.Atoi(c.Param("order_id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to get order id"})
+		return
+	}
+
+	// verify that order exists
+	order, err := app.models.Orders.Get(orderID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get order"})
+		return
+	}
+
+	if order == nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": fmt.Sprintf("Order with id '%d' not found", orderID)})
+		return
+	}
+
+	orderItem, err := app.models.OrdersItems.GetByOrderID(orderID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get order item"})
+		return
+	}
+
+	if orderItem == nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": fmt.Sprintf("Order item with order id '%d' not found", orderID)})
+		return
+	}
+
+	c.JSON(http.StatusOK, orderItem)
+}
+
+func (app *application) getOrderItemsByProductID(c *gin.Context) {
+	productID, err := strconv.Atoi(c.Param("product_id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to get order id"})
+		return
+	}
+
+	// verify that product exists
+	product, err := app.models.Products.Get(productID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get product"})
+		return
+	}
+
+	if product == nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": fmt.Sprintf("Product with id '%d' not found", productID)})
+		return
+	}
+
+	orderItem, err := app.models.OrdersItems.GetByProductID(productID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get order item"})
+		return
+	}
+
+	if orderItem == nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": fmt.Sprintf("Order item with product id '%d' not found", productID)})
+		return
+	}
+
+	c.JSON(http.StatusOK, orderItem)
+}
