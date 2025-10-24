@@ -180,12 +180,35 @@ func (app *application) getOrderItemsByUserEmail(c *gin.Context) {
 
 	ordersByUser, err := app.models.OrdersItems.GetByUserEmail(userEmail)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get order items by user email" + err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get order items by user email"})
 		return
 	}
 
 	if ordersByUser == nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": fmt.Sprintf("User with email '%s' does not have any order items", userEmail)})
+		return
+	}
+
+	c.JSON(http.StatusOK, ordersByUser)
+}
+
+func (app *application) getOrderItemsByUserPhone(c *gin.Context) {
+	userPhone, err := strconv.Atoi(c.Param("user_phone"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to get user phone"})
+		return
+	}
+
+	// TODO: Confirm that user phone exists (table user)
+
+	ordersByUser, err := app.models.OrdersItems.GetByUserPhone(userPhone)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get order items by user phone"})
+		return
+	}
+
+	if ordersByUser == nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": fmt.Sprintf("User with phone '%d' does not have any order items", userPhone)})
 		return
 	}
 

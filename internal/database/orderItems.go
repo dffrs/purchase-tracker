@@ -29,7 +29,7 @@ type OrdersByUser struct {
 	Quantity     int       `json:"quantity"`
 }
 
-func getByUserProps[T comparable](oi *OrderItemsModel, dbColumn string, value T) ([]*OrdersByUser, error) {
+func getByUserProps[T string | int](oi *OrderItemsModel, dbColumn string, value T) ([]*OrdersByUser, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
@@ -195,4 +195,8 @@ func (oi OrderItemsModel) GetByUserID(userID int) ([]*OrdersByUser, error) {
 
 func (oi OrderItemsModel) GetByUserEmail(userEmail string) ([]*OrdersByUser, error) {
 	return getByUserProps(&oi, "email", userEmail)
+}
+
+func (oi OrderItemsModel) GetByUserPhone(userPhone int) ([]*OrdersByUser, error) {
+	return getByUserProps(&oi, "phone", userPhone)
 }
