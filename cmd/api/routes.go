@@ -32,6 +32,15 @@ func (app *application) routes() http.Handler {
 		v1.PUT("/order/:id", app.updateOrder)
 		v1.POST("/order/user/:user_id", app.createOrder)
 		v1.DELETE("/order/:id", app.deleteOrder)
+
+		// order items
+		v1.POST("/orderItems", app.createOrderItems)
+		v1.GET("/orderItems/:order_item_id", app.getOrderItems)
+		v1.GET("/orderItems/order/:order_id", app.getOrderItemsByOrderID)
+		v1.GET("/orderItems/product/:product_id", app.getOrderItemsByProductID)
+		v1.GET("/orderItems/user/id/:user_id", app.getOrderItemsByUserID)
+		v1.GET("/orderItems/user/email/:user_email", app.getOrderItemsByUserEmail)
+		v1.GET("/orderItems/user/phone/:user_phone", app.getOrderItemsByUserPhone)
 	}
 
 	return g
