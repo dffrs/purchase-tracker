@@ -38,6 +38,7 @@ func (app *application) routes() http.Handler {
 		v1.GET("/orderItems/:order_item_id", app.getOrderItems)
 		v1.GET("/orderItems/order/:order_id", app.getOrderItemsByOrderID)
 		v1.GET("/orderItems/product/:product_id", app.getOrderItemsByProductID)
+		v1.GET("/orderItems/user/:user_id", app.getOrderItemsByUserID)
 	}
 
 	return g

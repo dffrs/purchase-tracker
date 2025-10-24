@@ -136,3 +136,35 @@ func (app *application) getOrderItemsByProductID(c *gin.Context) {
 
 	c.JSON(http.StatusOK, orderItem)
 }
+
+func (app *application) getOrderItemsByUserID(c *gin.Context) {
+	userID, err := strconv.Atoi(c.Param("user_id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to get user id"})
+		return
+	}
+
+	user, err := app.models.Users.Get(userID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get user"})
+		return
+	}
+
+	if user == nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": fmt.Sprintf("User with id '%d' not found", userID)})
+		return
+	}
+
+	ordersByUser, err := app.models.OrdersItems.GetByUserID(userID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get order items by user id" + err.Error()})
+		return
+	}
+
+	if ordersByUser == nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": fmt.Sprintf("User with id '%d' does not have any order items", userID)})
+		return
+	}
+
+	c.JSON(http.StatusOK, ordersByUser)
+}
