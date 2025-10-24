@@ -168,3 +168,26 @@ func (app *application) getOrderItemsByUserID(c *gin.Context) {
 
 	c.JSON(http.StatusOK, ordersByUser)
 }
+
+func (app *application) getOrderItemsByUserEmail(c *gin.Context) {
+	userEmail := (c.Param("user_email"))
+	if userEmail == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to get user email"})
+		return
+	}
+
+	// TODO: Confirm that user email exists (table user)
+
+	ordersByUser, err := app.models.OrdersItems.GetByUserEmail(userEmail)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get order items by user email" + err.Error()})
+		return
+	}
+
+	if ordersByUser == nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": fmt.Sprintf("User with email '%s' does not have any order items", userEmail)})
+		return
+	}
+
+	c.JSON(http.StatusOK, ordersByUser)
+}

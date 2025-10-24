@@ -187,3 +187,60 @@ func (oi OrderItemsModel) GetByUserID(userID int) ([]*OrdersByUser, error) {
 
 	return orderUsers, nil
 }
+
+func (oi OrderItemsModel) GetByUserEmail(userEmail string) ([]*OrdersByUser, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := ` 
+	SELECT 
+		users.name AS name,
+		users.email AS email,
+		users.phone AS phone,
+		products.name AS productName,
+		products.code AS productCode,
+		products.price AS productPrice,
+		orders.order_date AS orderDate,
+		order_items.quantity AS quantity
+	FROM
+		users
+		INNER JOIN orders ON orders.user_id = users.id
+		INNER JOIN order_items ON order_items.order_id = orders.id
+		INNER JOIN products ON products.id = order_items.product_id
+	WHERE
+		users.email = $1
+	`
+
+	rows, err := oi.DB.QueryContext(ctx, query, userEmail)
+	if err != nil {
+		return nil, err
+	}
+
+	orderUsers := []*OrdersByUser{}
+
+	for rows.Next() {
+		orderUser := new(OrdersByUser)
+
+		err := rows.Scan(
+			&orderUser.Name,
+			&orderUser.Email,
+			&orderUser.Phone,
+			&orderUser.ProductName,
+			&orderUser.ProductCode,
+			&orderUser.ProductPrice,
+			&orderUser.OrderDate,
+			&orderUser.Quantity,
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		orderUsers = append(orderUsers, orderUser)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return orderUsers, nil
+}
