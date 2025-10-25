@@ -10,6 +10,7 @@ func (app *application) routes() http.Handler {
 	g := gin.Default()
 
 	v1 := g.Group("/api/v1")
+	v1.Use(app.corsMiddleware())
 	{
 		// users
 		v1.GET("/users", app.getAllUsers)
