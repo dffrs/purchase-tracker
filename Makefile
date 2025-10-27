@@ -11,7 +11,7 @@ seedDB:
 			@cd be && go run ./cmd/seed/main.go
 
 clean:
-			@cd be && go clean
+			@cd be && rm -f main
 fmt: clean
 			@cd be && go fmt ./cmd/* ./internal/*
 vet: fmt
