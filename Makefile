@@ -7,6 +7,8 @@ upDB:
 downDB:
 			@cd be && go run ./cmd/migrate/main.go down
 resetDB: downDB upDB
+seedDB:
+			@cd be && go run ./cmd/seed/main.go
 
 clean:
 			@cd be && go clean
@@ -21,4 +23,9 @@ runBE: build
 runFE:
 			@cd fe && npm run dev
 
-run: runBE runFE
+run:
+	@echo "Starting Backend and Frontend..."
+	@trap 'echo "\nStopping processes..."; kill 0' SIGINT SIGTERM; \
+	$(MAKE) runBE & \
+	$(MAKE) runFE & \
+	wait
