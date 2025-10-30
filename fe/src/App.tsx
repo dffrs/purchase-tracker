@@ -12,12 +12,15 @@ type Users = {
 function App() {
   return (
     <div>
-      <Navbar>
-        <a>page 1</a>
-        <a>page 2</a>
-        <a>page 3</a>
-        <a>page 4</a>
-      </Navbar>
+      <nav className="flex items-center p-2 bg-white text-black">
+        <div className="flex flex-row gap-x-2">
+          <p id="icon">icon here</p>
+          <label htmlFor="icon">label here</label>
+        </div>
+        <div className="flex flex-row gap-x-2 ml-auto">
+          <p id="settings">settings here</p>
+        </div>
+      </nav>
     </div>
   );
 }
