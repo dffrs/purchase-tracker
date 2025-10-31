@@ -4,9 +4,13 @@ import { RiMoneyEuroCircleLine } from "react-icons/ri";
 
 import { Icon } from "./icon";
 
-export const Navbar: FunctionComponent = () => {
+type NavBarProps = {
+  className?: string;
+};
+
+export const Navbar: FunctionComponent<NavBarProps> = ({ className }) => {
   return (
-    <nav className="flex items-center p-2 text-contrast px-3">
+    <nav className={`flex items-center p-3 text-contrast ${className}`}>
       <div className="flex flex-row gap-x-2 items-center">
         <Icon id="icon" title="Purchase Tracker">
           <RiMoneyEuroCircleLine />

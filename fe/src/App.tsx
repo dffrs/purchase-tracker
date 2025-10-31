@@ -1,4 +1,4 @@
-import { Navbar } from "./components";
+import { Layout } from "./components";
 
 type Users = {
   id: number;
@@ -11,9 +11,7 @@ type Users = {
 function App() {
   return (
     <main className="w-screen h-screen bg-primary">
-      <div>
-        <Navbar />
-      </div>
+      <Layout>test</Layout>
     </main>
   );
 }
