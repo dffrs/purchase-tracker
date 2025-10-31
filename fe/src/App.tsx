@@ -11,7 +11,17 @@ type Users = {
 function App() {
   return (
     <main className="w-screen h-screen bg-primary">
-      <Layout>test</Layout>
+      <Layout>
+        <section className="grid grid-flow-col grid-cols-[auto,1fr]">
+          <aside className="bg-contrast text-primary p-2">
+            <p>hello there</p>
+            <p>hello there</p>
+            <p>hello there</p>
+            <p>hello there</p>
+          </aside>
+          test
+        </section>
+      </Layout>
     </main>
   );
 }
