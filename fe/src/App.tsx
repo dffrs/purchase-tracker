@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { Navbar } from "./components";
+import { IoSettingsOutline } from "react-icons/io5";
+import { RiMoneyEuroCircleLine } from "react-icons/ri";
+import { Icon } from "./components";
 
 type Users = {
   id: number;
@@ -12,13 +13,19 @@ type Users = {
 function App() {
   return (
     <div>
-      <nav className="flex items-center p-2 bg-white text-black">
-        <div className="flex flex-row gap-x-2">
-          <p id="icon">icon here</p>
-          <label htmlFor="icon">label here</label>
+      <nav className="flex items-center p-2 text-contrast">
+        <div className="flex flex-row gap-x-2 items-center">
+          <Icon id="icon" title="Purchase Tracker">
+            <RiMoneyEuroCircleLine />
+          </Icon>
+          <label htmlFor="icon" className="text-xs">
+            Purchase Tracker
+          </label>
         </div>
         <div className="flex flex-row gap-x-2 ml-auto">
-          <p id="settings">settings here</p>
+          <Icon title="Settings">
+            <IoSettingsOutline />
+          </Icon>
         </div>
       </nav>
     </div>
