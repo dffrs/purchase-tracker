@@ -1,4 +1,5 @@
-import { Button, Layout } from "./components";
+import { IoHome, IoSearch } from "react-icons/io5";
+import { Button, Icon, Layout } from "./components";
 
 type Users = {
   id: number;
@@ -13,16 +14,21 @@ function App() {
     <main className="w-screen h-screen bg-primary">
       <Layout>
         <section className="grid grid-flow-col grid-cols-[auto,1fr]">
-          <aside className="bg-contrast text-primary p-2">
-            <ul className="flex flex-col gap-y-2">
-              <li>
-                <Button>button 1</Button>
+          <aside className="bg-contrast text-contrast p-2">
+            <ul className="grid grid-flow-row gap-y-4">
+              <li className="flex flex-row gap-x-2 items-center">
+                <Button className="bg-secondary rounded p-3">
+                  <Icon title="Home" className="text-xl">
+                    <IoHome />
+                  </Icon>
+                </Button>
               </li>
-              <li>
-                <Button>button 2</Button>
-              </li>
-              <li>
-                <Button>button 3</Button>
+              <li className="flex flex-row gap-x-2 items-center">
+                <Button className="bg-secondary rounded p-3">
+                  <Icon title="Search" className="text-xl">
+                    <IoSearch />
+                  </Icon>
+                </Button>
               </li>
             </ul>
           </aside>

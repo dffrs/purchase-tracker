@@ -72,3 +72,11 @@ h6 {
 li {
   list-style: none;
 }
+
+button {
+  all: unset;
+}
+
+button:focus {
+  outline: revert;
+}
