@@ -14,10 +14,11 @@ function App() {
       <Layout>
         <section className="grid grid-flow-col grid-cols-[auto,1fr]">
           <aside className="bg-contrast text-primary p-2">
-            <p>hello there</p>
-            <p>hello there</p>
-            <p>hello there</p>
-            <p>hello there</p>
+            <ul>
+              <li>button 1</li>
+              <li>button 2</li>
+              <li>button 3</li>
+            </ul>
           </aside>
           test
         </section>
