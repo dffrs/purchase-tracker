@@ -12,7 +12,7 @@ export const Icon: FunctionComponent<PropsWithChildren<IconProps>> = ({
   return (
     <span
       id="icon-wrapper"
-      className="text-2xl cursor-pointer transition hover:scale-110"
+      className="text-4xl cursor-pointer transition hover:scale-110"
       title={title}
     >
       {children}
