@@ -13,7 +13,7 @@ type Users = {
 function App() {
   return (
     <div>
-      <nav className="flex items-center p-2 text-contrast">
+      <nav className="flex items-center p-2 text-contrast px-3">
         <div className="flex flex-row gap-x-2 items-center">
           <Icon id="icon" title="Purchase Tracker">
             <RiMoneyEuroCircleLine />
