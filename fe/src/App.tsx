@@ -20,7 +20,9 @@ function App() {
               <li>button 3</li>
             </ul>
           </aside>
-          test
+          <section className="flex items-center justify-center">
+            <p>test</p>
+          </section>
         </section>
       </Layout>
     </main>
