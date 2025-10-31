@@ -10,9 +10,11 @@ type Users = {
 
 function App() {
   return (
-    <>
-      <Navbar />
-    </>
+    <main className="w-screen h-screen bg-primary">
+      <div>
+        <Navbar />
+      </div>
+    </main>
   );
 }
 
