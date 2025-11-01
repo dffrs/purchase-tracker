@@ -1,5 +1,7 @@
 import { IoHome, IoSearch } from "react-icons/io5";
 import { Button, Icon, Layout } from "./components";
+import { Routes, Route, Link } from "react-router";
+import { Home, Search } from "./pages";
 
 type Users = {
   id: number;
@@ -18,22 +20,29 @@ function App() {
             <ul className="grid grid-flow-row gap-y-4">
               <li className="flex flex-row gap-x-2 items-center">
                 <Button className="bg-secondary rounded p-3">
-                  <Icon title="Home" className="text-xl">
-                    <IoHome />
-                  </Icon>
+                  <Link to="/home">
+                    <Icon title="Home" className="text-xl">
+                      <IoHome />
+                    </Icon>
+                  </Link>
                 </Button>
               </li>
               <li className="flex flex-row gap-x-2 items-center">
                 <Button className="bg-secondary rounded p-3">
-                  <Icon title="Search" className="text-xl">
-                    <IoSearch />
-                  </Icon>
+                  <Link to="/search">
+                    <Icon title="Search" className="text-xl">
+                      <IoSearch />
+                    </Icon>
+                  </Link>
                 </Button>
               </li>
             </ul>
           </aside>
           <section className="flex items-center justify-center">
-            <p>test</p>
+            <Routes>
+              <Route path="/home" element={<Home />} />
+              <Route path="/search" element={<Search />} />
+            </Routes>
           </section>
         </section>
       </Layout>
