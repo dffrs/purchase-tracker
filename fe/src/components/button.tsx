@@ -4,7 +4,7 @@ type ButtonProps = {} & HTMLAttributes<HTMLButtonElement>;
 
 export const Button: FunctionComponent<PropsWithChildren<ButtonProps>> = ({
   children,
-  className,
+  className = "",
   ...props
 }) => {
   return (

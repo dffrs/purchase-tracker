@@ -38,7 +38,7 @@ function App() {
               </li>
             </ul>
           </aside>
-          <section className="flex items-center justify-center">
+          <section className="flex items-center justify-center p-4">
             <Routes>
               <Route path="/home" element={<Home />} />
               <Route path="/search" element={<Search />} />

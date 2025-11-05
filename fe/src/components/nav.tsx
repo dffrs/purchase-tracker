@@ -8,7 +8,7 @@ type NavBarProps = {
   className?: string;
 };
 
-export const Navbar: FunctionComponent<NavBarProps> = ({ className }) => {
+export const Navbar: FunctionComponent<NavBarProps> = ({ className = "" }) => {
   return (
     <nav
       className={`flex items-center p-3 text-contrast bg-secondary ${className}`}
