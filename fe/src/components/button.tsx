@@ -10,7 +10,7 @@ export const Button: FunctionComponent<PropsWithChildren<ButtonProps>> = ({
   return (
     <button
       type="button"
-      className={`inline-block p-2 rounded-md cursor-pointer transition hover:scale-110 ${className}`}
+      className={`inline-block p-2 rounded-md shadow-md cursor-pointer transition hover:scale-110 ${className}`}
       {...props}
     >
       {children}
