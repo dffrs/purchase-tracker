@@ -4,9 +4,10 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "hsl(0, 0%, 20%)",
-        secondary: "hsl(0, 0%, 50%)",
-        contrast: "hsl(0, 0%, 80%)",
+        primary: "#F2F2F2",
+        secondary: "#ffffff",
+        contrast: "rgb(228 143 143)",
+        pop: "#8C3D0F",
       },
     },
     transitionDuration: { DEFAULT: "150ms" },

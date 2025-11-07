@@ -8,24 +8,7 @@ type NavBarProps = {
   className?: string;
 };
 
+// TODO: Fix me
 export const Navbar: FunctionComponent<NavBarProps> = ({ className = "" }) => {
-  return (
-    <nav
-      className={`flex items-center p-3 text-contrast bg-secondary ${className}`}
-    >
-      <div className="flex flex-row gap-x-2 items-center">
-        <Icon id="icon" title="Purchase Tracker">
-          <RiMoneyEuroCircleLine />
-        </Icon>
-        <label htmlFor="icon" className="text-xs">
-          Purchase Tracker
-        </label>
-      </div>
-      <div className="flex flex-row gap-x-2 ml-auto">
-        <Icon title="Settings">
-          <IoSettingsOutline />
-        </Icon>
-      </div>
-    </nav>
-  );
+  return <div></div>;
 };
