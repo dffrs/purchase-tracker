@@ -12,13 +12,22 @@ export const Home: FunctionComponent = () => {
         <li className="card">
           <span className="card-layout">
             <h1 className="card-header">Orders</h1>
-            <p className="card-text">42</p>
+            <p className="card-text">
+              {(42).toLocaleString("en", { style: "decimal" })}
+            </p>
           </span>
         </li>
         <li className="card">
           <span className="card-layout">
             <h1 className="card-header">Profit</h1>
-            <p className="card-text">€ 134,43</p>
+            <p className="card-text">
+              {(134.43).toLocaleString("en", {
+                style: "currency",
+                currency: "EUR",
+                maximumFractionDigits: 2,
+                trailingZeroDisplay: "stripIfInteger",
+              })}
+            </p>
           </span>
         </li>
       </ul>
