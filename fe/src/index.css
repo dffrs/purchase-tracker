@@ -149,6 +149,10 @@ a:active {
     }
 
     margin: auto;
+
+    transition:
+      display 0.25s allow-discrete,
+      overlay 0.25s allow-discrete;
   }
 
   .card {
