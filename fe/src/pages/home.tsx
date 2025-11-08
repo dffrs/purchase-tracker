@@ -17,8 +17,10 @@ export const Home: FunctionComponent = () => {
           </span>
         </li>
       </ul>
-      <div className="rounded-xl bg-secondary shadow-xl flex justify-center items-center">
-        <p className="text-pop">there will be a graph here</p>
+      <div className="card">
+        <span className="card-layout items-center">
+          <p className="card-header">there will be a graph here</p>
+        </span>
       </div>
     </div>
   );
