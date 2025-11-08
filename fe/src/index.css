@@ -2,6 +2,40 @@
 @tailwind components;
 @tailwind utilities;
 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes backdropFadeIn {
+  from {
+    backdrop-filter: blur(0);
+  }
+  to {
+    backdrop-filter: blur(1em);
+  }
+}
+@keyframes backdropFadeOut {
+  from {
+    backdrop-filter: blur(1em);
+  }
+  to {
+    backdrop-filter: blur(0);
+  }
+}
+
 :root {
   font-family:
     Arial Rounded MT Bold,
@@ -99,16 +133,24 @@ a:active {
   color: inherit;
 }
 
-dialog {
-  &::backdrop {
-    backdrop-filter: blur(1rem);
+@layer components {
+  dialog {
+    animation: fadeOut 0.5s forwards;
+
+    &::backdrop {
+      animation: backdropFadeOut 0.25s forwards;
+    }
+
+    &[open] {
+      animation: fadeIn 0.5s forwards;
+      &::backdrop {
+        animation: backdropFadeIn 0.25s forwards;
+      }
+    }
+
+    margin: auto;
   }
 
-  inset: 0;
-  margin: auto;
-}
-
-@layer components {
   .card {
     @apply rounded-xl bg-secondary shadow-xl;
   }
