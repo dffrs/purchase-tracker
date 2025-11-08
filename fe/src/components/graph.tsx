@@ -21,8 +21,8 @@ export const Graph: FunctionComponent<GraphProps> = ({ data }) => {
           <div
             key={i}
             style={{ height: `${height}%` }}
-            className="bg-pop rounded-t-xl flex items-end justify-center"
-            title={String(value)}
+            data-value={value}
+            className="relative bg-pop rounded-t-xl flex items-end justify-center after:content-[attr(data-value)] after:absolute after:top-[-2rem] after:text-pop"
           >
             <p className="text-primary">
               {date.toLocaleString("default", { month: "short" })}
