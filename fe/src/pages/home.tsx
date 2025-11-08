@@ -2,7 +2,7 @@ import { FunctionComponent } from "react";
 
 export const Home: FunctionComponent = () => {
   return (
-    <div className="h-full w-full grid grid-flow-row grid-rows-[auto,1fr]">
+    <div className="h-full w-full grid grid-flow-row grid-rows-[auto,1fr] gap-y-8">
       <ul className="grid grid-cols-2 gap-x-8 h-96">
         <li className="rounded-xl bg-secondary shadow-xl">
           <span className="flex flex-col gap-y-4 justify-center items-start h-full p-8">
@@ -17,7 +17,9 @@ export const Home: FunctionComponent = () => {
           </span>
         </li>
       </ul>
-      <div>another section</div>
+      <div className="rounded-xl bg-secondary shadow-xl flex justify-center items-center">
+        <p className="text-pop">there will be a graph here</p>
+      </div>
     </div>
   );
 };
