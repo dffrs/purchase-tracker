@@ -6,7 +6,7 @@ export default {
       colors: {
         primary: "#F2F2F2",
         secondary: "#ffffff",
-        contrast: "rgb(228 143 143)",
+        contrast: "#E48F8F",
         pop: "#8C3D0F",
       },
     },
