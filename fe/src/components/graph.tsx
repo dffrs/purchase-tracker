@@ -1,28 +1,33 @@
 import { FunctionComponent } from "react";
 
-type GraphProps = {
-  data: Array<number>;
-};
+const CEIL = 1.1;
+const FLOOR = 0.1;
 
-const mockData = [
-  34.7, 68.9, 65.1, 130.2, 208.6, 172.8, 155.0, 168.6, 134.4, 52.7, 94.5, 41.5,
-];
+type GraphProps = { data: Array<number> };
 
-export const Graph: FunctionComponent<GraphProps> = ({ data = mockData }) => {
-  const max = Math.max(...data);
-  const min = Math.min(...data) * 0.1;
+export const Graph: FunctionComponent<GraphProps> = ({ data }) => {
+  const max = Math.max(...data) * CEIL;
+  const min = Math.min(...data) * FLOOR;
 
   return (
-    <div className="bg-pop h-full w-full flex items-end gap-x-4">
+    <div className="h-full w-full grid grid-cols-12 items-end gap-x-4">
       {data.map((value, i) => {
-        const h = Math.round(100 * ((value - min) / max));
+        const height = Math.round(100 * ((value - min) / max));
+
+        const date = new Date();
+        date.setMonth(i);
 
         return (
           <div
-            className="w-28 bg-contrast rounded-t-xl"
-            style={{ height: `${h}%`, left: `${data.length * i}px` }}
+            key={i}
+            style={{ height: `${height}%` }}
+            className="bg-pop rounded-t-xl flex items-end justify-center"
             title={String(value)}
-          />
+          >
+            <p className="text-primary">
+              {date.toLocaleString("default", { month: "short" })}
+            </p>
+          </div>
         );
       })}
     </div>
