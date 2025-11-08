@@ -99,6 +99,15 @@ a:active {
   color: inherit;
 }
 
+dialog {
+  &::backdrop {
+    backdrop-filter: blur(1rem);
+  }
+
+  inset: 0;
+  margin: auto;
+}
+
 @layer components {
   .card {
     @apply rounded-xl bg-secondary shadow-xl;
