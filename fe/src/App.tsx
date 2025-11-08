@@ -1,4 +1,4 @@
-import { IoHome, IoSearch } from "react-icons/io5";
+import { IoAddCircleOutline, IoHome, IoSearch } from "react-icons/io5";
 import { Button, Icon, Layout } from "./components";
 import { Routes, Route, Link } from "react-router";
 import { Home, Search } from "./pages";
@@ -35,6 +35,13 @@ function App() {
                     </Icon>
                   </Button>
                 </Link>
+              </li>
+              <li className="flex flex-row gap-x-2 items-center">
+                <Button className="bg-secondary rounded p-3">
+                  <Icon title="Add" className="text-xl">
+                    <IoAddCircleOutline />
+                  </Icon>
+                </Button>
               </li>
             </ul>
           </aside>
