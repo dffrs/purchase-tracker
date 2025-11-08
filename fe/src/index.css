@@ -105,7 +105,7 @@ a:active {
   }
 
   .card-layout {
-    @apply flex flex-col gap-y-4 justify-center items-start h-full p-8;
+    @apply flex flex-col gap-y-4 justify-between items-start h-full p-8;
   }
 
   .card-header {

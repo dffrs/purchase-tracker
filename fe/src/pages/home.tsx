@@ -23,8 +23,8 @@ export const Home: FunctionComponent = () => {
         </li>
       </ul>
       <div className="card">
-        <span className="card-layout items-start">
-          <p className="card-header">2025</p>
+        <span className="card-layout">
+          <h1 className="card-header">2025</h1>
           <Graph data={mockData} />
         </span>
       </div>
