@@ -1,3 +1,4 @@
+import { Graph } from "@/components";
 import { FunctionComponent } from "react";
 
 export const Home: FunctionComponent = () => {
@@ -20,6 +21,7 @@ export const Home: FunctionComponent = () => {
       <div className="card">
         <span className="card-layout items-center">
           <p className="card-header">there will be a graph here</p>
+          <Graph />
         </span>
       </div>
     </div>
