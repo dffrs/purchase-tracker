@@ -3,6 +3,7 @@ import { Button, Icon, Layout } from "./components";
 import { Routes, Route, Link } from "react-router";
 import { Home, Search } from "./pages";
 import { useRef } from "react";
+import { Add } from "./dialogs";
 
 type Users = {
   id: number;
@@ -59,19 +60,7 @@ function App() {
               <Route path="/search" element={<Search />} />
             </Routes>
             <dialog ref={dialogRef} className="card">
-              <div className="flex flex-col gap-y-4 p-8">
-                <p className="text-pop">
-                  This modal dialog has a groovy backdrop!
-                </p>
-                <span>
-                  <Button
-                    className="bg-contrast rounded p-3"
-                    onClick={() => dialogRef.current?.close()}
-                  >
-                    Close
-                  </Button>
-                </span>
-              </div>
+              <Add onClose={() => dialogRef.current?.close()} />
             </dialog>
           </section>
         </section>

@@ -1,6 +1,10 @@
-import { FunctionComponent, HTMLAttributes, PropsWithChildren } from "react";
+import {
+  ButtonHTMLAttributes,
+  FunctionComponent,
+  PropsWithChildren,
+} from "react";
 
-type ButtonProps = {} & HTMLAttributes<HTMLButtonElement>;
+type ButtonProps = {} & ButtonHTMLAttributes<HTMLButtonElement>;
 
 export const Button: FunctionComponent<PropsWithChildren<ButtonProps>> = ({
   children,
