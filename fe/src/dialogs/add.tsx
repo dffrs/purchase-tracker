@@ -51,12 +51,12 @@ export const Add: FunctionComponent<AddProps> = ({ onClose }) => {
         </div>
         <div className="flex justify-between">
           <Button
-            className="text-contrast p-3 outline outline-2 outline-contrast"
+            className="text-pop p-3 outline outline-2 outline-pop"
             onClick={internalOnClose}
           >
             Close
           </Button>
-          <Button type="submit" className="bg-contrast p-3">
+          <Button type="submit" className="bg-pop p-3">
             Create
           </Button>
         </div>

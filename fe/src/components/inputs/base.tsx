@@ -6,8 +6,7 @@ const BASE_STYLE = `
 bg-transparent 
 border-x-0 border-t-0 border-2 border-contrast 
 text-pop 
-transition-transform 
-focus:outline-none focus:scale-105
+focus:outline-none 
 placeholder:text-contrast placeholder:opacity-50 placeholder:text-sm placeholder:italic
 `;
 
@@ -16,16 +15,19 @@ export const Input: FunctionComponent<InputProps> = forwardRef<
   InputProps
 >(({ id, label, className = "", ...props }, ref) => {
   return (
-    <fieldset className="flex flex-col border-none">
-      <label htmlFor={id} className="text-contrast">
+    <fieldset className="border-none text-contrast">
+      <label
+        htmlFor={id}
+        className="flex flex-col has-[:focus]:scale-105 transition-transform"
+      >
         {label}
+        <input
+          ref={ref}
+          id={id}
+          className={`${BASE_STYLE} ${className}`}
+          {...props}
+        />
       </label>
-      <input
-        ref={ref}
-        id={id}
-        className={`${BASE_STYLE} ${className}`}
-        {...props}
-      />
     </fieldset>
   );
 });
