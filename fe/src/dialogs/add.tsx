@@ -30,7 +30,8 @@ export const Add: FunctionComponent<AddProps> = ({ onClose }) => {
             <input
               type="text"
               id="name"
-              className="bg-transparent border-x-0 border-t-0 border-2 border-contrast text-pop transition-transform focus:outline-none focus:scale-105"
+              className="bg-transparent border-x-0 border-t-0 border-2 border-contrast text-pop transition-transform focus:outline-none focus:scale-105 placeholder:text-contrast placeholder:opacity-50 placeholder:text-sm placeholder:italic"
+              placeholder="user's name"
             />
           </span>
           <span className="flex flex-col">
