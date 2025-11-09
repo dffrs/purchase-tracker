@@ -7,6 +7,7 @@ type AddProps = {
 
 const EMAIL_VALIDATION =
   /^[\w.!#$%&'*+/=?^`{|}~-]+@[a-z\d](?:[a-z\d-]{0,61}[a-z\d])?(?:\.[a-z\d](?:[a-z\d-]{0,61}[a-z\d])?)*$/i;
+const PT_PHONE_NUMBER = /^(\+351)?\d{9}$/g;
 
 export const Add: FunctionComponent<AddProps> = ({ onClose }) => {
   const formRef = useRef<HTMLFormElement>(null);
@@ -41,6 +42,21 @@ export const Add: FunctionComponent<AddProps> = ({ onClose }) => {
               id="email"
               pattern={String(EMAIL_VALIDATION)}
               className="bg-transparent border-x-0 border-t-0 border-2 border-contrast text-pop transition-transform focus:outline-none focus:scale-105"
+            />
+          </span>
+          <span className="flex flex-col">
+            <label htmlFor="phone" className="text-contrast">
+              Phone
+            </label>
+            <input
+              type="tel"
+              id="phone"
+              className="bg-transparent border-x-0 border-t-0 border-2 border-contrast text-pop transition-transform focus:outline-none focus:scale-105"
+              pattern={String(PT_PHONE_NUMBER)}
+              onChange={(e) => {
+                e.target.value = e.target.value.replace(/[^\d|\+]/g, "");
+                return;
+              }}
             />
           </span>
         </div>
