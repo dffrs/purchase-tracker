@@ -1,4 +1,5 @@
 import { Button } from "@/components";
+import { Input } from "@/components/inputs/base";
 import { FunctionComponent, useRef } from "react";
 
 type AddProps = {
@@ -23,43 +24,30 @@ export const Add: FunctionComponent<AddProps> = ({ onClose }) => {
           <h1 className="text-contrast">Add order</h1>
         </div>
         <div data-testid="add-user-section" className="flex flex-col gap-y-4">
-          <span className="flex flex-col">
-            <label htmlFor="name" className="text-contrast">
-              Name
-            </label>
-            <input
-              type="text"
-              id="name"
-              className="bg-transparent border-x-0 border-t-0 border-2 border-contrast text-pop transition-transform focus:outline-none focus:scale-105 placeholder:text-contrast placeholder:opacity-50 placeholder:text-sm placeholder:italic"
-              placeholder="user's name"
-            />
-          </span>
-          <span className="flex flex-col">
-            <label htmlFor="email" className="text-contrast">
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              pattern={String(EMAIL_VALIDATION)}
-              className="bg-transparent border-x-0 border-t-0 border-2 border-contrast text-pop transition-transform focus:outline-none focus:scale-105"
-            />
-          </span>
-          <span className="flex flex-col">
-            <label htmlFor="phone" className="text-contrast">
-              Phone
-            </label>
-            <input
-              type="tel"
-              id="phone"
-              className="bg-transparent border-x-0 border-t-0 border-2 border-contrast text-pop transition-transform focus:outline-none focus:scale-105"
-              pattern={String(PT_PHONE_NUMBER)}
-              onChange={(e) => {
-                e.target.value = e.target.value.replace(/[^\d|\+]/g, "");
-                return;
-              }}
-            />
-          </span>
+          <Input
+            label="Name"
+            type="text"
+            id="name"
+            placeholder="user's name..."
+          />
+          <Input
+            label="Email"
+            type="email"
+            id="email"
+            placeholder="user's email..."
+            pattern={String(EMAIL_VALIDATION)}
+          />
+          <Input
+            label="Phone"
+            type="tel"
+            id="phone"
+            placeholder="user's phone number..."
+            pattern={String(PT_PHONE_NUMBER)}
+            onChange={(e) => {
+              e.target.value = e.target.value.replace(/[^\d|\+]/g, "");
+              return;
+            }}
+          />
         </div>
         <div className="flex justify-between">
           <Button
