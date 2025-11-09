@@ -1,6 +1,5 @@
-import { Button } from "@/components";
-import { Input } from "@/components/inputs/base";
-import { FunctionComponent, useRef } from "react";
+import { Button, Input, Autocomplete, ACOption } from "@/components";
+import { FunctionComponent, useCallback, useRef } from "react";
 
 type AddProps = {
   onClose: () => void;
@@ -17,6 +16,16 @@ export const Add: FunctionComponent<AddProps> = ({ onClose }) => {
     onClose();
   };
 
+  // test
+  const nameRef = useRef<HTMLInputElement>(null);
+
+  const onAutoCompleteName: ACOption["onClick"] = useCallback((event) => {
+    if (!nameRef.current) return;
+    const value = event.currentTarget.id;
+
+    nameRef.current.value = value;
+  }, []);
+
   return (
     <form ref={formRef} autoComplete="off">
       <div className="flex flex-col gap-y-4 p-8">
@@ -24,12 +33,17 @@ export const Add: FunctionComponent<AddProps> = ({ onClose }) => {
           <h1 className="text-contrast">Add order</h1>
         </div>
         <div data-testid="add-user-section" className="flex flex-col gap-y-4">
-          <Input
-            label="Name"
-            type="text"
-            id="name"
-            placeholder="user's name..."
-          />
+          <Autocomplete
+            options={[{ text: "option 1", onClick: onAutoCompleteName }]}
+          >
+            <Input
+              ref={nameRef}
+              label="Name"
+              type="text"
+              id="name"
+              placeholder="user's name..."
+            />
+          </Autocomplete>
           <Input
             label="Email"
             type="email"
