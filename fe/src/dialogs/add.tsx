@@ -42,6 +42,7 @@ export const Add: FunctionComponent<AddProps> = ({ onClose }) => {
             type="tel"
             id="phone"
             placeholder="user's phone number..."
+            maxLength={13}
             pattern={String(PT_PHONE_NUMBER)}
             onChange={(e) => {
               e.target.value = e.target.value.replace(/[^\d|\+]/g, "");
