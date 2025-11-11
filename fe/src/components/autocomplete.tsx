@@ -55,7 +55,13 @@ export const Autocomplete: FunctionComponent<
         <>
           <ul className="card flex flex-col gap-y-2 max-h-40 overflow-y-auto absolute top-full w-full p-2 rounded shadow-xl z-20 text-pop outline-2 outline-pop cursor-pointer">
             {options.map(({ text, onClick }, i) => {
-              if (filter && !text.includes(filter)) return null;
+              if (
+                filter &&
+                !String(text)
+                  .toLowerCase()
+                  .includes(String(filter).toLowerCase())
+              )
+                return null;
 
               return (
                 <li
