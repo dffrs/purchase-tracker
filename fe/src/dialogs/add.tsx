@@ -1,5 +1,5 @@
 import { Button, Input, Autocomplete, ACOption } from "@/components";
-import { FunctionComponent, useCallback, useRef } from "react";
+import { FunctionComponent, useCallback, useMemo, useRef } from "react";
 
 type AddProps = {
   onClose: () => void;
@@ -26,6 +26,13 @@ export const Add: FunctionComponent<AddProps> = ({ onClose }) => {
     nameRef.current.value = value;
   }, []);
 
+  const nameAutocomplete = useMemo(() => {
+    return Array.from({ length: 10 }, (_, i) => ({
+      text: "option " + (i + 1),
+      onClick: onAutoCompleteName,
+    }));
+  }, [onAutoCompleteName]);
+
   return (
     <form ref={formRef} autoComplete="off">
       <div className="flex flex-col gap-y-4 p-8">
@@ -33,9 +40,7 @@ export const Add: FunctionComponent<AddProps> = ({ onClose }) => {
           <h1 className="text-contrast">Add order</h1>
         </div>
         <div data-testid="add-user-section" className="flex flex-col gap-y-4">
-          <Autocomplete
-            options={[{ text: "option 1", onClick: onAutoCompleteName }]}
-          >
+          <Autocomplete options={nameAutocomplete}>
             <Input
               ref={nameRef}
               label="Name"

@@ -42,7 +42,7 @@ export const Autocomplete: FunctionComponent<
       {children}
       {open && (
         <>
-          <ul className="card absolute top-full w-full inline-block p-2 rounded shadow-xl z-20 text-pop outline-2 outline-pop cursor-pointer">
+          <ul className="card flex flex-col gap-y-2 max-h-40 overflow-y-auto absolute top-full w-full p-2 rounded shadow-xl z-20 text-pop outline-2 outline-pop cursor-pointer">
             {options.map(({ text, onClick }, i) => {
               return (
                 <li
@@ -50,7 +50,7 @@ export const Autocomplete: FunctionComponent<
                   data-name="autocomplete-option"
                   title={text}
                   key={`option-${i}-${text}`}
-                  className="max-w-fit truncate"
+                  className="max-w-fit cursor-pointer overflow-ellipsis whitespace-nowrap overflow-clip"
                   onClick={(event) => {
                     event.stopPropagation();
                     onClick(event);
