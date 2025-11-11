@@ -16,6 +16,9 @@ export const Autocomplete: FunctionComponent<
   PropsWithChildren<AutocompleteProps>
 > = ({ children, options }) => {
   const [open, setOpen] = useState(() => false);
+  const [filter, setFilter] = useState<string | undefined>(() => undefined);
+
+  const shouldDisplayOptions = open && options.length > 0;
 
   const toggleDropdown = useCallback(() => {
     setOpen((prevState) => !prevState);
@@ -38,12 +41,22 @@ export const Autocomplete: FunctionComponent<
   );
 
   return (
-    <div className="flex flex-col relative" onClick={onClick}>
+    <div
+      className="flex flex-col relative"
+      onClick={onClick}
+      onChange={(event) => {
+        // TODO: clean & improve me
+        const inputsValue = (event.target as HTMLInputElement).value;
+        setFilter(inputsValue);
+      }}
+    >
       {children}
-      {open && (
+      {shouldDisplayOptions && (
         <>
           <ul className="card flex flex-col gap-y-2 max-h-40 overflow-y-auto absolute top-full w-full p-2 rounded shadow-xl z-20 text-pop outline-2 outline-pop cursor-pointer">
             {options.map(({ text, onClick }, i) => {
+              if (filter && !text.includes(filter)) return null;
+
               return (
                 <li
                   id={text}
