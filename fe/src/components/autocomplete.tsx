@@ -25,48 +25,48 @@ export const Autocomplete: FunctionComponent<
     setOpen(false);
   }, []);
 
-  const openDropdown = useCallback(() => {
-    setOpen(true);
-  }, []);
+  const onClick: React.MouseEventHandler<HTMLDivElement> = useCallback(() => {
+    toggleDropdown();
+  }, [toggleDropdown]);
 
-  const onClick: React.MouseEventHandler<HTMLDivElement> = useCallback(
+  const onOutsideClick: React.MouseEventHandler<HTMLDivElement> = useCallback(
     (event) => {
-      const ct = event.currentTarget;
-      const name = ct.dataset["name"];
-
-      if (name === "autocomplete-option") return;
-
-      toggleDropdown();
+      event.stopPropagation();
+      closeDropdown();
     },
-    [toggleDropdown],
+    [closeDropdown],
   );
 
   return (
-    <div
-      className="flex flex-col relative"
-      onClick={onClick}
-      onFocus={openDropdown}
-      // TODO: fix me
-      onBlur={closeDropdown}
-    >
+    <div className="flex flex-col relative" onClick={onClick}>
       {children}
       {open && (
-        <ul className="card absolute top-full w-full inline-block p-2 rounded shadow-xl z-10 text-pop outline-2 outline-pop cursor-pointer">
-          {options.map(({ text, onClick }, i) => {
-            return (
-              <li
-                id={text}
-                data-name="autocomplete-option"
-                title={text}
-                key={`option-${i}-${text}`}
-                className="max-w-fit truncate"
-                onClick={onClick}
-              >
-                {text}
-              </li>
-            );
-          })}
-        </ul>
+        <>
+          <ul className="card absolute top-full w-full inline-block p-2 rounded shadow-xl z-20 text-pop outline-2 outline-pop cursor-pointer">
+            {options.map(({ text, onClick }, i) => {
+              return (
+                <li
+                  id={text}
+                  data-name="autocomplete-option"
+                  title={text}
+                  key={`option-${i}-${text}`}
+                  className="max-w-fit truncate"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    onClick(event);
+                    closeDropdown();
+                  }}
+                >
+                  {text}
+                </li>
+              );
+            })}
+          </ul>
+          <div
+            onClick={onOutsideClick}
+            className="fixed h-screen w-screen z-10 left-[50%] top-[50%] translate-y-[-50%] translate-x-[-50%]"
+          />
+        </>
       )}
     </div>
   );
