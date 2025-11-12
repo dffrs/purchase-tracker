@@ -12,6 +12,10 @@ export type ACOption = {
 
 type AutocompleteProps = { options: Array<ACOption> };
 
+const doesItincludeFilter = (text: string, filter: string) => {
+  return String(text).toLowerCase().includes(String(filter).toLowerCase());
+};
+
 export const Autocomplete: FunctionComponent<
   PropsWithChildren<AutocompleteProps>
 > = ({ children, options }) => {
@@ -55,13 +59,7 @@ export const Autocomplete: FunctionComponent<
         <>
           <ul className="card flex flex-col gap-y-2 max-h-40 overflow-y-auto absolute top-full w-full p-2 rounded shadow-xl z-20 text-pop outline-2 outline-pop cursor-pointer">
             {options.map(({ text, onClick }, i) => {
-              if (
-                filter &&
-                !String(text)
-                  .toLowerCase()
-                  .includes(String(filter).toLowerCase())
-              )
-                return null;
+              if (filter && !doesItincludeFilter(text, filter)) return null;
 
               return (
                 <li
