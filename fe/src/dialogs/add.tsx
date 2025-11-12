@@ -26,7 +26,7 @@ export const Add: FunctionComponent<AddProps> = ({ onClose }) => {
     nameRef.current.value = value;
   }, []);
 
-  const nameAutocomplete = useMemo(() => {
+  const tempAutocompleteOptions = useMemo(() => {
     return Array.from({ length: 10 }, (_, i) => ({
       text: "option " + (i + 1),
       onClick: onAutoCompleteName,
@@ -40,7 +40,7 @@ export const Add: FunctionComponent<AddProps> = ({ onClose }) => {
           <h1 className="text-contrast">Add order</h1>
         </div>
         <div data-testid="add-user-section" className="flex flex-col gap-y-4">
-          <Autocomplete options={nameAutocomplete}>
+          <Autocomplete options={tempAutocompleteOptions}>
             <Input
               ref={nameRef}
               label="Name"
@@ -49,25 +49,29 @@ export const Add: FunctionComponent<AddProps> = ({ onClose }) => {
               placeholder="user's name..."
             />
           </Autocomplete>
-          <Input
-            label="Email"
-            type="email"
-            id="email"
-            placeholder="user's email..."
-            pattern={String(EMAIL_VALIDATION)}
-          />
-          <Input
-            label="Phone"
-            type="tel"
-            id="phone"
-            placeholder="user's phone number..."
-            maxLength={13}
-            pattern={String(PT_PHONE_NUMBER)}
-            onChange={(e) => {
-              e.target.value = e.target.value.replace(/[^\d|\+]/g, "");
-              return;
-            }}
-          />
+          <Autocomplete options={tempAutocompleteOptions}>
+            <Input
+              label="Email"
+              type="email"
+              id="email"
+              placeholder="user's email..."
+              pattern={String(EMAIL_VALIDATION)}
+            />
+          </Autocomplete>
+          <Autocomplete options={tempAutocompleteOptions}>
+            <Input
+              label="Phone"
+              type="tel"
+              id="phone"
+              placeholder="user's phone number..."
+              maxLength={13}
+              pattern={String(PT_PHONE_NUMBER)}
+              onChange={(e) => {
+                e.target.value = e.target.value.replace(/[^\d|\+]/g, "");
+                return;
+              }}
+            />
+          </Autocomplete>
         </div>
         <div className="flex justify-between">
           <Button
