@@ -67,7 +67,7 @@ export const Autocomplete: FunctionComponent<
                   data-name="autocomplete-option"
                   title={text}
                   key={`option-${i}-${text}`}
-                  className="max-w-fit cursor-pointer overflow-ellipsis whitespace-nowrap overflow-clip"
+                  className="max-w-fit cursor-pointer overflow-ellipsis whitespace-nowrap overflow-clip transition hover:scale-105"
                   onClick={(event) => {
                     event.stopPropagation();
                     onClick(event);
