@@ -39,39 +39,53 @@ export const Add: FunctionComponent<AddProps> = ({ onClose }) => {
         <div>
           <h1 className="text-contrast">Add order</h1>
         </div>
-        <div data-testid="add-user-section" className="flex flex-col gap-y-4">
-          <Autocomplete options={tempAutocompleteOptions}>
+        <div className="flex gap-x-4">
+          <div data-testid="add-user-section" className="flex flex-col gap-y-4">
+            <Autocomplete options={tempAutocompleteOptions}>
+              <Input
+                ref={nameRef}
+                label="User Name"
+                type="text"
+                id="name"
+                placeholder="user's name..."
+              />
+            </Autocomplete>
+            <Autocomplete options={tempAutocompleteOptions}>
+              <Input
+                label="Email"
+                type="email"
+                id="email"
+                placeholder="user's email..."
+                pattern={String(EMAIL_VALIDATION)}
+              />
+            </Autocomplete>
+            <Autocomplete options={tempAutocompleteOptions}>
+              <Input
+                label="Phone"
+                type="tel"
+                id="phone"
+                placeholder="user's phone number..."
+                maxLength={13}
+                pattern={String(PT_PHONE_NUMBER)}
+                onChange={(e) => {
+                  e.target.value = e.target.value.replace(/[^\d|\+]/g, "");
+                  return;
+                }}
+              />
+            </Autocomplete>
+          </div>
+          <div className="h-auto w-1 bg-primary rounded-xl" />
+          <div
+            data-testid="add-product-section"
+            className="flex flex-col gap-y-4"
+          >
             <Input
-              ref={nameRef}
-              label="Name"
+              label="Product Name"
               type="text"
-              id="name"
-              placeholder="user's name..."
+              id="product-name"
+              placeholder="product name..."
             />
-          </Autocomplete>
-          <Autocomplete options={tempAutocompleteOptions}>
-            <Input
-              label="Email"
-              type="email"
-              id="email"
-              placeholder="user's email..."
-              pattern={String(EMAIL_VALIDATION)}
-            />
-          </Autocomplete>
-          <Autocomplete options={tempAutocompleteOptions}>
-            <Input
-              label="Phone"
-              type="tel"
-              id="phone"
-              placeholder="user's phone number..."
-              maxLength={13}
-              pattern={String(PT_PHONE_NUMBER)}
-              onChange={(e) => {
-                e.target.value = e.target.value.replace(/[^\d|\+]/g, "");
-                return;
-              }}
-            />
-          </Autocomplete>
+          </div>
         </div>
         <div className="flex justify-between">
           <Button
