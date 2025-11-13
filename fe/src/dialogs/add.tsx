@@ -5,8 +5,10 @@ type AddProps = {
   onClose: () => void;
 };
 
+// TODO: get a new regex
 const EMAIL_VALIDATION =
   /^[\w.!#$%&'*+/=?^`{|}~-]+@[a-z\d](?:[a-z\d-]{0,61}[a-z\d])?(?:\.[a-z\d](?:[a-z\d-]{0,61}[a-z\d])?)*$/i;
+
 const PT_PHONE_NUMBER = /^(\+351)?\d{9}$/g;
 
 export const Add: FunctionComponent<AddProps> = ({ onClose }) => {
@@ -89,17 +91,27 @@ export const Add: FunctionComponent<AddProps> = ({ onClose }) => {
             </Autocomplete>
             <Autocomplete options={tempAutocompleteOptions}>
               <Input
-                label="Product Code"
+                label="Code"
                 type="text"
                 id="product-code"
                 placeholder="product code..."
               />
             </Autocomplete>
             <Input
-              label="Product price"
+              label="Price €"
               type="number"
               id="product-price"
               placeholder="product price..."
+              min={0}
+              max={1_000_000}
+              step="0.01"
+              onChange={(e) => {
+                const value = e.currentTarget.value;
+                const numberOfDigits = String(value).split(/\./)[1]?.length;
+
+                if (numberOfDigits > 2)
+                  e.currentTarget.value = value.slice(0, -1);
+              }}
             />
           </div>
         </div>

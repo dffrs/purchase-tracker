@@ -154,6 +154,12 @@ a:active {
   background: theme("colors.pop");
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 @layer components {
   dialog {
     margin: auto;
