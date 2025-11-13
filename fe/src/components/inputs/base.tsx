@@ -14,10 +14,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ id, label, className = "", ...props }, ref) => {
     return (
       <fieldset className="border-none text-contrast">
-        <label
-          htmlFor={id}
-          className="flex flex-col has-[:focus]:scale-105 transition-transform"
-        >
+        <label htmlFor={id} className="flex flex-col transition-transform">
           {label}
           <input
             ref={ref}
