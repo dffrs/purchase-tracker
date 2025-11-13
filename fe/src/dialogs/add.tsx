@@ -46,7 +46,7 @@ export const Add: FunctionComponent<AddProps> = ({ onClose }) => {
         <div className="flex flex-col gap-y-6">
           <div
             data-testid="add-user-section"
-            className="grid grid-cols-2 gap-4"
+            className="grid grid-cols-2 gap-6"
           >
             <Autocomplete options={tempAutocompleteOptions}>
               <Input

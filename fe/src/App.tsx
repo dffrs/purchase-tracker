@@ -59,7 +59,7 @@ function App() {
               <Route path="/home" element={<Home />} />
               <Route path="/search" element={<Search />} />
             </Routes>
-            <dialog ref={dialogRef} className="card">
+            <dialog ref={dialogRef} className="card w-[40%]">
               <Add onClose={() => dialogRef.current?.close()} />
             </dialog>
           </section>
