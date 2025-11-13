@@ -1,4 +1,5 @@
 import { Button, Input, Autocomplete, ACOption } from "@/components";
+import { getNumberOfDecimals } from "@/util";
 import { FunctionComponent, useCallback, useMemo, useRef } from "react";
 
 type AddProps = {
@@ -107,7 +108,7 @@ export const Add: FunctionComponent<AddProps> = ({ onClose }) => {
               step="0.01"
               onChange={(e) => {
                 const value = e.currentTarget.value;
-                const numberOfDigits = String(value).split(/\./)[1]?.length;
+                const numberOfDigits = getNumberOfDecimals(value);
 
                 if (numberOfDigits > 2)
                   e.currentTarget.value = value.slice(0, -1);
