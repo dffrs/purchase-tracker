@@ -44,7 +44,10 @@ export const Add: FunctionComponent<AddProps> = ({ onClose }) => {
           <h1 className="text-contrast">Add order</h1>
         </div>
         <div className="flex flex-col gap-y-6">
-          <div data-testid="add-user-section" className="flex flex-col gap-y-4">
+          <div
+            data-testid="add-user-section"
+            className="grid grid-cols-2 gap-4"
+          >
             <Autocomplete options={tempAutocompleteOptions}>
               <Input
                 ref={nameRef}
@@ -52,6 +55,14 @@ export const Add: FunctionComponent<AddProps> = ({ onClose }) => {
                 type="text"
                 id="name"
                 placeholder="user's name..."
+              />
+            </Autocomplete>
+            <Autocomplete options={tempAutocompleteOptions}>
+              <Input
+                label="Address"
+                type="text"
+                id="address"
+                placeholder="user's address..."
               />
             </Autocomplete>
             <Autocomplete options={tempAutocompleteOptions}>
