@@ -96,7 +96,6 @@ export const Add: FunctionComponent<AddProps> = ({ onClose }) => {
               />
             </Autocomplete>
           </div>
-          <div className="h-1 w-full bg-primary rounded-xl" />
           <div className="flex items-center justify-between">
             <p className="text-contrast">Add Product</p>
             <Button className="bg-pop">
