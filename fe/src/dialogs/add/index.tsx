@@ -29,7 +29,7 @@ export const Add: FunctionComponent<AddProps> = ({ onClose }) => {
     );
 
     // products
-    // TODO:
+    const pName = getFormElements<HTMLFormElement>(form, "[id='product-name']");
   };
 
   return (

@@ -15,18 +15,30 @@ export const getNumberOfDecimals = (value: unknown): number => {
 };
 
 export function getFormElements<T extends Element>(
+  form: HTMLFormElement,
+  element: string,
+): Array<T | null>;
+export function getFormElements<T extends Element>(
   formElements: HTMLFormControlsCollection,
-  elements: string,
+  element: string,
 ): T | null;
 export function getFormElements<T extends Element>(
   formElements: HTMLFormControlsCollection,
   elements: string[],
 ): Array<T | null>;
 export function getFormElements<T extends Element>(
-  formElements: HTMLFormControlsCollection,
+  formOrCollection: any,
   elements: any,
 ) {
-  if (!Array.isArray(elements)) return formElements.namedItem(elements);
+  if (
+    formOrCollection instanceof HTMLFormElement &&
+    typeof elements === "string"
+  )
+    return formOrCollection.querySelectorAll(elements);
 
-  return elements.map((element) => formElements.namedItem(element) as T | null);
+  if (!Array.isArray(elements)) return formOrCollection.namedItem(elements);
+
+  return elements.map(
+    (element) => formOrCollection.namedItem(element) as T | null,
+  );
 }
