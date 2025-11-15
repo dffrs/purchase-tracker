@@ -10,7 +10,7 @@ import { IoCaretDown } from "react-icons/io5";
 const WRAPPER_STYLES = `
 bg-secondary text-contrast
 shadow-lg rounded-xl 
-outline outline-2 outline-pop 
+outline outline-2 outline-constrast
 cursor-pointer 
 `;
 
@@ -30,7 +30,7 @@ export const Accordion: FunctionComponent<
 
   return (
     <div className={WRAPPER_STYLES} onClick={onOpen}>
-      <div className="bg-secondary p-4 rounded-xl outline outline-2 outline-pop flex items-center justify-between shadow-lg">
+      <div className="bg-secondary p-4 rounded-xl outline outline-2 outline-constrast flex items-center justify-between shadow-lg">
         <p>{title}</p>
         <Icon
           title="Expand/Collapse"
