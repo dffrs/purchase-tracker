@@ -34,13 +34,13 @@ export const Accordion: FunctionComponent<
         <p>{title}</p>
         <Icon
           title="Expand/Collapse"
-          className={`text-xl ${open ? "" : "rotate-180"}`}
+          className={`text-xl ${open ? "rotate-180" : ""}`}
         >
           <IoCaretDown />
         </Icon>
       </div>
       <div
-        className={`p-8 ${open ? "invisible hidden" : "visible block"}`}
+        className={`p-8 ${open ? "visible block" : "invisible hidden"}`}
         onClick={(e) => e.stopPropagation()}
       >
         {children}
