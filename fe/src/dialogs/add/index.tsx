@@ -16,8 +16,16 @@ export const Add: FunctionComponent<AddProps> = ({ onClose }) => {
     onClose();
   };
 
+  const onSubmit: React.FormEventHandler<HTMLFormElement> = (event) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+
+    const formElements = form.elements;
+    console.log("here", formElements);
+  };
+
   return (
-    <form ref={formRef} autoComplete="off">
+    <form ref={formRef} autoComplete="off" onSubmit={onSubmit}>
       <div className="flex flex-col gap-y-4 p-8">
         <div>
           <h1 className="text-contrast">Add order</h1>
