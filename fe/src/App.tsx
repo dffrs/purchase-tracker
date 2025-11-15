@@ -3,7 +3,7 @@ import { Button, Icon, Layout } from "./components";
 import { Routes, Route, Link } from "react-router";
 import { Home, Search } from "./pages";
 import { useRef } from "react";
-import { Add } from "./dialogs";
+import { Add } from "./dialogs/";
 
 type Users = {
   id: number;
