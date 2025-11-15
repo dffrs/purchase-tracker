@@ -1,8 +1,8 @@
-import { Button, Input, Autocomplete, Icon, Accordion } from "@/components";
-import { getNumberOfDecimals, getFormElements } from "@/util";
+import { Button } from "@/components";
+import { getFormElements } from "@/util";
 import { FunctionComponent, useRef } from "react";
-import { IoAdd } from "react-icons/io5";
 import { UserSection } from "./section/user";
+import { ProductSection } from "./section/product";
 
 type AddProps = {
   onClose: () => void;
@@ -35,57 +35,11 @@ export const Add: FunctionComponent<AddProps> = ({ onClose }) => {
   return (
     <form ref={formRef} autoComplete="off" onSubmit={onSubmit}>
       <div className="flex flex-col gap-y-4 p-8">
-        <div>
-          <h1 className="text-contrast">Add order</h1>
-        </div>
-        <UserSection />
-        <div className="flex items-center justify-between">
-          <p className="text-contrast">Add Product</p>
-          <Button className="bg-pop">
-            <Icon title="Add Product" className="text-xl">
-              <IoAdd />
-            </Icon>
-          </Button>
-        </div>
-        <Accordion title="Product 1">
-          <div
-            data-testid="add-product-section"
-            className="flex flex-col gap-y-4"
-          >
-            <Autocomplete options={[]}>
-              <Input
-                label="Product Name"
-                type="text"
-                id="product-name"
-                placeholder="product name..."
-              />
-            </Autocomplete>
-            <Autocomplete options={[]}>
-              <Input
-                label="Code"
-                type="text"
-                id="product-code"
-                placeholder="product code..."
-              />
-            </Autocomplete>
-            <Input
-              label="Price €"
-              type="number"
-              id="product-price"
-              placeholder="product price..."
-              min={0}
-              max={1_000_000}
-              step="0.01"
-              onChange={(e) => {
-                const value = e.currentTarget.value;
-                const numberOfDigits = getNumberOfDecimals(value);
+        <h1 className="text-contrast">Add order</h1>
 
-                if (numberOfDigits > 2)
-                  e.currentTarget.value = value.slice(0, -1);
-              }}
-            />
-          </div>
-        </Accordion>
+        <UserSection />
+        <ProductSection />
+
         <div className="flex justify-between">
           <Button
             className="text-pop p-3 outline outline-2 outline-pop"
