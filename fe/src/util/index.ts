@@ -14,9 +14,19 @@ export const getNumberOfDecimals = (value: unknown): number => {
   }
 };
 
-export const getFormElements = <T extends Element>(
+export function getFormElements<T extends Element>(
+  formElements: HTMLFormControlsCollection,
+  elements: string,
+): T | null;
+export function getFormElements<T extends Element>(
   formElements: HTMLFormControlsCollection,
   elements: string[],
-) => {
+): Array<T | null>;
+export function getFormElements<T extends Element>(
+  formElements: HTMLFormControlsCollection,
+  elements: any,
+) {
+  if (!Array.isArray(elements)) return formElements.namedItem(elements);
+
   return elements.map((element) => formElements.namedItem(element) as T | null);
-};
+}

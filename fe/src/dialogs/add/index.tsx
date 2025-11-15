@@ -22,11 +22,14 @@ export const Add: FunctionComponent<AddProps> = ({ onClose }) => {
 
     const formElements = form.elements;
 
-    // user values
+    // user
     const [uName, uAddress, uEmail, uPhone] = getFormElements<HTMLInputElement>(
       formElements,
       ["name", "address", "email", "phone"],
     );
+
+    // products
+    // TODO:
   };
 
   return (
