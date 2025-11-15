@@ -8,6 +8,13 @@ type AddProps = {
   onClose: () => void;
 };
 
+const getFormElement = <T extends Element>(
+  formElements: HTMLFormControlsCollection,
+  element: string,
+) => {
+  return formElements.namedItem(element) as T | null;
+};
+
 export const Add: FunctionComponent<AddProps> = ({ onClose }) => {
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -21,7 +28,17 @@ export const Add: FunctionComponent<AddProps> = ({ onClose }) => {
     const form = event.currentTarget;
 
     const formElements = form.elements;
-    console.log("here", formElements);
+
+    // user values
+    const uName = getFormElement<HTMLInputElement>(formElements, "name");
+    const uAddress = getFormElement<HTMLInputElement>(formElements, "address");
+    const uEmail = getFormElement<HTMLInputElement>(formElements, "email");
+    const uPhone = getFormElement<HTMLInputElement>(formElements, "phone");
+
+    console.log(
+      "form values",
+      [uName, uAddress, uEmail, uPhone].map((e) => e?.value),
+    );
   };
 
   return (
