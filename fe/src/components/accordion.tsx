@@ -11,7 +11,6 @@ const WRAPPER_STYLES = `
 bg-secondary text-contrast
 shadow-lg rounded-xl 
 outline outline-2 outline-constrast
-cursor-pointer 
 `;
 
 type AccordionProps = {
@@ -30,7 +29,7 @@ export const Accordion: FunctionComponent<
 
   return (
     <div className={WRAPPER_STYLES} onClick={onOpen}>
-      <div className="bg-secondary p-4 rounded-xl outline outline-2 outline-constrast flex items-center justify-between shadow-lg">
+      <div className="bg-secondary p-4 rounded-xl outline outline-2 outline-constrast flex items-center justify-between shadow-lg cursor-pointer">
         {header}
         <Icon
           title="Expand/Collapse"
