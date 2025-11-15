@@ -34,6 +34,7 @@ export const AddDialog: FunctionComponent<AddProps> = ({
     const pName = getFormElements<HTMLFormElement>(form, "[id='product-name']");
   };
 
+  // TODO: nice solution, but rethink me
   useEffect(() => {
     if (open) {
       setIsVisible(true);
