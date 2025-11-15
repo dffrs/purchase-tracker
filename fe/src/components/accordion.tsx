@@ -30,7 +30,7 @@ export const Accordion: FunctionComponent<
 
   return (
     <div className={WRAPPER_STYLES} onClick={onOpen}>
-      <div className="bg-secondary p-8 rounded-xl outline outline-2 outline-pop flex items-center justify-between shadow-lg">
+      <div className="bg-secondary p-4 rounded-xl outline outline-2 outline-pop flex items-center justify-between shadow-lg">
         <p>{title}</p>
         <Icon
           title="Expand/Collapse"
