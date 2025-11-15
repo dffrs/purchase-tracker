@@ -39,11 +39,12 @@ export const Accordion: FunctionComponent<
           <IoCaretDown />
         </Icon>
       </div>
-      {open && (
-        <div className="p-8" onClick={(e) => e.stopPropagation()}>
-          {children}
-        </div>
-      )}
+      <div
+        className={`p-8 ${open ? "invisible hidden" : "visible block"}`}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {children}
+      </div>
     </div>
   );
 };
