@@ -1,13 +1,17 @@
 import { Button, Icon, Accordion, Autocomplete, Input } from "@/components";
 import { getNumberOfDecimals } from "@/util";
 import { FunctionComponent, useCallback, useState } from "react";
-import { IoAdd } from "react-icons/io5";
+import { IoAdd, IoRemoveCircleOutline } from "react-icons/io5";
 
 export const ProductSection: FunctionComponent = () => {
-  const [numberOfProducts, setNumberOfProducts] = useState<number>(() => 0);
+  const [products, setProducts] = useState<number[]>(() => []);
 
   const onCreateProduct = useCallback(() => {
-    setNumberOfProducts((prev) => prev + 1);
+    setProducts((prev) => [...prev, (prev?.at(-1) || 0) + 1]);
+  }, []);
+
+  const onRemoveProduct = useCallback((product: number) => {
+    setProducts((prev) => prev.filter((p) => p !== product));
   }, []);
 
   return (
@@ -20,8 +24,20 @@ export const ProductSection: FunctionComponent = () => {
           </Icon>
         </Button>
       </div>
-      {Array.from({ length: numberOfProducts }, (_, index) => (
-        <Accordion key={`product-${index + 1}`} title={`Product ${index + 1}`}>
+      {products.map((product, index) => (
+        <Accordion
+          key={`product-${product}-${index}`}
+          header={
+            <span className="flex items-center justify-between w-full">
+              <p>Product {index + 1}</p>
+              <Icon title="Delete" className="text-lg mr-2">
+                <IoRemoveCircleOutline
+                  onClick={() => onRemoveProduct(product)}
+                />
+              </Icon>
+            </span>
+          }
+        >
           <div
             data-testid="add-product-section"
             className="flex flex-col gap-y-4"

@@ -15,13 +15,13 @@ cursor-pointer
 `;
 
 type AccordionProps = {
-  title: string;
   isOpen?: boolean;
+  header: React.ReactNode;
 };
 
 export const Accordion: FunctionComponent<
   PropsWithChildren<AccordionProps>
-> = ({ title, isOpen = false, children }) => {
+> = ({ header, isOpen = false, children }) => {
   const [open, setOpen] = useState(() => isOpen);
 
   const onOpen = useCallback(() => {
@@ -31,7 +31,7 @@ export const Accordion: FunctionComponent<
   return (
     <div className={WRAPPER_STYLES} onClick={onOpen}>
       <div className="bg-secondary p-4 rounded-xl outline outline-2 outline-constrast flex items-center justify-between shadow-lg">
-        <p>{title}</p>
+        {header}
         <Icon
           title="Expand/Collapse"
           className={`text-xl ${open ? "rotate-180" : ""}`}

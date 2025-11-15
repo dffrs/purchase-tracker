@@ -31,7 +31,10 @@ export const AddDialog: FunctionComponent<AddProps> = ({
     );
 
     // products
-    const pName = getFormElements<HTMLFormElement>(form, "[id='product-name']");
+    const pName = getFormElements<HTMLInputElement>(
+      form,
+      "[id='product-name']",
+    );
   };
 
   // TODO: nice solution, but rethink me
