@@ -13,3 +13,10 @@ export const getNumberOfDecimals = (value: unknown): number => {
     return errorValue;
   }
 };
+
+export const getFormElements = <T extends Element>(
+  formElements: HTMLFormControlsCollection,
+  elements: string[],
+) => {
+  return elements.map((element) => formElements.namedItem(element) as T | null);
+};

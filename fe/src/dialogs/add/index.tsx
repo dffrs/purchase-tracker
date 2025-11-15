@@ -1,18 +1,11 @@
 import { Button, Input, Autocomplete, Icon, Accordion } from "@/components";
-import { getNumberOfDecimals } from "@/util";
+import { getNumberOfDecimals, getFormElements } from "@/util";
 import { FunctionComponent, useRef } from "react";
 import { IoAdd } from "react-icons/io5";
 import { UserSection } from "./section/user";
 
 type AddProps = {
   onClose: () => void;
-};
-
-const getFormElement = <T extends Element>(
-  formElements: HTMLFormControlsCollection,
-  element: string,
-) => {
-  return formElements.namedItem(element) as T | null;
 };
 
 export const Add: FunctionComponent<AddProps> = ({ onClose }) => {
@@ -30,14 +23,9 @@ export const Add: FunctionComponent<AddProps> = ({ onClose }) => {
     const formElements = form.elements;
 
     // user values
-    const uName = getFormElement<HTMLInputElement>(formElements, "name");
-    const uAddress = getFormElement<HTMLInputElement>(formElements, "address");
-    const uEmail = getFormElement<HTMLInputElement>(formElements, "email");
-    const uPhone = getFormElement<HTMLInputElement>(formElements, "phone");
-
-    console.log(
-      "form values",
-      [uName, uAddress, uEmail, uPhone].map((e) => e?.value),
+    const [uName, uAddress, uEmail, uPhone] = getFormElements<HTMLInputElement>(
+      formElements,
+      ["name", "address", "email", "phone"],
     );
   };
 
