@@ -1,20 +1,22 @@
 import { Button } from "@/components";
 import { getFormElements } from "@/util";
-import { FunctionComponent, useRef } from "react";
+import { FunctionComponent, useEffect, useRef, useState } from "react";
 import { UserSection } from "./section/user";
 import { ProductSection } from "./section/product";
 
 type AddProps = {
+  isOpen: boolean;
+  className?: string;
   onClose: () => void;
 };
 
-export const Add: FunctionComponent<AddProps> = ({ onClose }) => {
-  const formRef = useRef<HTMLFormElement>(null);
-
-  const internalOnClose = () => {
-    formRef.current?.reset();
-    onClose();
-  };
+export const AddDialog: FunctionComponent<AddProps> = ({
+  isOpen: open,
+  className,
+  onClose,
+}) => {
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const [isVisible, setIsVisible] = useState(() => open);
 
   const onSubmit: React.FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
@@ -32,26 +34,41 @@ export const Add: FunctionComponent<AddProps> = ({ onClose }) => {
     const pName = getFormElements<HTMLFormElement>(form, "[id='product-name']");
   };
 
+  useEffect(() => {
+    if (open) {
+      setIsVisible(true);
+      dialogRef.current?.showModal();
+      return;
+    }
+
+    dialogRef.current?.close();
+    setTimeout(() => setIsVisible(false), 250);
+  }, [open]);
+
   return (
-    <form ref={formRef} autoComplete="off" onSubmit={onSubmit}>
-      <div className="flex flex-col gap-y-4 p-8">
-        <h1 className="text-contrast">Add order</h1>
+    (open || isVisible) && (
+      <dialog ref={dialogRef} className={className}>
+        <form autoComplete="off" onSubmit={onSubmit}>
+          <div className="flex flex-col gap-y-4 p-8">
+            <h1 className="text-contrast">Add order</h1>
 
-        <UserSection />
-        <ProductSection />
+            <UserSection />
+            <ProductSection />
 
-        <div className="flex justify-between">
-          <Button
-            className="text-pop p-3 outline outline-2 outline-pop"
-            onClick={internalOnClose}
-          >
-            Close
-          </Button>
-          <Button type="submit" className="bg-pop p-3">
-            Create
-          </Button>
-        </div>
-      </div>
-    </form>
+            <div className="flex justify-between">
+              <Button
+                className="text-pop p-3 outline outline-2 outline-pop"
+                onClick={onClose}
+              >
+                Close
+              </Button>
+              <Button type="submit" className="bg-pop p-3">
+                Create
+              </Button>
+            </div>
+          </div>
+        </form>
+      </dialog>
+    )
   );
 };

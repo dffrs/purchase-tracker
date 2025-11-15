@@ -1,1 +1,1 @@
-export { Add } from "./add";
+export { AddDialog } from "./add";

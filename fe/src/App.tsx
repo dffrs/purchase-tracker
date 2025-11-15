@@ -2,10 +2,10 @@ import { IoAddCircleOutline, IoHome, IoSearch } from "react-icons/io5";
 import { Button, Icon, Layout } from "./components";
 import { Routes, Route, Link } from "react-router";
 import { Home, Search } from "./pages";
-import { useRef } from "react";
-import { Add } from "./dialogs/";
+import { useRef, useState } from "react";
+import { AddDialog } from "./dialogs/";
 
-type Users = {
+type User = {
   id: number;
   name: string;
   email: string;
@@ -14,7 +14,8 @@ type Users = {
 };
 
 function App() {
-  const dialogRef = useRef<HTMLDialogElement>(null);
+  // TODO: isolate me
+  const [dialogOpen, setDialogOpen] = useState(() => false);
 
   return (
     <main className="w-screen h-screen bg-primary">
@@ -43,9 +44,7 @@ function App() {
               <li className="flex flex-row gap-x-2 items-center">
                 <Button
                   className="bg-secondary rounded p-3"
-                  onClick={() => {
-                    dialogRef.current?.showModal();
-                  }}
+                  onClick={() => setDialogOpen(true)}
                 >
                   <Icon title="Add" className="text-xl">
                     <IoAddCircleOutline />
@@ -59,9 +58,11 @@ function App() {
               <Route path="/home" element={<Home />} />
               <Route path="/search" element={<Search />} />
             </Routes>
-            <dialog ref={dialogRef} className="card w-[40%]">
-              <Add onClose={() => dialogRef.current?.close()} />
-            </dialog>
+            <AddDialog
+              isOpen={dialogOpen}
+              className="card w-[40%]"
+              onClose={() => setDialogOpen(false)}
+            />
           </section>
         </section>
       </Layout>
