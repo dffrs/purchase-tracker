@@ -65,6 +65,25 @@ export const AddDialog: FunctionComponent<AddProps> = ({
     setTimeout(() => setIsVisible(false), 250);
   }, [open]);
 
+  // NOTE:
+  // hacky way of preventing <dialog /> from closing on ESC
+  // Solution required for Chromium based browsers:
+  // https://issues.chromium.org/issues/346597066
+  useEffect(() => {
+    const handler = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+    };
+
+    document.addEventListener("keydown", handler);
+
+    return () => {
+      document.removeEventListener("keydown", handler);
+    };
+  }, []);
+
   return (
     (open || isVisible) && (
       <dialog ref={dialogRef} className={className}>
