@@ -25,15 +25,31 @@ export const AddDialog: FunctionComponent<AddProps> = ({
     const formElements = form.elements;
 
     // user
-    const [uName, uAddress, uEmail, uPhone] = getFormElements<HTMLInputElement>(
-      formElements,
-      ["name", "address", "email", "phone"],
-    );
+    const userElements = getFormElements<HTMLInputElement>(formElements, [
+      "name",
+      "address",
+      "email",
+      "phone",
+    ]);
 
     // products
     const pName = getFormElements<HTMLInputElement>(
       form,
-      "[id='product-name']",
+      "[id^='product'][id$='name']",
+    );
+
+    const pCode = getFormElements<HTMLInputElement>(
+      form,
+      "[id^='product'][id$='code']",
+    );
+
+    const pPrice = getFormElements<HTMLInputElement>(
+      form,
+      "[id^='product'][id$='price']",
+    );
+
+    [...userElements, ...pName, ...pCode, ...pPrice].forEach((element) =>
+      console.log(element?.value),
     );
   };
 

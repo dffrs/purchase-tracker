@@ -46,7 +46,7 @@ export const ProductSection: FunctionComponent = () => {
               <Input
                 label="Product Name"
                 type="text"
-                id={`product-${index}-name`}
+                id={`product-${product}-${index}-name`}
                 placeholder="product name..."
               />
             </Autocomplete>
@@ -54,14 +54,14 @@ export const ProductSection: FunctionComponent = () => {
               <Input
                 label="Code"
                 type="text"
-                id={`product-${index}-code`}
+                id={`product-${product}-${index}-code`}
                 placeholder="product code..."
               />
             </Autocomplete>
             <Input
               label="Price €"
               type="number"
-              id={`product-${index}-price`}
+              id={`product-${product}-${index}-price`}
               placeholder="product price..."
               min={0}
               max={1_000_000}
