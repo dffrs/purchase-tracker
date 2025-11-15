@@ -34,7 +34,7 @@ export const Accordion: FunctionComponent<
         <p>{title}</p>
         <Icon
           title="Expand/Collapse"
-          className={`text-2xl ${open ? "rotate-180" : ""}`}
+          className={`text-xl ${open ? "rotate-180" : ""}`}
         >
           <IoCaretDown />
         </Icon>
