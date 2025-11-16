@@ -10,6 +10,8 @@ export const getAllUsers = async () => {
 
     const result = (await response.json()) as User[];
 
+    await new Promise((r) => setTimeout(r, 2_000));
+
     return result;
   } catch (error) {
     console.error(error);

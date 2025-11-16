@@ -2,7 +2,7 @@ import { IoAddCircleOutline, IoHome, IoSearch } from "react-icons/io5";
 import { Button, Icon, Layout } from "./components";
 import { Routes, Route, Link } from "react-router";
 import { Home, Search } from "./pages";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { AddDialog } from "./dialogs/";
 
 function App() {
