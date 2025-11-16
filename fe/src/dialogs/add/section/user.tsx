@@ -12,20 +12,48 @@ export const UserSection: FunctionComponent = () => {
   const [users, isLoading] = useGetAllUsers();
 
   const nameRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const phoneRef = useRef<HTMLInputElement>(null);
 
-  const onAutoCompleteName: ACOption["onClick"] = useCallback((event) => {
-    if (!nameRef.current) return;
-    const value = event.currentTarget.id;
+  // TODO: fix any
+  const onAutoComplete = useCallback(
+    (event: any, prop: keyof User) => {
+      if (!nameRef.current) return;
+      if (!emailRef.current) return;
+      if (!phoneRef.current) return;
 
-    nameRef.current.value = value;
-  }, []);
+      const value = event.currentTarget.id;
+
+      const user = users.find((user) => String(user[prop]) === String(value));
+      if (!user) return;
+
+      nameRef.current.value = user.name;
+      emailRef.current.value = user.email;
+      phoneRef.current.value = String(user.phone);
+    },
+    [users],
+  );
 
   const userNameAutoComplete = useMemo(() => {
     return users.map((user) => ({
       text: user.name,
-      onClick: onAutoCompleteName,
+      onClick: (event: any) => onAutoComplete(event, "name"),
     }));
-  }, [users, onAutoCompleteName]);
+  }, [users, onAutoComplete]);
+
+  const userEmailAutoComplete = useMemo(() => {
+    return users.map((user) => ({
+      text: user.email,
+      onClick: (event: any) => onAutoComplete(event, "email"),
+    }));
+  }, [users, onAutoComplete]);
+
+  const userPhoneAutoComplete = useMemo(() => {
+    return users.map((user) => ({
+      text: String(user.phone),
+      onClick: (event: any) => onAutoComplete(event, "phone"),
+    }));
+  }, [users, onAutoComplete]);
 
   return (
     <LoadingArea isLoading={isLoading}>
@@ -47,8 +75,9 @@ export const UserSection: FunctionComponent = () => {
             placeholder="user's address..."
           />
         </Autocomplete>
-        <Autocomplete options={[]}>
+        <Autocomplete options={userEmailAutoComplete}>
           <Input
+            ref={emailRef}
             label="Email"
             type="email"
             id="email"
@@ -56,8 +85,9 @@ export const UserSection: FunctionComponent = () => {
             pattern={String(EMAIL_VALIDATION)}
           />
         </Autocomplete>
-        <Autocomplete options={[]}>
+        <Autocomplete options={userPhoneAutoComplete}>
           <Input
+            ref={phoneRef}
             label="Phone"
             type="tel"
             id="phone"

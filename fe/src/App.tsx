@@ -52,7 +52,7 @@ function App() {
             </Routes>
             <AddDialog
               isOpen={dialogOpen}
-              className="card w-[40%]"
+              className="card w-[40%] overflow-visible"
               onClose={() => setDialogOpen(false)}
             />
           </section>

@@ -12,7 +12,7 @@ type AddProps = {
 
 export const AddDialog: FunctionComponent<AddProps> = ({
   isOpen: open,
-  className,
+  className = "",
   onClose,
 }) => {
   const dialogRef = useRef<HTMLDialogElement>(null);
