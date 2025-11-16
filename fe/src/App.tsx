@@ -5,14 +5,6 @@ import { Home, Search } from "./pages";
 import { useRef, useState } from "react";
 import { AddDialog } from "./dialogs/";
 
-type User = {
-  id: number;
-  name: string;
-  email: string;
-  phone: number;
-  created_at: string;
-};
-
 function App() {
   // TODO: isolate me
   const [dialogOpen, setDialogOpen] = useState(() => false);

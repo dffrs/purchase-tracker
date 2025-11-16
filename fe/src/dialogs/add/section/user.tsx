@@ -1,12 +1,15 @@
 import { ACOption, Autocomplete, Input } from "@/components";
+import { useGetAllUsers } from "@/hooks";
 import { FunctionComponent, useCallback, useMemo, useRef } from "react";
 
 const EMAIL_VALIDATION =
   /^[\w.!#$%&'*+/=?^`{|}~-]+@[a-z\d](?:[a-z\d-]{0,61}[a-z\d])?(?:\.[a-z\d](?:[a-z\d-]{0,61}[a-z\d])?)*$/i;
 
-const PT_PHONE_NUMBER = /^(\+351)?\d{9}$/g;
+const PT_PHONE_NUMBER = /^(\+351)?\d{9|13}$/g;
 
 export const UserSection: FunctionComponent = () => {
+  const [users, isLoading] = useGetAllUsers();
+
   const nameRef = useRef<HTMLInputElement>(null);
 
   const onAutoCompleteName: ACOption["onClick"] = useCallback((event) => {
@@ -16,16 +19,16 @@ export const UserSection: FunctionComponent = () => {
     nameRef.current.value = value;
   }, []);
 
-  const tempAutocompleteOptions = useMemo(() => {
-    return Array.from({ length: 10 }, (_, i) => ({
-      text: "option " + (i + 1),
+  const userNameAutoComplete = useMemo(() => {
+    return users.map((user) => ({
+      text: user.name,
       onClick: onAutoCompleteName,
     }));
-  }, [onAutoCompleteName]);
+  }, [users, onAutoCompleteName]);
 
   return (
     <div data-testid="add-user-section" className="grid grid-cols-2 gap-6">
-      <Autocomplete options={tempAutocompleteOptions}>
+      <Autocomplete options={userNameAutoComplete}>
         <Input
           ref={nameRef}
           label="User Name"
@@ -34,7 +37,7 @@ export const UserSection: FunctionComponent = () => {
           placeholder="user's name..."
         />
       </Autocomplete>
-      <Autocomplete options={tempAutocompleteOptions}>
+      <Autocomplete options={[]}>
         <Input
           label="Address"
           type="text"
@@ -42,7 +45,7 @@ export const UserSection: FunctionComponent = () => {
           placeholder="user's address..."
         />
       </Autocomplete>
-      <Autocomplete options={tempAutocompleteOptions}>
+      <Autocomplete options={[]}>
         <Input
           label="Email"
           type="email"
@@ -51,7 +54,7 @@ export const UserSection: FunctionComponent = () => {
           pattern={String(EMAIL_VALIDATION)}
         />
       </Autocomplete>
-      <Autocomplete options={tempAutocompleteOptions}>
+      <Autocomplete options={[]}>
         <Input
           label="Phone"
           type="tel"
