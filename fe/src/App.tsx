@@ -1,5 +1,10 @@
-import { IoAddCircleOutline, IoHome, IoSearch } from "react-icons/io5";
-import { Button, Icon, Layout } from "./components";
+import {
+  IoAddCircleOutline,
+  IoHome,
+  IoSearch,
+  IoWarning,
+} from "react-icons/io5";
+import { Button, Icon, Layout, useToast } from "./components";
 import { Routes, Route, Link } from "react-router";
 import { Home, Search } from "./pages";
 import { useState } from "react";
@@ -8,6 +13,7 @@ import { AddDialog } from "./dialogs/";
 function App() {
   // TODO: isolate me
   const [dialogOpen, setDialogOpen] = useState(() => false);
+  const { createToast } = useToast();
 
   return (
     <main className="w-screen h-screen bg-primary">
@@ -40,6 +46,16 @@ function App() {
                 >
                   <Icon title="Add" className="text-xl">
                     <IoAddCircleOutline />
+                  </Icon>
+                </Button>
+              </li>
+              <li className="flex flex-row gap-x-2 items-center">
+                <Button
+                  className="bg-secondary rounded p-3"
+                  onClick={createToast}
+                >
+                  <Icon title="Test" className="text-xl">
+                    <IoWarning />
                   </Icon>
                 </Button>
               </li>
