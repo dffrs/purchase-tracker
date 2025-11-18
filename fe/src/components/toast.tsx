@@ -34,7 +34,7 @@ const Toast: FunctionComponent<PropsWithChildren<ToastProps>> = ({
   children,
 }) => {
   return (
-    <span className="bg-contrast p-2 rounded-xl shadow-xl flex flex items-center gap-x-2">
+    <span className="bg-contrast p-2 rounded-xl shadow-md flex flex items-center gap-x-2">
       <Button
         id={String(id)}
         className="shadow-none rounded-full p-0"
@@ -68,7 +68,7 @@ export const ToastProvider: FunctionComponent<PropsWithChildren> = ({
   return (
     <ToastContext.Provider value={{ createToast }}>
       {children}
-      <ul className="absolute bottom-10 left-[50%] max-h-80 p-2 flex flex-col gap-y-4">
+      <ul className="absolute bottom-10 left-[50%] max-h-96 py-1 flex flex-col gap-y-2 overflow-hidden">
         {toasts?.map((toast, i) => {
           return (
             <li key={i}>
