@@ -44,7 +44,9 @@ const Toast: FunctionComponent<PropsWithChildren<ToastProps>> = ({
           <IoClose />
         </Icon>
       </Button>
-      {children}
+      <span className="max-w-[25ch] overflow-ellipsis whitespace-nowrap overflow-clip">
+        {children}
+      </span>
     </span>
   );
 };
@@ -71,7 +73,7 @@ export const ToastProvider: FunctionComponent<PropsWithChildren> = ({
           return (
             <li key={i}>
               <Toast id={toast} onClose={onClose}>
-                toast {i + 1}
+                toast {toast}
               </Toast>
             </li>
           );
