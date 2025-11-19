@@ -10,6 +10,8 @@ import { Button } from "./button";
 import { Icon } from "./icon";
 import { IoClose } from "react-icons/io5";
 
+const TIMEOUT = 5_000;
+
 type ToastCtx = {
   createToast: () => void;
 };
@@ -57,7 +59,16 @@ export const ToastProvider: FunctionComponent<PropsWithChildren> = ({
   const [toasts, setToasts] = useState<number[]>(() => []);
 
   const createToast = () => {
-    setToasts((prev) => [...prev, (prev.at(-1) ?? 0) + 1]);
+    setToasts((prev) => {
+      const newToast = (prev.at(-1) ?? 0) + 1;
+
+      setTimeout(
+        () => setToasts((prev) => prev.filter((t) => t !== newToast)),
+        TIMEOUT,
+      );
+
+      return [...prev, newToast];
+    });
   };
 
   const onClose: ToastProps["onClose"] = useCallback((event) => {
