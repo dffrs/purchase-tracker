@@ -34,7 +34,7 @@ const Toast: FunctionComponent<PropsWithChildren<ToastProps>> = ({
   children,
 }) => {
   return (
-    <span className="bg-contrast p-2 rounded-xl shadow-md flex items-center gap-x-2">
+    <span className="bg-contrast p-2 rounded-xl shadow-md flex items-center">
       <Button
         id={String(id)}
         className="!shadow-none rounded-full p-0"
@@ -44,7 +44,7 @@ const Toast: FunctionComponent<PropsWithChildren<ToastProps>> = ({
           <IoClose />
         </Icon>
       </Button>
-      <span className="max-w-[25ch] overflow-ellipsis whitespace-nowrap overflow-clip">
+      <span className="max-w-[25ch] overflow-ellipsis whitespace-nowrap overflow-clip mr-4">
         {children}
       </span>
     </span>
