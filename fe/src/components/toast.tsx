@@ -4,6 +4,7 @@ import {
   PropsWithChildren,
   useCallback,
   useContext,
+  useMemo,
   useState,
 } from "react";
 import { Button } from "./button";
@@ -58,7 +59,7 @@ export const ToastProvider: FunctionComponent<PropsWithChildren> = ({
 }) => {
   const [toasts, setToasts] = useState<number[]>(() => []);
 
-  const createToast = () => {
+  const createToast = useCallback(() => {
     setToasts((prev) => {
       const newToast = (prev.at(-1) ?? 0) + 1;
 
@@ -69,7 +70,7 @@ export const ToastProvider: FunctionComponent<PropsWithChildren> = ({
 
       return [...prev, newToast];
     });
-  };
+  }, []);
 
   const onClose: ToastProps["onClose"] = useCallback((event) => {
     const toastId = event.currentTarget.id;
@@ -77,12 +78,14 @@ export const ToastProvider: FunctionComponent<PropsWithChildren> = ({
   }, []);
 
   return (
-    <ToastContext.Provider value={{ createToast }}>
+    <ToastContext.Provider
+      value={useMemo(() => ({ createToast }), [createToast])}
+    >
       {children}
       <ul className="absolute bottom-10 left-[50%] max-h-96 py-0 flex flex-col gap-y-2 overflow-hidden">
-        {toasts?.map((toast, i) => {
+        {toasts?.map((toast) => {
           return (
-            <li key={i}>
+            <li key={toast}>
               <Toast id={toast} onClose={onClose}>
                 toast {toast}
               </Toast>
