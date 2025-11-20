@@ -14,7 +14,7 @@ import { IoClose } from "react-icons/io5";
 const TIMEOUT = 5_000;
 
 type ToastCtx = {
-  createToast: () => void;
+  createToast: (message: string) => void;
 };
 
 const ToastContext = createContext<ToastCtx | null>(null);
@@ -59,7 +59,7 @@ export const ToastProvider: FunctionComponent<PropsWithChildren> = ({
 }) => {
   const [toasts, setToasts] = useState<number[]>(() => []);
 
-  const createToast = useCallback(() => {
+  const createToast = useCallback((message: string) => {
     setToasts((prev) => {
       const newToast = (prev.at(-1) ?? 0) + 1;
 

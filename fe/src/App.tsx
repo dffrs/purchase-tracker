@@ -52,7 +52,7 @@ function App() {
               <li className="flex flex-row gap-x-2 items-center">
                 <Button
                   className="bg-secondary rounded p-3"
-                  onClick={createToast}
+                  onClick={() => createToast("")}
                 >
                   <Icon title="Test" className="text-xl">
                     <IoWarning />
