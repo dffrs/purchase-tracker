@@ -54,6 +54,15 @@
   }
 }
 
+@keyframes moveOut {
+  from {
+    transform: translateY(0%);
+  }
+  to {
+    transform: translateY(100%);
+  }
+}
+
 :root {
   font-family:
     Arial Rounded MT Bold,
@@ -219,7 +228,9 @@ input::-webkit-inner-spin-button {
   .shrink-wrapper {
     animation:
       moveIn 0.25s forwards,
-      fadeIn 0.5s forwards;
+      fadeIn 0.5s forwards,
+      moveOut 0.25s forwards linear calc(5s - 0.001s),
+      fadeOut 0.25s forwards linear calc(5s - 0.001s);
 
     & .shrink {
       display: inline-block;
@@ -232,8 +243,12 @@ input::-webkit-inner-spin-button {
       animation-delay: 1000ms;
     }
 
-    &:hover .shrink {
+    &:hover {
       animation-play-state: paused;
+
+      .shrink {
+        animation-play-state: paused;
+      }
     }
   }
 }
