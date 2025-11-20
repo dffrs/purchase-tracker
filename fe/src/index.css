@@ -36,6 +36,15 @@
   }
 }
 
+@keyframes shrink-animation {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
+}
+
 :root {
   font-family:
     Arial Rounded MT Bold,
@@ -196,5 +205,17 @@ input::-webkit-inner-spin-button {
 
   .card-text {
     @apply text-9xl text-pop;
+  }
+
+  .shrink-wrapper {
+    & .shrink {
+      display: inline-block;
+      height: 4px;
+      animation: shrink-animation 1s infinite;
+    }
+
+    &:hover {
+      animation-play-state: paused;
+    }
   }
 }

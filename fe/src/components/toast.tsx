@@ -4,6 +4,7 @@ import {
   PropsWithChildren,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
 } from "react";
@@ -26,27 +27,37 @@ export const useToast = () => {
 
 type ToastProps = {
   id: number;
-  onClose: React.MouseEventHandler<HTMLButtonElement>;
+  onClose: (toastId: number) => void;
+  timer: number;
 };
 
 const Toast: FunctionComponent<PropsWithChildren<ToastProps>> = ({
   id,
+  timer,
   onClose,
+
   children,
 }) => {
+  // useEffect(() => {
+  //   setTimeout(() => onClose(id), timer);
+  // }, [onClose, id]);
+
   return (
-    <span className="bg-contrast p-2 rounded-xl shadow-md flex items-center">
-      <Button
-        id={String(id)}
-        className="!shadow-none rounded-full p-0"
-        onClick={onClose}
-      >
-        <Icon title="Close" className="text-base">
-          <IoClose />
-        </Icon>
-      </Button>
-      <span className="max-w-[25ch] overflow-ellipsis whitespace-nowrap overflow-clip mr-4">
-        {children}
+    <span className="bg-contrast rounded-xl p-2 shadow-md flex flex-col items-start shrink-wrapper">
+      <span className="bg-pop h-1 w-full rounded-xl shrink" />
+      <span className="flex items-center">
+        <Button
+          id={String(id)}
+          className="!shadow-none rounded-full p-0"
+          onClick={() => onClose(id)}
+        >
+          <Icon title="Close" className="text-base">
+            <IoClose />
+          </Icon>
+        </Button>
+        <span className="max-w-[25ch] overflow-ellipsis whitespace-nowrap overflow-clip mr-4">
+          {children}
+        </span>
       </span>
     </span>
   );
@@ -55,6 +66,7 @@ const Toast: FunctionComponent<PropsWithChildren<ToastProps>> = ({
 type Toast = {
   id: number;
   message: string;
+  timer: number;
 };
 
 export const ToastProvider: FunctionComponent<PropsWithChildren> = ({
@@ -66,21 +78,19 @@ export const ToastProvider: FunctionComponent<PropsWithChildren> = ({
     setToasts((prev) => {
       const newToast = (prev.at(-1)?.id ?? 0) + 1;
 
-      setTimeout(
-        () => setToasts((prev) => prev.filter((t) => t.id !== newToast)),
-        TIMEOUT,
-      );
-
       return [
         ...prev,
-        { id: newToast, message: message || newToast.toString() },
+        {
+          id: newToast,
+          message: message || newToast.toString(),
+          timer: TIMEOUT,
+        },
       ];
     });
   }, []);
 
-  const onClose: ToastProps["onClose"] = useCallback((event) => {
-    const toastId = event.currentTarget.id;
-    setToasts((prev) => prev.filter((t) => t.id !== +toastId));
+  const onClose: ToastProps["onClose"] = useCallback((toastId) => {
+    setToasts((prev) => prev.filter((t) => t.id !== toastId));
   }, []);
 
   return (
@@ -89,10 +99,10 @@ export const ToastProvider: FunctionComponent<PropsWithChildren> = ({
     >
       {children}
       <ul className="absolute bottom-10 left-[50%] max-h-96 py-0 flex flex-col gap-y-2 overflow-hidden">
-        {toasts?.map(({ id, message }) => {
+        {toasts?.map(({ id, message, timer }) => {
           return (
             <li key={id}>
-              <Toast id={id} onClose={onClose}>
+              <Toast id={id} onClose={onClose} timer={timer}>
                 toast {message}
               </Toast>
             </li>
