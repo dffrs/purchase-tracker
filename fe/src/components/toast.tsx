@@ -13,9 +13,7 @@ import { IoClose } from "react-icons/io5";
 
 const TIMEOUT = 5_000;
 
-type ToastCtx = {
-  createToast: (message: string) => void;
-};
+type ToastCtx = { createToast: (message: string) => void };
 
 const ToastContext = createContext<ToastCtx | null>(null);
 
@@ -54,27 +52,35 @@ const Toast: FunctionComponent<PropsWithChildren<ToastProps>> = ({
   );
 };
 
+type Toast = {
+  id: number;
+  message: string;
+};
+
 export const ToastProvider: FunctionComponent<PropsWithChildren> = ({
   children,
 }) => {
-  const [toasts, setToasts] = useState<number[]>(() => []);
+  const [toasts, setToasts] = useState<Toast[]>(() => []);
 
   const createToast = useCallback((message: string) => {
     setToasts((prev) => {
-      const newToast = (prev.at(-1) ?? 0) + 1;
+      const newToast = (prev.at(-1)?.id ?? 0) + 1;
 
       setTimeout(
-        () => setToasts((prev) => prev.filter((t) => t !== newToast)),
+        () => setToasts((prev) => prev.filter((t) => t.id !== newToast)),
         TIMEOUT,
       );
 
-      return [...prev, newToast];
+      return [
+        ...prev,
+        { id: newToast, message: message || newToast.toString() },
+      ];
     });
   }, []);
 
   const onClose: ToastProps["onClose"] = useCallback((event) => {
     const toastId = event.currentTarget.id;
-    setToasts((prev) => prev.filter((t) => t !== +toastId));
+    setToasts((prev) => prev.filter((t) => t.id !== +toastId));
   }, []);
 
   return (
@@ -83,11 +89,11 @@ export const ToastProvider: FunctionComponent<PropsWithChildren> = ({
     >
       {children}
       <ul className="absolute bottom-10 left-[50%] max-h-96 py-0 flex flex-col gap-y-2 overflow-hidden">
-        {toasts?.map((toast) => {
+        {toasts?.map(({ id, message }) => {
           return (
-            <li key={toast}>
-              <Toast id={toast} onClose={onClose}>
-                toast {toast}
+            <li key={id}>
+              <Toast id={id} onClose={onClose}>
+                toast {message}
               </Toast>
             </li>
           );
