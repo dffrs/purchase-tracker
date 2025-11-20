@@ -36,27 +36,26 @@ const Toast: FunctionComponent<PropsWithChildren<ToastProps>> = ({
   id,
   timer,
   onClose,
-
   children,
 }) => {
-  const toastRef = useRef<HTMLSpanElement>(null);
+  const timerRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    if (!toastRef.current) return;
+    if (!timerRef.current) return;
 
     const listener = () => onClose(id);
 
-    toastRef.current.addEventListener("animationend", listener);
+    timerRef.current.addEventListener("animationend", listener);
 
     return () => {
-      toastRef.current?.removeEventListener("animationend", listener);
+      timerRef.current?.removeEventListener("animationend", listener);
     };
   }, [onClose, id]);
 
   return (
     <span className="bg-contrast rounded-xl p-2 shadow-md flex flex-col items-start shrink-wrapper">
       <span
-        ref={toastRef}
+        ref={timerRef}
         data-timeout={timer}
         className="bg-pop h-1 w-full rounded-xl shrink"
       />
