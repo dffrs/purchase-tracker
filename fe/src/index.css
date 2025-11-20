@@ -211,10 +211,10 @@ input::-webkit-inner-spin-button {
     & .shrink {
       display: inline-block;
       height: 4px;
-      animation: shrink-animation 1s infinite;
+      animation: shrink-animation var(--timeout, 5000) forwards;
     }
 
-    &:hover {
+    &:hover .shrink {
       animation-play-state: paused;
     }
   }

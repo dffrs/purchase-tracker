@@ -6,11 +6,16 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import { Button } from "./button";
 import { Icon } from "./icon";
 import { IoClose } from "react-icons/io5";
+
+interface ShrinkStyle extends React.CSSProperties {
+  "--timeout"?: string;
+}
 
 const TIMEOUT = 5_000;
 
@@ -38,13 +43,26 @@ const Toast: FunctionComponent<PropsWithChildren<ToastProps>> = ({
 
   children,
 }) => {
-  // useEffect(() => {
-  //   setTimeout(() => onClose(id), timer);
-  // }, [onClose, id]);
+  const toastRef = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    if (!toastRef.current) return;
+
+    const listener = () => onClose(id);
+
+    toastRef.current.addEventListener("animationend", listener);
+
+    return () => {
+      toastRef.current?.removeEventListener("animationend", listener);
+    };
+  }, [onClose, id]);
 
   return (
-    <span className="bg-contrast rounded-xl p-2 shadow-md flex flex-col items-start shrink-wrapper">
-      <span className="bg-pop h-1 w-full rounded-xl shrink" />
+    <span
+      className="bg-contrast rounded-xl p-2 shadow-md flex flex-col items-start shrink-wrapper"
+      style={{ "--timeout": `${timer}ms` } as ShrinkStyle}
+    >
+      <span ref={toastRef} className="bg-pop h-1 w-full rounded-xl shrink" />
       <span className="flex items-center">
         <Button
           id={String(id)}
