@@ -226,21 +226,24 @@ input::-webkit-inner-spin-button {
   }
 
   .shrink-wrapper {
+    --timeout: attr(data-timeout ms, 1000);
+    --delay: 1s;
+
     animation:
       moveIn 0.25s forwards,
       fadeIn 0.5s forwards,
-      moveOut 0.25s forwards linear calc(5s - 0.001s),
-      fadeOut 0.25s forwards linear calc(5s - 0.001s);
+      moveOut 0.25s forwards linear calc(var(--timeout) + var(--delay) - 0.1s),
+      fadeOut 0.25s forwards linear calc(var(--timeout) + var(--delay) - 0.2s);
 
     & .shrink {
       display: inline-block;
       height: 4px;
 
       animation-name: shrink-animation;
-      animation-duration: attr(data-timeout ms, 1000);
+      animation-duration: var(--timeout);
       animation-fill-mode: forwards;
       animation-timing-function: linear;
-      animation-delay: 1000ms;
+      animation-delay: var(--delay);
     }
 
     &:hover {
