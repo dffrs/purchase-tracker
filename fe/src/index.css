@@ -216,6 +216,7 @@ input::-webkit-inner-spin-button {
       animation-duration: attr(data-timeout ms, 1000);
       animation-fill-mode: forwards;
       animation-timing-function: linear;
+      animation-delay: 1000ms;
     }
 
     &:hover .shrink {

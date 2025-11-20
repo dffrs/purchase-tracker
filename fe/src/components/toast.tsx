@@ -53,11 +53,11 @@ const Toast: FunctionComponent<PropsWithChildren<ToastProps>> = ({
   }, [onClose, id]);
 
   return (
-    <span className="bg-contrast rounded-xl p-2 shadow-md flex flex-col items-start shrink-wrapper">
+    <span className="bg-pop rounded-xl p-2 shadow-md flex flex-col items-start shrink-wrapper">
       <span
         ref={timerRef}
         data-timeout={timer}
-        className="bg-pop h-1 w-full rounded-xl shrink"
+        className="bg-secondary h-1 w-full rounded-xl shrink"
       />
       <span className="flex items-center">
         <Button
