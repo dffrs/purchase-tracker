@@ -8,7 +8,7 @@ import { Button, Icon, Layout, useToast } from "./components";
 import { Routes, Route, Link } from "react-router";
 import { Home, Search } from "./pages";
 import { useState } from "react";
-import { AddDialog } from "./dialogs/";
+import { AddModal } from "./modals";
 
 function App() {
   // TODO: isolate me
@@ -66,7 +66,7 @@ function App() {
               <Route path="/home" element={<Home />} />
               <Route path="/search" element={<Search />} />
             </Routes>
-            <AddDialog
+            <AddModal
               isOpen={dialogOpen}
               className="card w-[40%] overflow-visible"
               onClose={() => setDialogOpen(false)}

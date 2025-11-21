@@ -188,7 +188,9 @@ input::-webkit-inner-spin-button {
 }
 
 @layer components {
-  dialog {
+  div[role="dialog"] {
+    @apply z-40 absolute;
+
     margin: auto;
 
     animation: fadeOut 0.25s forwards;
@@ -197,7 +199,7 @@ input::-webkit-inner-spin-button {
       animation: backdropFadeOut 0.25s forwards;
     }
 
-    &[open] {
+    &[data-open="true"] {
       animation: fadeIn 0.25s forwards;
       &::backdrop {
         animation: backdropFadeIn 0.25s forwards;
