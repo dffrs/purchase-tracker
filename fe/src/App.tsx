@@ -13,7 +13,7 @@ import { AddDialog } from "./dialogs/";
 function App() {
   // TODO: isolate me
   const [dialogOpen, setDialogOpen] = useState(() => false);
-  const { createToast } = useToast();
+  const createToast = useToast();
 
   return (
     <main className="w-screen h-screen bg-primary">

@@ -15,7 +15,7 @@ import { IoClose } from "react-icons/io5";
 
 const TIMEOUT = 5_000;
 
-type ToastCtx = { createToast: (message: string) => void };
+type ToastCtx = (message: string) => void;
 
 const ToastContext = createContext<ToastCtx | null>(null);
 
@@ -107,9 +107,7 @@ export const ToastProvider: FunctionComponent<PropsWithChildren> = ({
   }, []);
 
   return (
-    <ToastContext.Provider
-      value={useMemo(() => ({ createToast }), [createToast])}
-    >
+    <ToastContext.Provider value={createToast}>
       {children}
       <ul className="absolute bottom-10 left-[50%] max-h-96 py-0 flex flex-col gap-y-2 overflow-hidden">
         {toasts?.map(({ id, message, timer }) => {
