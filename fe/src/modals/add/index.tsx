@@ -6,15 +6,10 @@ import { ProductSection } from "./section/product";
 
 type AddProps = {
   isOpen: boolean;
-  className?: string;
   onClose: () => void;
 };
 
-export const AddModal: FunctionComponent<AddProps> = ({
-  isOpen,
-  className = "",
-  onClose,
-}) => {
+export const AddModal: FunctionComponent<AddProps> = ({ isOpen, onClose }) => {
   const onSubmit: React.FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
     const form = event.currentTarget;
@@ -51,7 +46,7 @@ export const AddModal: FunctionComponent<AddProps> = ({
   };
 
   return (
-    <Modal isOpen={isOpen} className={className}>
+    <Modal isOpen={isOpen} className="w-[40%]">
       <form autoComplete="off" onSubmit={onSubmit}>
         <div className="flex flex-col gap-y-4 p-8">
           <h1 className="text-contrast">Add order</h1>

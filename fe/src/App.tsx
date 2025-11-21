@@ -68,7 +68,6 @@ function App() {
             </Routes>
             <AddModal
               isOpen={dialogOpen}
-              className="card w-[40%] overflow-visible"
               onClose={() => setDialogOpen(false)}
             />
           </section>
