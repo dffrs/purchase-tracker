@@ -205,12 +205,7 @@ input::-webkit-inner-spin-button {
   }
 
   div[role="dialog-bg"] {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    backdrop-filter: blur(15px);
+    @apply fixed inset-0 w-screen h-screen blur-sm;
 
     &[data-open="true"] {
       animation: backdropFadeIn 0.25s forwards;
