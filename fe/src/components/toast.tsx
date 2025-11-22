@@ -108,7 +108,7 @@ export const ToastProvider: FunctionComponent<PropsWithChildren> = ({
   return (
     <ToastContext.Provider value={createToast}>
       {children}
-      <ul className="absolute bottom-10 left-[50%] max-h-96 py-0 flex flex-col gap-y-2 overflow-hidden">
+      <ul className="absolute bottom-10 left-[50%] max-h-96 py-0 flex flex-col gap-y-2 overflow-hidden z-50">
         {toasts?.map(({ id, message, timer }) => {
           return (
             <li key={id}>

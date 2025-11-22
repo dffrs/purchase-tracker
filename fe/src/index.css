@@ -188,25 +188,34 @@ input::-webkit-inner-spin-button {
 }
 
 @layer components {
-  dialog {
+  div[role="modal-wrapper"] {
+    @apply z-40 absolute;
     margin: auto;
 
-    animation: fadeOut 0.25s forwards;
+    &[data-open="true"] {
+      div[role="modal"] {
+        animation: fadeIn 0.25s forwards;
+      }
 
-    &::backdrop {
-      animation: backdropFadeOut 0.25s forwards;
-    }
-
-    &[open] {
-      animation: fadeIn 0.25s forwards;
-      &::backdrop {
+      &::before {
         animation: backdropFadeIn 0.25s forwards;
       }
     }
 
-    transition:
-      display 0.25s allow-discrete,
-      overlay 0.25s allow-discrete;
+    div[role="modal"] {
+      @apply w-full;
+      animation: fadeOut 0.25s forwards;
+
+      transition:
+        display 0.25s allow-discrete,
+        overlay 0.25s allow-discrete;
+    }
+
+    &::before {
+      @apply content-[""] fixed inset-0 w-screen h-screen blur-sm;
+
+      animation: backdropFadeOut 0.25s forwards;
+    }
   }
 
   .card {

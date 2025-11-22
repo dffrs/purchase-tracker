@@ -8,11 +8,11 @@ import { Button, Icon, Layout, useToast } from "./components";
 import { Routes, Route, Link } from "react-router";
 import { Home, Search } from "./pages";
 import { useState } from "react";
-import { AddDialog } from "./dialogs/";
+import { AddModal } from "./modals";
 
 function App() {
   // TODO: isolate me
-  const [dialogOpen, setDialogOpen] = useState(() => false);
+  const [modalOpen, setModalOpen] = useState(() => false);
   const createToast = useToast();
 
   return (
@@ -42,7 +42,7 @@ function App() {
               <li className="flex flex-row gap-x-2 items-center">
                 <Button
                   className="bg-secondary rounded p-3"
-                  onClick={() => setDialogOpen(true)}
+                  onClick={() => setModalOpen(true)}
                 >
                   <Icon title="Add" className="text-xl">
                     <IoAddCircleOutline />
@@ -66,11 +66,7 @@ function App() {
               <Route path="/home" element={<Home />} />
               <Route path="/search" element={<Search />} />
             </Routes>
-            <AddDialog
-              isOpen={dialogOpen}
-              className="card w-[40%] overflow-visible"
-              onClose={() => setDialogOpen(false)}
-            />
+            <AddModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
           </section>
         </section>
       </Layout>
