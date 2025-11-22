@@ -2,9 +2,55 @@
 @tailwind components;
 @tailwind utilities;
 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes shrink-animation {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
+}
+
+@keyframes moveIn {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0%);
+  }
+}
+
+@keyframes moveOut {
+  from {
+    transform: translateY(0%);
+  }
+  to {
+    transform: translateY(100%);
+  }
+}
+
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  font-weight: 400;
+  font-family:
+    Arial Rounded MT Bold,
+    sans-serif;
+  font-weight: 800;
 
   color-scheme: light dark;
 
@@ -13,4 +59,189 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+
+  ::selection {
+    background: theme("colors.contrast");
+    color: white;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  line-height: 1.5;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-wrap: balance;
+}
+
+li {
+  list-style: none;
+}
+
+button {
+  all: unset;
+}
+
+button:focus {
+  outline: revert;
+}
+
+a {
+  text-decoration: none;
+}
+
+a,
+a:visited,
+a:hover,
+a:active {
+  color: inherit;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: theme("colors.contrast");
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: theme("colors.pop");
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+@layer components {
+  div[role="modal-wrapper"] {
+    @apply z-40 absolute;
+    margin: auto;
+
+    &[data-open="true"] {
+      div[role="modal"] {
+        @apply animate-fadeIn;
+      }
+
+      &::before {
+        @apply animate-backdropFadeIn;
+      }
+    }
+
+    div[role="modal"] {
+      @apply w-full;
+      animation: fadeOut 0.25s forwards;
+
+      transition:
+        display 0.25s allow-discrete,
+        overlay 0.25s allow-discrete;
+    }
+
+    &::before {
+      @apply content-[""] fixed inset-0 w-screen h-screen blur-sm animate-backdropFadeOut;
+    }
+  }
+
+  .card {
+    @apply rounded-xl bg-secondary shadow-xl;
+  }
+
+  .card-layout {
+    @apply flex flex-col gap-y-4 justify-between items-start h-full p-8;
+  }
+
+  .card-header {
+    @apply font-bold text-2xl text-contrast;
+  }
+
+  .card-text {
+    @apply text-9xl text-pop;
+  }
+
+  .shrink-wrapper {
+    --timeout: attr(data-timeout ms, 1000);
+    --delay: 1s;
+
+    animation:
+      moveIn 0.25s forwards,
+      fadeIn 0.5s forwards,
+      moveOut 0.25s forwards linear calc(var(--timeout) + var(--delay) - 0.1s),
+      fadeOut 0.25s forwards linear calc(var(--timeout) + var(--delay) - 0.2s);
+
+    & .shrink {
+      display: inline-block;
+      height: 4px;
+
+      animation-name: shrink-animation;
+      animation-duration: var(--timeout);
+      animation-fill-mode: forwards;
+      animation-timing-function: linear;
+      animation-delay: var(--delay);
+    }
+
+    &:hover {
+      animation-play-state: paused;
+
+      .shrink {
+        animation-play-state: paused;
+      }
+    }
+  }
 }

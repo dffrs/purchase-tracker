@@ -1,44 +1,60 @@
+import { IoAddCircleOutline, IoHome, IoSearch } from "react-icons/io5";
+import { Button, Icon, Layout } from "./components";
+import { Routes, Route, Link } from "react-router";
+import { Home, Search } from "./pages";
 import { useState } from "react";
-import "./App.css";
-
-type Users = {
-  id: number;
-  name: string;
-  email: string;
-  phone: number;
-  created_at: string;
-};
+import { AddModal } from "./modals";
 
 function App() {
-  const [users, setUsers] = useState<Users[]>(() => []);
+  // TODO: isolate me
+  const [modalOpen, setModalOpen] = useState(() => false);
 
   return (
-    <div>
-      <button
-        onClick={async () => {
-          const resp = await fetch("http://localhost:8080/api/v1/users", {
-            method: "GET",
-          });
-          const users = await resp.json();
-          setUsers(users);
-        }}
-      >
-        Get all users
-      </button>
-      <ul className="flex flex-col items-start gap-2">
-        {users.map(({ id, name, email, phone, created_at }) => (
-          <li
-            key={id}
-            className="flex flex-rows gap-1 items-center justify-between"
-          >
-            <span>{name}</span>
-            <span>{email}</span>
-            <span>{phone}</span>
-            <span>{created_at}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <main className="w-screen h-screen bg-primary">
+      <Layout>
+        <section className="grid grid-flow-col grid-cols-[auto,1fr]">
+          <aside className="bg-transparent text-pop px-2 py-8">
+            <ul className="grid grid-flow-row gap-y-4">
+              <li className="flex flex-row gap-x-2 items-center">
+                <Link to="/home">
+                  <Button className="bg-secondary rounded p-3">
+                    <Icon title="Home" className="text-xl">
+                      <IoHome />
+                    </Icon>
+                  </Button>
+                </Link>
+              </li>
+              <li className="flex flex-row gap-x-2 items-center">
+                <Link to="/search">
+                  <Button className="bg-secondary rounded p-3">
+                    <Icon title="Search" className="text-xl">
+                      <IoSearch />
+                    </Icon>
+                  </Button>
+                </Link>
+              </li>
+              <li className="flex flex-row gap-x-2 items-center">
+                <Button
+                  className="bg-secondary rounded p-3"
+                  onClick={() => setModalOpen(true)}
+                >
+                  <Icon title="Add" className="text-xl">
+                    <IoAddCircleOutline />
+                  </Icon>
+                </Button>
+              </li>
+            </ul>
+          </aside>
+          <section className="flex items-center justify-center p-8">
+            <Routes>
+              <Route path="/home" element={<Home />} />
+              <Route path="/search" element={<Search />} />
+            </Routes>
+            <AddModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
+          </section>
+        </section>
+      </Layout>
+    </main>
   );
 }
 
