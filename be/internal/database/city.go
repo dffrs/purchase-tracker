@@ -9,8 +9,8 @@ type CityModel struct {
 }
 
 type City struct {
-	ID        int    `json:"id"`
-	Name      string `json:"name" binding:"required"`
-	ZipCode   string `json:"zipCode" binding:"required"`
-	CountryID int    `json:"countryID" binding:"required"`
+	ID        int
+	Name      string
+	ZipCode   string
+	CountryID int
 }

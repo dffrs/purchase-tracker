@@ -9,9 +9,9 @@ type AddressModel struct {
 }
 
 type Address struct {
-	ID           int    `json:"id"`
-	Street       string `json:"street" binding:"required"`
-	StreetNumber string `json:"streetNumber"`
-	Apartment    string `json:"apartment"`
-	CityID       int    `json:"cityID" binding:"required"`
+	ID           int
+	Street       string
+	StreetNumber string
+	Apartment    string
+	CityID       int
 }

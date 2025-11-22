@@ -3,6 +3,7 @@ package database
 import (
 	"context"
 	"database/sql"
+	model "purchase-tracker/internal/models"
 	"time"
 )
 
@@ -11,31 +12,40 @@ type UsersModel struct {
 }
 
 type User struct {
-	ID        int       `json:"id"`
-	Name      string    `json:"name" binding:"required"`
-	Email     string    `json:"email" binding:"required"`
-	Phone     int       `json:"phone" binding:"required"`
-	AddressID int       `json:"addressID" binding:"required"`
-	CreatedAt time.Time `json:"createdAt"`
+	ID        int
+	Name      string
+	Email     string
+	Phone     int
+	AddressID int
+	CreatedAt time.Time
 }
 
-type AddressInfo struct {
-	Street       string `json:"street"`
-	StreetNumber string `json:"streetNumber"`
-	Apartment    string `json:"apartment"`
-	City         string `json:"city"`
-	ZipCode      string `json:"zipCode"`
-	Code         string `json:"code"`
-	CountryName  string `json:"countryName"`
-}
-
-type UserInfo struct {
-	ID        int         `json:"id"`
-	Name      string      `json:"name"`
-	Email     string      `json:"email"`
-	Phone     int         `json:"phone"`
-	CreatedAt time.Time   `json:"createdAt"`
-	Address   AddressInfo `json:"address"`
+func toUserResponse(
+	user *User,
+	address *Address,
+	city *City,
+	country *Country,
+) *model.UserResponse {
+	return &model.UserResponse{
+		ID:        user.ID,
+		Name:      user.Name,
+		Email:     user.Email,
+		Phone:     user.Phone,
+		CreatedAt: user.CreatedAt,
+		Address: model.AddressResponse{
+			Street:       address.Street,
+			StreetNumber: address.StreetNumber,
+			Apartment:    address.Apartment,
+			City: model.CityResponse{
+				Name:    city.Name,
+				ZipCode: city.ZipCode,
+				Country: model.CountryResponse{
+					Code: country.Code,
+					Name: country.Name,
+				},
+			},
+		},
+	}
 }
 
 func (u *UsersModel) Insert(user *User) error {
@@ -80,30 +90,20 @@ func (u *UsersModel) Get(userID int) (*User, error) {
 	return user, nil
 }
 
-func (u *UsersModel) GetAll() ([]*UserInfo, error) {
+func (u *UsersModel) GetAll() ([]*model.UserResponse, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	query := ` 
+	query := `
 	SELECT 
-		users.id AS id,
-		users.name AS name,
-		users.email AS email,
-		users.phone AS phone,
-		users.created_at AS createdAt,
-		address.street AS street,
-		address.street_number AS streetNumber,
-		address.apartment AS apartment,
-		city.name AS city,
-		city.zip_code AS zipCode,
-		country.code AS code,
-		country.name AS countryName
-	FROM
-		users
-		INNER JOIN address ON address.id = users.address_id
-		INNER JOIN city ON city.id = address.city_id
-		INNER JOIN country ON country.id = city.country_id
-	`
+  	users.id, users.name, users.email, users.phone, users.created_at,
+  	address.id, address.street, address.street_number, address.apartment,
+  	city.id, city.name, city.zip_code,
+  	country.id, country.code, country.name
+  FROM users
+  JOIN address ON address.id = users.address_id
+  JOIN city ON city.id = address.city_id
+  JOIN country ON country.id = city.country_id`
 
 	rows, err := u.DB.QueryContext(ctx, query, nil)
 	if err != nil {
@@ -111,30 +111,25 @@ func (u *UsersModel) GetAll() ([]*UserInfo, error) {
 	}
 	defer rows.Close()
 
-	users := []*UserInfo{}
+	users := []*model.UserResponse{}
 
 	for rows.Next() {
-		user := new(UserInfo)
+		user := new(User)
+		address := new(Address)
+		city := new(City)
+		country := new(Country)
 
 		err := rows.Scan(
-			&user.ID,
-			&user.Name,
-			&user.Email,
-			&user.Phone,
-			&user.CreatedAt,
-			&user.Address.Street,
-			&user.Address.StreetNumber,
-			&user.Address.Apartment,
-			&user.Address.City,
-			&user.Address.ZipCode,
-			&user.Address.Code,
-			&user.Address.CountryName,
+			&user.ID, &user.Name, &user.Email, &user.Phone, &user.CreatedAt,
+			&address.ID, &address.Street, &address.StreetNumber, &address.Apartment,
+			&city.ID, &city.Name, &city.ZipCode,
+			&country.ID, &country.Code, &country.Name,
 		)
 		if err != nil {
 			return nil, err
 		}
 
-		users = append(users, user)
+		users = append(users, toUserResponse(user, address, city, country))
 
 	}
 
