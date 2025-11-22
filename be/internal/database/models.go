@@ -4,6 +4,9 @@ import "database/sql"
 
 type Models struct {
 	Users       UsersModel
+	Country     CountryModel
+	City        CityModel
+	Address     AddressModel
 	Products    ProductsModel
 	Orders      OrdersModel
 	OrdersItems OrderItemsModel
