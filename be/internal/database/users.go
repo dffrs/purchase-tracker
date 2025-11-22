@@ -48,6 +48,7 @@ func toUserResponse(
 	}
 }
 
+// TODO: Update me with Address
 func (u *UsersModel) Insert(user *User) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
@@ -69,15 +70,36 @@ func (u *UsersModel) Insert(user *User) error {
 	return nil
 }
 
-func (u *UsersModel) Get(userID int) (*User, error) {
+func (u *UsersModel) Get(userID int) (*m.UserResponse, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
 	user := new(User)
+	address := new(Address)
+	city := new(City)
+	country := new(Country)
 
-	query := "SELECT * FROM users WHERE id = $1"
+	query := `
+	SELECT 
+  	users.id, users.name, users.email, users.phone, users.created_at,
+  	address.id, address.street, address.street_number, address.apartment,
+  	city.id, city.name, city.zip_code,
+  	country.id, country.code, country.name
+  FROM 
+		users
+  JOIN address ON address.id = users.address_id
+  JOIN city ON city.id = address.city_id
+  JOIN country ON country.id = city.country_id
+	WHERE
+		users.id = $1
+	`
 
-	err := u.DB.QueryRowContext(ctx, query, userID).Scan(&user.ID, &user.Name, &user.Email, &user.Phone, &user.AddressID, &user.CreatedAt)
+	err := u.DB.QueryRowContext(ctx, query, userID).Scan(
+		&user.ID, &user.Name, &user.Email, &user.Phone, &user.CreatedAt,
+		&address.ID, &address.Street, &address.StreetNumber, &address.Apartment,
+		&city.ID, &city.Name, &city.ZipCode,
+		&country.ID, &country.Code, &country.Name,
+	)
 	if err != nil {
 		// no rows ?
 		if err == sql.ErrNoRows {
@@ -87,7 +109,7 @@ func (u *UsersModel) Get(userID int) (*User, error) {
 		return nil, err
 	}
 
-	return user, nil
+	return toUserResponse(user, address, city, country), nil
 }
 
 func (u *UsersModel) GetAll() ([]*m.UserResponse, error) {
@@ -140,6 +162,7 @@ func (u *UsersModel) GetAll() ([]*m.UserResponse, error) {
 	return users, nil
 }
 
+// TODO: Update me with Address
 func (u *UsersModel) Update(user *User) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
@@ -154,6 +177,7 @@ func (u *UsersModel) Update(user *User) error {
 	return nil
 }
 
+// TODO: Update me with Address
 func (u *UsersModel) Delete(userID int) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
