@@ -19,6 +19,21 @@ type User struct {
 	CreatedAt time.Time `json:"created_at"`
 }
 
+type UserInfo struct {
+	ID           int       `json:"id"`
+	Name         string    `json:"name"`
+	Email        string    `json:"email"`
+	Phone        int       `json:"phone"`
+	CreatedAt    time.Time `json:"createdAt"`
+	Street       string    `json:"street"`
+	StreetNumber string    `json:"streetNumber"`
+	Apartment    string    `json:"apartment"`
+	City         string    `json:"city"`
+	ZipCode      string    `json:"zipCode"`
+	Code         string    `json:"code"`
+	CountryName  string    `json:"countryName"`
+}
+
 func (u *UsersModel) Insert(user *User) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
@@ -61,11 +76,30 @@ func (u *UsersModel) Get(userID int) (*User, error) {
 	return user, nil
 }
 
-func (u *UsersModel) GetAll() ([]*User, error) {
+func (u *UsersModel) GetAll() ([]*UserInfo, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	query := "SELECT * FROM users"
+	query := ` 
+	SELECT 
+		users.id AS id,
+		users.name AS name,
+		users.email AS email,
+		users.phone AS phone,
+		users.created_at AS createdAt,
+		address.street AS street,
+		address.street_number AS streetNumber,
+		address.apartment AS apartment,
+		city.name AS city,
+		city.zip_code AS zipCode,
+		country.code AS code,
+		country.name AS countryName
+	FROM
+		users
+		INNER JOIN address ON address.id = users.address_id
+		INNER JOIN city ON city.id = address.city_id
+		INNER JOIN country ON country.id = city.country_id
+	`
 
 	rows, err := u.DB.QueryContext(ctx, query, nil)
 	if err != nil {
@@ -73,12 +107,12 @@ func (u *UsersModel) GetAll() ([]*User, error) {
 	}
 	defer rows.Close()
 
-	users := []*User{}
+	users := []*UserInfo{}
 
 	for rows.Next() {
-		user := new(User)
+		user := new(UserInfo)
 
-		err := rows.Scan(&user.ID, &user.Name, &user.Email, &user.Phone, &user.AddressID, &user.CreatedAt)
+		err := rows.Scan(&user.ID, &user.Name, &user.Email, &user.Phone, &user.CreatedAt, &user.Street, &user.StreetNumber, &user.Apartment, &user.City, &user.ZipCode, &user.Code, &user.CountryName)
 		if err != nil {
 			return nil, err
 		}
