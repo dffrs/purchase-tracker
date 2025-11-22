@@ -13,7 +13,6 @@ import { AddModal } from "./modals";
 function App() {
   // TODO: isolate me
   const [modalOpen, setModalOpen] = useState(() => false);
-  const createToast = useToast();
 
   return (
     <main className="w-screen h-screen bg-primary">
@@ -46,16 +45,6 @@ function App() {
                 >
                   <Icon title="Add" className="text-xl">
                     <IoAddCircleOutline />
-                  </Icon>
-                </Button>
-              </li>
-              <li className="flex flex-row gap-x-2 items-center">
-                <Button
-                  className="bg-secondary rounded p-3"
-                  onClick={() => createToast("")}
-                >
-                  <Icon title="Test" className="text-xl">
-                    <IoWarning />
                   </Icon>
                 </Button>
               </li>

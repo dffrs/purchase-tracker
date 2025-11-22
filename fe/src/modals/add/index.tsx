@@ -1,4 +1,4 @@
-import { Button, Modal } from "@/components";
+import { Button, Modal, useToast } from "@/components";
 import { getFormElements } from "@/util";
 import { FunctionComponent } from "react";
 import { UserSection } from "./section/user";
@@ -10,6 +10,8 @@ type AddProps = {
 };
 
 export const AddModal: FunctionComponent<AddProps> = ({ isOpen, onClose }) => {
+  const createToast = useToast();
+
   const onSubmit: React.FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
     const form = event.currentTarget;
@@ -43,6 +45,8 @@ export const AddModal: FunctionComponent<AddProps> = ({ isOpen, onClose }) => {
     [...userElements, ...pName, ...pCode, ...pPrice].forEach((element) =>
       console.log(element?.value),
     );
+
+    createToast("Hello there");
   };
 
   return (

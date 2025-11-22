@@ -113,7 +113,7 @@ export const ToastProvider: FunctionComponent<PropsWithChildren> = ({
           return (
             <li key={id}>
               <Toast id={id} onClose={onClose} timer={timer}>
-                toast {message}
+                {message}
               </Toast>
             </li>
           );
