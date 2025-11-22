@@ -9,18 +9,18 @@ export const Home: FunctionComponent = () => {
   return (
     <div className="h-full w-full grid grid-flow-row grid-rows-[auto,1fr] gap-y-8">
       <ul className="grid grid-cols-2 gap-x-8 h-96">
-        <li className="card">
+        <li className="card overflow-hidden">
           <span className="card-layout">
             <h1 className="card-header">Orders</h1>
-            <p className="card-text">
+            <p className="card-text animate-fadeAndMoveIn">
               {(42).toLocaleString("en", { style: "decimal" })}
             </p>
           </span>
         </li>
-        <li className="card">
+        <li className="card overflow-hidden">
           <span className="card-layout">
             <h1 className="card-header">Profit</h1>
-            <p className="card-text">
+            <p className="card-text animate-fadeAndMoveIn">
               {(134.43).toLocaleString("en", {
                 style: "currency",
                 currency: "EUR",

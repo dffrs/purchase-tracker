@@ -19,23 +19,6 @@
   }
 }
 
-@keyframes backdropFadeIn {
-  from {
-    backdrop-filter: blur(0);
-  }
-  to {
-    backdrop-filter: blur(1em);
-  }
-}
-@keyframes backdropFadeOut {
-  from {
-    backdrop-filter: blur(1em);
-  }
-  to {
-    backdrop-filter: blur(0);
-  }
-}
-
 @keyframes shrink-animation {
   from {
     width: 100%;
@@ -194,11 +177,11 @@ input::-webkit-inner-spin-button {
 
     &[data-open="true"] {
       div[role="modal"] {
-        animation: fadeIn 0.25s forwards;
+        @apply animate-fadeIn;
       }
 
       &::before {
-        animation: backdropFadeIn 0.25s forwards;
+        @apply animate-backdropFadeIn;
       }
     }
 
@@ -212,9 +195,7 @@ input::-webkit-inner-spin-button {
     }
 
     &::before {
-      @apply content-[""] fixed inset-0 w-screen h-screen blur-sm;
-
-      animation: backdropFadeOut 0.25s forwards;
+      @apply content-[""] fixed inset-0 w-screen h-screen blur-sm animate-backdropFadeOut;
     }
   }
 

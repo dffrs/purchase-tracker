@@ -1,10 +1,5 @@
-import {
-  IoAddCircleOutline,
-  IoHome,
-  IoSearch,
-  IoWarning,
-} from "react-icons/io5";
-import { Button, Icon, Layout, useToast } from "./components";
+import { IoAddCircleOutline, IoHome, IoSearch } from "react-icons/io5";
+import { Button, Icon, Layout } from "./components";
 import { Routes, Route, Link } from "react-router";
 import { Home, Search } from "./pages";
 import { useState } from "react";

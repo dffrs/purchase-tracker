@@ -10,7 +10,7 @@ export const Graph: FunctionComponent<GraphProps> = ({ data }) => {
   const min = Math.min(...data) * FLOOR;
 
   return (
-    <div className="h-full w-full grid grid-cols-12 items-end gap-x-4">
+    <div className="h-full w-full grid grid-cols-12 items-end gap-x-4 overflow-hidden">
       {data.map((value, i) => {
         const height = Math.round(100 * ((value - min) / max));
 
@@ -22,7 +22,7 @@ export const Graph: FunctionComponent<GraphProps> = ({ data }) => {
             key={i}
             style={{ height: `${height}%` }}
             data-value={value}
-            className="relative bg-pop rounded-t-xl flex items-end justify-center after:content-[attr(data-value)] after:absolute after:top-[-2rem] after:text-pop"
+            className="relative bg-pop rounded-t-xl flex items-end animate-fadeAndMoveIn justify-center after:content-[attr(data-value)] after:absolute after:top-[-2rem] after:text-pop"
           >
             <p className="text-primary">
               {date.toLocaleString("default", { month: "short" })}
