@@ -15,6 +15,7 @@ type User struct {
 	Name      string    `json:"name" binding:"required"`
 	Email     string    `json:"email" binding:"required"`
 	Phone     int       `json:"phone" binding:"required"`
+	AddressID int       `json:"addressID" binding:"required"`
 	CreatedAt time.Time `json:"created_at"`
 }
 
@@ -22,9 +23,9 @@ func (u *UsersModel) Insert(user *User) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	query := "INSERT INTO users (name, email, phone, created_at) VALUES ($1, $2, $3, $4)"
+	query := "INSERT INTO users (name, email, phone, addressID, created_at) VALUES ($1, $2, $3, $4, $5)"
 
-	result, err := u.DB.ExecContext(ctx, query, user.Name, user.Email, user.Phone, time.Now().Unix())
+	result, err := u.DB.ExecContext(ctx, query, user.Name, user.Email, user.Phone, user.AddressID, time.Now().Unix())
 	if err != nil {
 		return err
 	}
@@ -47,7 +48,7 @@ func (u *UsersModel) Get(userID int) (*User, error) {
 
 	query := "SELECT * FROM users WHERE id = $1"
 
-	err := u.DB.QueryRowContext(ctx, query, userID).Scan(&user.ID, &user.Name, &user.Email, &user.Phone, &user.CreatedAt)
+	err := u.DB.QueryRowContext(ctx, query, userID).Scan(&user.ID, &user.Name, &user.Email, &user.Phone, &user.AddressID, &user.CreatedAt)
 	if err != nil {
 		// no rows ?
 		if err == sql.ErrNoRows {
@@ -77,7 +78,7 @@ func (u *UsersModel) GetAll() ([]*User, error) {
 	for rows.Next() {
 		user := new(User)
 
-		err := rows.Scan(&user.ID, &user.Name, &user.Email, &user.Phone, &user.CreatedAt)
+		err := rows.Scan(&user.ID, &user.Name, &user.Email, &user.Phone, &user.AddressID, &user.CreatedAt)
 		if err != nil {
 			return nil, err
 		}
@@ -97,9 +98,9 @@ func (u *UsersModel) Update(user *User) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	query := "UPDATE users SET name = $1, email = $2, phone = $3 WHERE id = $4"
+	query := "UPDATE users SET name = $1, email = $2, phone = $3, addressID = $4 WHERE id = $5"
 
-	_, err := u.DB.ExecContext(ctx, query, user.Name, user.Email, user.Phone, user.ID)
+	_, err := u.DB.ExecContext(ctx, query, user.Name, user.Email, user.Phone, user.AddressID, user.ID)
 	if err != nil {
 		return err
 	}
