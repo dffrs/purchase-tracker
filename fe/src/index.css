@@ -188,12 +188,12 @@ input::-webkit-inner-spin-button {
 }
 
 @layer components {
-  div[role="dialog-wrapper"] {
+  div[role="modal-wrapper"] {
     @apply z-40 absolute;
     margin: auto;
 
     &[data-open="true"] {
-      div[role="dialog"] {
+      div[role="modal"] {
         animation: fadeIn 0.25s forwards;
       }
 
@@ -202,7 +202,7 @@ input::-webkit-inner-spin-button {
       }
     }
 
-    div[role="dialog"] {
+    div[role="modal"] {
       @apply w-full;
       animation: fadeOut 0.25s forwards;
 
