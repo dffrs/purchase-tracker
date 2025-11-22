@@ -19,19 +19,23 @@ type User struct {
 	CreatedAt time.Time `json:"createdAt"`
 }
 
+type AddressInfo struct {
+	Street       string `json:"street"`
+	StreetNumber string `json:"streetNumber"`
+	Apartment    string `json:"apartment"`
+	City         string `json:"city"`
+	ZipCode      string `json:"zipCode"`
+	Code         string `json:"code"`
+	CountryName  string `json:"countryName"`
+}
+
 type UserInfo struct {
-	ID           int       `json:"id"`
-	Name         string    `json:"name"`
-	Email        string    `json:"email"`
-	Phone        int       `json:"phone"`
-	CreatedAt    time.Time `json:"createdAt"`
-	Street       string    `json:"street"`
-	StreetNumber string    `json:"streetNumber"`
-	Apartment    string    `json:"apartment"`
-	City         string    `json:"city"`
-	ZipCode      string    `json:"zipCode"`
-	Code         string    `json:"code"`
-	CountryName  string    `json:"countryName"`
+	ID        int         `json:"id"`
+	Name      string      `json:"name"`
+	Email     string      `json:"email"`
+	Phone     int         `json:"phone"`
+	CreatedAt time.Time   `json:"createdAt"`
+	Address   AddressInfo `json:"address"`
 }
 
 func (u *UsersModel) Insert(user *User) error {
@@ -112,7 +116,20 @@ func (u *UsersModel) GetAll() ([]*UserInfo, error) {
 	for rows.Next() {
 		user := new(UserInfo)
 
-		err := rows.Scan(&user.ID, &user.Name, &user.Email, &user.Phone, &user.CreatedAt, &user.Street, &user.StreetNumber, &user.Apartment, &user.City, &user.ZipCode, &user.Code, &user.CountryName)
+		err := rows.Scan(
+			&user.ID,
+			&user.Name,
+			&user.Email,
+			&user.Phone,
+			&user.CreatedAt,
+			&user.Address.Street,
+			&user.Address.StreetNumber,
+			&user.Address.Apartment,
+			&user.Address.City,
+			&user.Address.ZipCode,
+			&user.Address.Code,
+			&user.Address.CountryName,
+		)
 		if err != nil {
 			return nil, err
 		}
