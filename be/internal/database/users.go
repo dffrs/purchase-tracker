@@ -3,7 +3,7 @@ package database
 import (
 	"context"
 	"database/sql"
-	model "purchase-tracker/internal/models"
+	m "purchase-tracker/internal/models"
 	"time"
 )
 
@@ -25,21 +25,21 @@ func toUserResponse(
 	address *Address,
 	city *City,
 	country *Country,
-) *model.UserResponse {
-	return &model.UserResponse{
+) *m.UserResponse {
+	return &m.UserResponse{
 		ID:        user.ID,
 		Name:      user.Name,
 		Email:     user.Email,
 		Phone:     user.Phone,
 		CreatedAt: user.CreatedAt,
-		Address: model.AddressResponse{
+		Address: m.AddressResponse{
 			Street:       address.Street,
 			StreetNumber: address.StreetNumber,
 			Apartment:    address.Apartment,
-			City: model.CityResponse{
+			City: m.CityResponse{
 				Name:    city.Name,
 				ZipCode: city.ZipCode,
-				Country: model.CountryResponse{
+				Country: m.CountryResponse{
 					Code: country.Code,
 					Name: country.Name,
 				},
@@ -90,7 +90,7 @@ func (u *UsersModel) Get(userID int) (*User, error) {
 	return user, nil
 }
 
-func (u *UsersModel) GetAll() ([]*model.UserResponse, error) {
+func (u *UsersModel) GetAll() ([]*m.UserResponse, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
@@ -111,7 +111,7 @@ func (u *UsersModel) GetAll() ([]*model.UserResponse, error) {
 	}
 	defer rows.Close()
 
-	users := []*model.UserResponse{}
+	users := []*m.UserResponse{}
 
 	for rows.Next() {
 		user := new(User)
