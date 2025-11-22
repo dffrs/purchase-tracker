@@ -188,30 +188,34 @@ input::-webkit-inner-spin-button {
 }
 
 @layer components {
-  div[role="dialog"] {
+  div[role="dialog-wrapper"] {
     @apply z-40 absolute;
-
     margin: auto;
 
-    animation: fadeOut 0.25s forwards;
-
     &[data-open="true"] {
-      animation: fadeIn 0.25s forwards;
+      div[role="dialog"] {
+        animation: fadeIn 0.25s forwards;
+      }
+
+      &::before {
+        animation: backdropFadeIn 0.25s forwards;
+      }
     }
 
-    transition:
-      display 0.25s allow-discrete,
-      overlay 0.25s allow-discrete;
-  }
+    div[role="dialog"] {
+      @apply w-full;
+      animation: fadeOut 0.25s forwards;
 
-  div[role="dialog-bg"] {
-    @apply fixed inset-0 w-screen h-screen blur-sm;
-
-    &[data-open="true"] {
-      animation: backdropFadeIn 0.25s forwards;
+      transition:
+        display 0.25s allow-discrete,
+        overlay 0.25s allow-discrete;
     }
 
-    animation: backdropFadeOut 0.25s forwards;
+    &::before {
+      @apply content-[""] fixed inset-0 w-screen h-screen blur-sm;
+
+      animation: backdropFadeOut 0.25s forwards;
+    }
   }
 
   .card {

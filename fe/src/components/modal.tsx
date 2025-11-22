@@ -22,17 +22,15 @@ export const Modal = forwardRef<HTMLDivElement, PropsWithChildren<ModalProps>>(
 
     return (
       (isOpen || isVisible) && (
-        <>
+        <div role="dialog-wrapper" data-open={isOpen}>
           <div
             ref={ref}
             role="dialog"
             className={`card overflow-visible shadow-2xl ${className}`}
-            data-open={isOpen}
           >
             {children}
           </div>
-          <div role="dialog-bg" data-open={isOpen} />
-        </>
+        </div>
       )
     );
   },
