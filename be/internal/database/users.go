@@ -16,7 +16,7 @@ type User struct {
 	Email     string    `json:"email" binding:"required"`
 	Phone     int       `json:"phone" binding:"required"`
 	AddressID int       `json:"addressID" binding:"required"`
-	CreatedAt time.Time `json:"created_at"`
+	CreatedAt time.Time `json:"createdAt"`
 }
 
 type UserInfo struct {
