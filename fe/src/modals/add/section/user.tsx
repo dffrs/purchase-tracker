@@ -62,10 +62,19 @@ export const UserSection: FunctionComponent = () => {
         <Autocomplete options={userNameAutoComplete}>
           <Input
             ref={nameRef}
-            label="User Name"
+            label="First Name"
             type="text"
             id="name"
-            placeholder="user's name..."
+            placeholder="e.g., Raquel"
+          />
+        </Autocomplete>
+        <Autocomplete options={userNameAutoComplete}>
+          <Input
+            ref={nameRef}
+            label="Last Name"
+            type="text"
+            id="name"
+            placeholder="e.g., Canhoto"
           />
         </Autocomplete>
         <Autocomplete options={userEmailAutoComplete}>
@@ -74,7 +83,7 @@ export const UserSection: FunctionComponent = () => {
             label="Email"
             type="email"
             id="email"
-            placeholder="user's email..."
+            placeholder="e.g., rc@gmail.com"
             pattern={String(EMAIL_VALIDATION)}
           />
         </Autocomplete>
@@ -84,7 +93,7 @@ export const UserSection: FunctionComponent = () => {
             label="Phone"
             type="tel"
             id="phone"
-            placeholder="user's phone number..."
+            placeholder="e.g., +351 912 345 678"
             maxLength={13}
             pattern={String(PT_PHONE_NUMBER)}
             onChange={(e) => {
@@ -99,7 +108,7 @@ export const UserSection: FunctionComponent = () => {
             label="Street"
             type="text"
             id="street"
-            placeholder="user's address..."
+            placeholder="e.g., Avenida da Liberdade"
           />
         </Autocomplete>
         <div className="flex items-center justify-between">
@@ -108,7 +117,7 @@ export const UserSection: FunctionComponent = () => {
               label="Street Number"
               type="text"
               id="streetNumber"
-              placeholder="user's address..."
+              placeholder="e.g., 245"
             />
           </Autocomplete>
           <Autocomplete options={[]}>
@@ -116,7 +125,7 @@ export const UserSection: FunctionComponent = () => {
               label="Apartment, Suite, etc."
               type="text"
               id="apartment"
-              placeholder="user's address..."
+              placeholder="e.g., Apt 3B (optional)"
             />
           </Autocomplete>
         </div>
@@ -126,7 +135,7 @@ export const UserSection: FunctionComponent = () => {
               label="City"
               type="text"
               id="city"
-              placeholder="user's address..."
+              placeholder="e.g., Lisbon"
             />
           </Autocomplete>
           <Autocomplete options={[]}>
@@ -134,7 +143,7 @@ export const UserSection: FunctionComponent = () => {
               label="Zip Code"
               type="text"
               id="zipCode"
-              placeholder="user's address..."
+              placeholder="e.g., 1000-001"
             />
           </Autocomplete>
         </div>
@@ -144,7 +153,7 @@ export const UserSection: FunctionComponent = () => {
             type="text"
             id="country"
             defaultValue="Portugal"
-            placeholder="user's address..."
+            placeholder="e.g., Portugal"
           />
         </Autocomplete>
       </div>

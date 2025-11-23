@@ -50,7 +50,7 @@ export const AddModal: FunctionComponent<AddProps> = ({ isOpen, onClose }) => {
   };
 
   return (
-    <Modal isOpen={isOpen} className="w-[40%]">
+    <Modal isOpen={isOpen} className="!w-[45vw]">
       <form autoComplete="off" onSubmit={onSubmit}>
         <div className="flex flex-col gap-y-4 p-8">
           <h1 className="text-contrast">Add order</h1>
