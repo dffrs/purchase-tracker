@@ -14,6 +14,7 @@ export const UserSection: FunctionComponent = () => {
   const nameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
   const phoneRef = useRef<HTMLInputElement>(null);
+  const streetRef = useRef<HTMLInputElement>(null);
 
   // TODO: fix any
   const onAutoComplete = useCallback(
@@ -67,14 +68,6 @@ export const UserSection: FunctionComponent = () => {
             placeholder="user's name..."
           />
         </Autocomplete>
-        <Autocomplete options={[]}>
-          <Input
-            label="Address"
-            type="text"
-            id="address"
-            placeholder="user's address..."
-          />
-        </Autocomplete>
         <Autocomplete options={userEmailAutoComplete}>
           <Input
             ref={emailRef}
@@ -98,6 +91,60 @@ export const UserSection: FunctionComponent = () => {
               e.target.value = e.target.value.replace(/[^\d|\+]/g, "");
               return;
             }}
+          />
+        </Autocomplete>
+        <Autocomplete options={[]}>
+          <Input
+            ref={streetRef}
+            label="Street"
+            type="text"
+            id="street"
+            placeholder="user's address..."
+          />
+        </Autocomplete>
+        <div className="flex items-center justify-between">
+          <Autocomplete options={[]}>
+            <Input
+              label="Street Number"
+              type="text"
+              id="streetNumber"
+              placeholder="user's address..."
+            />
+          </Autocomplete>
+          <Autocomplete options={[]}>
+            <Input
+              label="Apartment, Suite, etc."
+              type="text"
+              id="apartment"
+              placeholder="user's address..."
+            />
+          </Autocomplete>
+        </div>
+        <div className="flex items-center justify-between">
+          <Autocomplete options={[]}>
+            <Input
+              label="City"
+              type="text"
+              id="city"
+              placeholder="user's address..."
+            />
+          </Autocomplete>
+          <Autocomplete options={[]}>
+            <Input
+              label="Zip Code"
+              type="text"
+              id="zipCode"
+              placeholder="user's address..."
+            />
+          </Autocomplete>
+        </div>
+        <Autocomplete options={[]}>
+          <Input
+            label="Country"
+            type="text"
+            id="country"
+            defaultValue="Portugal"
+            placeholder="user's address..."
           />
         </Autocomplete>
       </div>
