@@ -11,26 +11,58 @@ const PT_PHONE_NUMBER = /^(\+351)?\d{9|13}$/g;
 export const UserSection: FunctionComponent = () => {
   const [users, isLoading] = useGetAllUsers();
 
-  const nameRef = useRef<HTMLInputElement>(null);
+  // user name
+  const firstNameRef = useRef<HTMLInputElement>(null);
+  const lastNameRef = useRef<HTMLInputElement>(null);
+
+  // user info
   const emailRef = useRef<HTMLInputElement>(null);
   const phoneRef = useRef<HTMLInputElement>(null);
+
+  // user address
   const streetRef = useRef<HTMLInputElement>(null);
+  const streetNumberRef = useRef<HTMLInputElement>(null);
+  const apartmentRef = useRef<HTMLInputElement>(null);
+  const cityRef = useRef<HTMLInputElement>(null);
+  const zipCodeRef = useRef<HTMLInputElement>(null);
+  const countryRef = useRef<HTMLInputElement>(null);
 
   // TODO: fix any
   const onAutoComplete = useCallback(
     (event: any, prop: keyof User) => {
-      if (!nameRef.current) return;
+      if (!firstNameRef.current) return;
+      if (!lastNameRef.current) return;
       if (!emailRef.current) return;
       if (!phoneRef.current) return;
+      if (!streetRef.current) return;
+      if (!streetNumberRef.current) return;
+      if (!apartmentRef.current) return;
+      if (!cityRef.current) return;
+      if (!zipCodeRef.current) return;
+      if (!countryRef.current) return;
 
       const value = event.currentTarget.id;
 
       const user = users.find((user) => String(user[prop]) === String(value));
       if (!user) return;
 
-      nameRef.current.value = user.name;
+      const [firstName, ...lastName] = user.name.split(" ");
+
+      // user name
+      firstNameRef.current.value = firstName;
+      lastNameRef.current.value = lastName.toString();
+
+      // user info
       emailRef.current.value = user.email;
       phoneRef.current.value = String(user.phone);
+
+      // user address
+      streetRef.current.value = user.address?.street ?? "";
+      streetNumberRef.current.value = user.address?.streetNumber ?? "";
+      apartmentRef.current.value = user.address?.apartment ?? "";
+      cityRef.current.value = user.address?.city?.name ?? "";
+      zipCodeRef.current.value = user.address?.city?.zipCode ?? "";
+      countryRef.current.value = user.address?.city?.country?.name ?? "";
     },
     [users],
   );
@@ -61,7 +93,7 @@ export const UserSection: FunctionComponent = () => {
       <div data-testid="add-user-section" className="grid grid-cols-2 gap-6">
         <Autocomplete options={userNameAutoComplete}>
           <Input
-            ref={nameRef}
+            ref={firstNameRef}
             label="First Name"
             type="text"
             id="name"
@@ -70,7 +102,7 @@ export const UserSection: FunctionComponent = () => {
         </Autocomplete>
         <Autocomplete options={userNameAutoComplete}>
           <Input
-            ref={nameRef}
+            ref={lastNameRef}
             label="Last Name"
             type="text"
             id="name"
@@ -114,6 +146,7 @@ export const UserSection: FunctionComponent = () => {
         <div className="flex items-center justify-between">
           <Autocomplete options={[]}>
             <Input
+              ref={streetNumberRef}
               label="Street Number"
               type="text"
               id="streetNumber"
@@ -122,6 +155,7 @@ export const UserSection: FunctionComponent = () => {
           </Autocomplete>
           <Autocomplete options={[]}>
             <Input
+              ref={apartmentRef}
               label="Apartment, Suite, etc."
               type="text"
               id="apartment"
@@ -132,6 +166,7 @@ export const UserSection: FunctionComponent = () => {
         <div className="flex items-center justify-between">
           <Autocomplete options={[]}>
             <Input
+              ref={cityRef}
               label="City"
               type="text"
               id="city"
@@ -140,6 +175,7 @@ export const UserSection: FunctionComponent = () => {
           </Autocomplete>
           <Autocomplete options={[]}>
             <Input
+              ref={zipCodeRef}
               label="Zip Code"
               type="text"
               id="zipCode"
@@ -149,6 +185,7 @@ export const UserSection: FunctionComponent = () => {
         </div>
         <Autocomplete options={[]}>
           <Input
+            ref={countryRef}
             label="Country"
             type="text"
             id="country"
