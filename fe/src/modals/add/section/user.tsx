@@ -49,7 +49,7 @@ export const UserSection: FunctionComponent = () => {
 
       // user name
       firstNameRef.current.value = firstName;
-      lastNameRef.current.value = lastName.toString();
+      lastNameRef.current.value = lastName.join(" ");
 
       // user info
       emailRef.current.value = user.email;
