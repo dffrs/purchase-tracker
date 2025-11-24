@@ -9,9 +9,9 @@ type AddressModel struct {
 }
 
 type Address struct {
-	ID           int
-	Street       string
-	StreetNumber string
-	Apartment    string
-	CityID       int
+	ID           sql.NullInt64
+	Street       sql.NullString
+	StreetNumber sql.NullString
+	Apartment    sql.NullString
+	CityID       sql.NullInt64
 }
