@@ -56,12 +56,17 @@ export const UserSection: FunctionComponent = () => {
       phoneRef.current.value = String(user.phone);
 
       // user address
-      streetRef.current.value = user.address?.street ?? "";
-      streetNumberRef.current.value = user.address?.streetNumber ?? "";
-      apartmentRef.current.value = user.address?.apartment ?? "";
-      cityRef.current.value = user.address?.city?.name ?? "";
-      zipCodeRef.current.value = user.address?.city?.zipCode ?? "";
-      countryRef.current.value = user.address?.city?.country?.name ?? "";
+      if (user.address?.street) streetRef.current.value = user.address.street;
+      if (user.address?.streetNumber)
+        streetNumberRef.current.value = user.address.streetNumber;
+      if (user.address?.apartment)
+        apartmentRef.current.value = user.address.apartment;
+      if (user.address?.city?.name)
+        cityRef.current.value = user.address.city.name;
+      if (user.address?.city?.zipCode)
+        zipCodeRef.current.value = user.address.city.zipCode;
+      if (user.address?.city?.country?.name)
+        countryRef.current.value = user.address.city.country.name;
     },
     [users],
   );
