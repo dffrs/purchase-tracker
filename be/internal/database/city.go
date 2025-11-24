@@ -9,8 +9,8 @@ type CityModel struct {
 }
 
 type City struct {
-	ID        sql.NullInt64
-	Name      sql.NullString
-	ZipCode   sql.NullString
-	CountryID sql.NullInt64
+	ID        *int
+	Name      *string
+	ZipCode   *string
+	CountryID *int
 }

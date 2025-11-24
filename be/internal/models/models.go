@@ -1,26 +1,25 @@
 package internal
 
 import (
-	"database/sql"
 	"time"
 )
 
 type CountryResponse struct {
-	Code sql.NullString `json:"code"`
-	Name sql.NullString `json:"name"`
+	Code *string `json:"code"`
+	Name *string `json:"name"`
 }
 
 type CityResponse struct {
-	Name    sql.NullString  `json:"name"`
-	ZipCode sql.NullString  `json:"zipCode"`
+	Name    *string         `json:"name"`
+	ZipCode *string         `json:"zipCode"`
 	Country CountryResponse `json:"country"`
 }
 
 type AddressResponse struct {
-	Street       sql.NullString `json:"street"`
-	StreetNumber sql.NullString `json:"streetNumber"`
-	Apartment    sql.NullString `json:"apartment"`
-	City         CityResponse   `json:"city"`
+	Street       *string      `json:"street"`
+	StreetNumber *string      `json:"streetNumber"`
+	Apartment    *string      `json:"apartment"`
+	City         CityResponse `json:"city"`
 }
 
 type UserResponse struct {

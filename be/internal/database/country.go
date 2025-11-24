@@ -9,7 +9,7 @@ type CountryModel struct {
 }
 
 type Country struct {
-	ID   sql.NullInt64
-	Code sql.NullString
-	Name sql.NullString
+	ID   *int
+	Code *string
+	Name *string
 }
