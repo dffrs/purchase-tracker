@@ -93,6 +93,7 @@ export const UserSection: FunctionComponent = () => {
         <Autocomplete options={userNameAutoComplete}>
           <Input
             ref={firstNameRef}
+            required
             label="First Name"
             type="text"
             id="firstName"
@@ -102,6 +103,7 @@ export const UserSection: FunctionComponent = () => {
         <Autocomplete options={userNameAutoComplete}>
           <Input
             ref={lastNameRef}
+            required
             label="Last Name"
             type="text"
             id="lastName"
