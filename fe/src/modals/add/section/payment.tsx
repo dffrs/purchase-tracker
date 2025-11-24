@@ -3,7 +3,7 @@ import { FunctionComponent } from "react";
 
 export const PaymentMethodSection: FunctionComponent = () => {
   return (
-    <div className="flex items-center gap-x-2">
+    <div className="flex items-center gap-x-2 pt-2">
       <Input
         type="radio"
         name="payment"
