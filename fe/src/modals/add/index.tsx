@@ -3,6 +3,7 @@ import { getFormElements } from "@/util";
 import { FunctionComponent } from "react";
 import { UserSection } from "./section/user";
 import { ProductSection } from "./section/product";
+import { PaymentMethodSection } from "./section/payment";
 
 type AddProps = {
   isOpen: boolean;
@@ -62,6 +63,7 @@ export const AddModal: FunctionComponent<AddProps> = ({ isOpen, onClose }) => {
           <h1 className="text-contrast">Add order</h1>
 
           <UserSection />
+          <PaymentMethodSection />
           <ProductSection />
 
           <div className="flex justify-between">

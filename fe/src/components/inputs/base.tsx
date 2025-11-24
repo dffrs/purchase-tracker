@@ -1,6 +1,9 @@
 import { forwardRef, FunctionComponent, InputHTMLAttributes } from "react";
 
-type InputProps = { label: string } & InputHTMLAttributes<HTMLInputElement>;
+type InputProps = {
+  label: string;
+  labelClassName?: string;
+} & InputHTMLAttributes<HTMLInputElement>;
 
 const BASE_STYLE = `
 bg-transparent 
@@ -11,10 +14,13 @@ placeholder:text-contrast placeholder:opacity-50 placeholder:text-sm placeholder
 `;
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ id, label, className = "", ...props }, ref) => {
+  ({ id, label, className = "", labelClassName = "", ...props }, ref) => {
     return (
       <fieldset className="border-none text-contrast">
-        <label htmlFor={id} className="flex flex-col transition-transform">
+        <label
+          htmlFor={id}
+          className={`flex flex-col transition-transform ${labelClassName}`}
+        >
           {label}
           <input
             ref={ref}
