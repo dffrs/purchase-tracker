@@ -9,9 +9,9 @@ type AddressModel struct {
 }
 
 type Address struct {
-	ID           int
-	Street       string
-	StreetNumber string
-	Apartment    string
-	CityID       int
+	ID           *int
+	Street       *string
+	StreetNumber *string
+	Apartment    *string
+	CityID       *int
 }

@@ -9,7 +9,7 @@ type CountryModel struct {
 }
 
 type Country struct {
-	ID   int    `json:"id"`
-	Code string `json:"code" binding:"required"`
-	Name string `json:"name" binding:"required"`
+	ID   *int
+	Code *string
+	Name *string
 }

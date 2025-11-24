@@ -9,8 +9,8 @@ type CityModel struct {
 }
 
 type City struct {
-	ID        int
-	Name      string
-	ZipCode   string
-	CountryID int
+	ID        *int
+	Name      *string
+	ZipCode   *string
+	CountryID *int
 }

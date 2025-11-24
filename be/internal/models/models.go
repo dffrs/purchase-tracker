@@ -1,22 +1,24 @@
 package internal
 
-import "time"
+import (
+	"time"
+)
 
 type CountryResponse struct {
-	Code string `json:"code"`
-	Name string `json:"name"`
+	Code *string `json:"code"`
+	Name *string `json:"name"`
 }
 
 type CityResponse struct {
-	Name    string          `json:"name"`
-	ZipCode string          `json:"zipCode"`
+	Name    *string         `json:"name"`
+	ZipCode *string         `json:"zipCode"`
 	Country CountryResponse `json:"country"`
 }
 
 type AddressResponse struct {
-	Street       string       `json:"street"`
-	StreetNumber string       `json:"streetNumber"`
-	Apartment    string       `json:"apartment"`
+	Street       *string      `json:"street"`
+	StreetNumber *string      `json:"streetNumber"`
+	Apartment    *string      `json:"apartment"`
 	City         CityResponse `json:"city"`
 }
 

@@ -16,7 +16,7 @@ type User struct {
 	Name      string
 	Email     string
 	Phone     int
-	AddressID int
+	AddressID sql.NullInt64
 	CreatedAt time.Time
 }
 
@@ -87,9 +87,9 @@ func (u *UsersModel) Get(userID int) (*m.UserResponse, error) {
   	country.id, country.code, country.name
   FROM 
 		users
-  JOIN address ON address.id = users.address_id
-  JOIN city ON city.id = address.city_id
-  JOIN country ON country.id = city.country_id
+  LEFT JOIN address ON address.id = users.address_id
+  LEFT JOIN city ON city.id = address.city_id
+  LEFT JOIN country ON country.id = city.country_id
 	WHERE
 		users.id = $1
 	`
@@ -123,9 +123,9 @@ func (u *UsersModel) GetAll() ([]*m.UserResponse, error) {
   	city.id, city.name, city.zip_code,
   	country.id, country.code, country.name
   FROM users
-  JOIN address ON address.id = users.address_id
-  JOIN city ON city.id = address.city_id
-  JOIN country ON country.id = city.country_id`
+  LEFT JOIN address ON address.id = users.address_id
+  LEFT JOIN city ON city.id = address.city_id
+  LEFT JOIN country ON country.id = city.country_id`
 
 	rows, err := u.DB.QueryContext(ctx, query, nil)
 	if err != nil {
