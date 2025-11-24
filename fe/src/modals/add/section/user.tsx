@@ -95,7 +95,7 @@ export const UserSection: FunctionComponent = () => {
             ref={firstNameRef}
             label="First Name"
             type="text"
-            id="name"
+            id="firstName"
             placeholder="e.g., Raquel"
           />
         </Autocomplete>
@@ -104,7 +104,7 @@ export const UserSection: FunctionComponent = () => {
             ref={lastNameRef}
             label="Last Name"
             type="text"
-            id="name"
+            id="lastName"
             placeholder="e.g., Canhoto"
           />
         </Autocomplete>

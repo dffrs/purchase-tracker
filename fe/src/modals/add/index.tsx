@@ -20,10 +20,16 @@ export const AddModal: FunctionComponent<AddProps> = ({ isOpen, onClose }) => {
 
     // user
     const userElements = getFormElements<HTMLInputElement>(formElements, [
-      "name",
-      "address",
+      "firstName",
+      "lastName",
       "email",
       "phone",
+      "street",
+      "streetNumber",
+      "apartment",
+      "city",
+      "zipCode",
+      "country",
     ]);
 
     // products
