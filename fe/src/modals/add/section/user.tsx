@@ -178,6 +178,10 @@ export const UserSection: FunctionComponent = () => {
               label="Zip Code"
               type="text"
               id="zipCode"
+              onChange={(e) => {
+                e.target.value = e.target.value.replace(/[^\d|\-]/g, "");
+                return;
+              }}
               placeholder="e.g., 1000-001"
             />
           </Autocomplete>
