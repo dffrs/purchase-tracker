@@ -1,4 +1,4 @@
-import { Autocomplete, Input } from "@/components";
+import { ACOption, Autocomplete, Input } from "@/components";
 import { LoadingArea } from "@/components/loadingArea";
 import { useGetAllUsers } from "@/hooks";
 import { FunctionComponent, useCallback, useMemo, useRef } from "react";
@@ -27,9 +27,8 @@ export const UserSection: FunctionComponent = () => {
   const zipCodeRef = useRef<HTMLInputElement>(null);
   const countryRef = useRef<HTMLInputElement>(null);
 
-  // TODO: fix any
   const onAutoComplete = useCallback(
-    (event: any, prop: keyof User) => {
+    (event: Parameters<ACOption["onClick"]>[0], prop: keyof User) => {
       if (!firstNameRef.current) return;
       if (!lastNameRef.current) return;
       if (!emailRef.current) return;
@@ -67,24 +66,24 @@ export const UserSection: FunctionComponent = () => {
     [users],
   );
 
-  const userNameAutoComplete = useMemo(() => {
+  const userNameAutoComplete: ACOption[] = useMemo(() => {
     return users.map((user) => ({
       text: user.name,
-      onClick: (event: any) => onAutoComplete(event, "name"),
+      onClick: (event) => onAutoComplete(event, "name"),
     }));
   }, [users, onAutoComplete]);
 
-  const userEmailAutoComplete = useMemo(() => {
+  const userEmailAutoComplete: ACOption[] = useMemo(() => {
     return users.map((user) => ({
       text: user.email,
-      onClick: (event: any) => onAutoComplete(event, "email"),
+      onClick: (event) => onAutoComplete(event, "email"),
     }));
   }, [users, onAutoComplete]);
 
-  const userPhoneAutoComplete = useMemo(() => {
+  const userPhoneAutoComplete: ACOption[] = useMemo(() => {
     return users.map((user) => ({
       text: String(user.phone),
-      onClick: (event: any) => onAutoComplete(event, "phone"),
+      onClick: (event) => onAutoComplete(event, "phone"),
     }));
   }, [users, onAutoComplete]);
 
