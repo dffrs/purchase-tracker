@@ -16,8 +16,8 @@ export const DeliverySection: FunctionComponent = () => {
           name="delivery"
           id={id}
           label={label}
-          className="accent-contrast cursor-pointer"
-          labelClassName="!flex-row-reverse gap-x-2 cursor-pointer text-pop"
+          className="accent-pop cursor-pointer"
+          labelClassName="!flex-row-reverse gap-x-2 cursor-pointer text-contrast"
         />
       ))}
     </div>

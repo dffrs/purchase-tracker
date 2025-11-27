@@ -19,8 +19,8 @@ export const PaymentMethodSection: FunctionComponent = () => {
           name="payment"
           id={id}
           label={label}
-          className="accent-contrast cursor-pointer"
-          labelClassName="!flex-row-reverse gap-x-2 cursor-pointer text-pop"
+          className="accent-pop cursor-pointer"
+          labelClassName="!flex-row-reverse gap-x-2 cursor-pointer text-contrast"
         />
       ))}
     </div>

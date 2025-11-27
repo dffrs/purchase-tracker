@@ -6,8 +6,8 @@ export default {
       colors: {
         primary: "#F2F2F2",
         secondary: "#ffffff",
-        contrast: "#E48F8F",
-        pop: "#8C3D0F",
+        contrast: "#E1C3B5",
+        pop: "#571029",
       },
       keyframes: {
         fadeIn: {
