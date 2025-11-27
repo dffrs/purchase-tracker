@@ -1,6 +1,11 @@
-import { forwardRef, PropsWithChildren, useEffect, useState } from "react";
-
-const DEL_FROM_DOM_TIMEOUT = 250; //ms
+import {
+  forwardRef,
+  PropsWithChildren,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
 
 type ModalProps = {
   isOpen: boolean;
@@ -10,6 +15,9 @@ type ModalProps = {
 export const Modal = forwardRef<HTMLDivElement, PropsWithChildren<ModalProps>>(
   ({ isOpen, className = "", children }, ref) => {
     const [isVisible, setIsVisible] = useState(() => isOpen);
+    const modalRef = useRef<HTMLDivElement>(null);
+
+    useImperativeHandle(ref, () => modalRef.current as HTMLDivElement);
 
     useEffect(() => {
       if (isOpen) {
@@ -17,14 +25,23 @@ export const Modal = forwardRef<HTMLDivElement, PropsWithChildren<ModalProps>>(
         return;
       }
 
-      setTimeout(() => setIsVisible(false), DEL_FROM_DOM_TIMEOUT);
+      const el = modalRef.current;
+      if (!el) return;
+
+      const listener = () => setIsVisible(false);
+
+      el.addEventListener("animationend", listener);
+
+      return () => {
+        el.removeEventListener("animationend", listener);
+      };
     }, [isOpen]);
 
     return (
       (isOpen || isVisible) && (
         <div role="modal-wrapper" data-open={isOpen}>
           <div
-            ref={ref}
+            ref={modalRef}
             role="modal"
             className={`card overflow-visible shadow-2xl ${className}`}
           >
