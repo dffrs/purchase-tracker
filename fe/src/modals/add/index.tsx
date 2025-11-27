@@ -4,6 +4,7 @@ import { FunctionComponent } from "react";
 import { UserSection } from "./section/user";
 import { ProductSection } from "./section/product";
 import { PaymentMethodSection } from "./section/payment";
+import { DeliverySection } from "./section/delivery";
 
 type AddProps = {
   isOpen: boolean;
@@ -64,6 +65,7 @@ export const AddModal: FunctionComponent<AddProps> = ({ isOpen, onClose }) => {
 
           <UserSection />
           <PaymentMethodSection />
+          <DeliverySection />
           <ProductSection />
 
           <div className="flex justify-between">
