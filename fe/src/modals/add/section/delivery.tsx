@@ -8,7 +8,7 @@ const DELIVERY_OPTIONS = [
 
 export const DeliverySection: FunctionComponent = () => {
   return (
-    <div className="flex items-center gap-x-2 pt-2">
+    <div className="flex items-center gap-x-3 pt-2">
       {DELIVERY_OPTIONS.map(({ id, label }) => (
         <Input
           key={id}
