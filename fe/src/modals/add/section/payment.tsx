@@ -1,49 +1,28 @@
 import { Input } from "@/components";
 import { FunctionComponent } from "react";
 
+const PAYMENT_OPTIONS = [
+  { id: "mbway", label: "MBWay" },
+  { id: "cash", label: "Cash" },
+  { id: "card", label: "Card" },
+  { id: "paypal", label: "Paypal" },
+  { id: "other", label: "Other" },
+] as const;
+
 export const PaymentMethodSection: FunctionComponent = () => {
   return (
     <div className="flex items-center gap-x-2 pt-2">
-      <Input
-        type="radio"
-        name="payment"
-        id="mbway"
-        label="MBWay"
-        className="accent-contrast cursor-pointer"
-        labelClassName="!flex-row-reverse gap-x-2 cursor-pointer text-pop"
-      />
-      <Input
-        type="radio"
-        name="payment"
-        id="cash"
-        label="Cash"
-        className="accent-contrast cursor-pointer"
-        labelClassName="!flex-row-reverse gap-x-2 cursor-pointer text-pop"
-      />
-      <Input
-        type="radio"
-        name="payment"
-        id="card"
-        label="Card"
-        className="accent-contrast cursor-pointer"
-        labelClassName="!flex-row-reverse gap-x-2 cursor-pointer text-pop"
-      />
-      <Input
-        type="radio"
-        name="payment"
-        id="paypal"
-        label="Paypal"
-        className="accent-contrast cursor-pointer"
-        labelClassName="!flex-row-reverse gap-x-2 cursor-pointer text-pop"
-      />
-      <Input
-        type="radio"
-        name="payment"
-        id="other"
-        label="Other"
-        className="accent-contrast cursor-pointer"
-        labelClassName="!flex-row-reverse gap-x-2 cursor-pointer text-pop"
-      />
+      {PAYMENT_OPTIONS.map(({ id, label }) => (
+        <Input
+          key={id}
+          type="radio"
+          name="payment"
+          id={id}
+          label={label}
+          className="accent-contrast cursor-pointer"
+          labelClassName="!flex-row-reverse gap-x-2 cursor-pointer text-pop"
+        />
+      ))}
     </div>
   );
 };
