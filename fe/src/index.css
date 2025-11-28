@@ -171,6 +171,10 @@ input::-webkit-inner-spin-button {
 }
 
 @layer components {
+  fieldset {
+    @apply min-w-0;
+  }
+
   div[role="modal-wrapper"] {
     @apply z-40 absolute;
     margin: auto;

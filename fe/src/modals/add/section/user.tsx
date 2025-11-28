@@ -150,7 +150,7 @@ export const UserSection: FunctionComponent = () => {
             placeholder="e.g., Avenida da Liberdade"
           />
         </Autocomplete>
-        <div className="flex items-center justify-between">
+        <div className="grid grid-cols-2 gap-6">
           <Autocomplete options={[]}>
             <Input
               ref={streetNumberRef}
@@ -170,7 +170,7 @@ export const UserSection: FunctionComponent = () => {
             />
           </Autocomplete>
         </div>
-        <div className="flex items-center justify-between">
+        <div className="grid grid-cols-2 gap-6">
           <Autocomplete options={[]}>
             <Input
               ref={cityRef}
