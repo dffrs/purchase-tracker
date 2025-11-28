@@ -49,7 +49,7 @@ export const ProductSection: FunctionComponent = () => {
               data-testid="add-product-section"
               className="flex flex-col gap-y-4"
             >
-              <div className="flex gap-x-2 items-center justify-between w-full">
+              <div className="grid grid-cols-3 gap-4 w-full">
                 <Autocomplete options={[]}>
                   <Input
                     label="Product Name"
@@ -66,10 +66,25 @@ export const ProductSection: FunctionComponent = () => {
                     placeholder="product code..."
                   />
                 </Autocomplete>
-              </div>
-              <div className="flex gap-x-2 items-center justify-between w-full">
                 <Input
-                  label="PVP"
+                  label="Quantity"
+                  type="number"
+                  id={`product-${product}-${index}-quantity`}
+                  placeholder="quantity..."
+                  min={0}
+                  max={1_000_000}
+                  step="1"
+                  onChange={(e) => {
+                    // TODO: can not allow negative numbers
+                    const value = e.currentTarget.value;
+                    const numberOfDigits = getNumberOfDecimals(value);
+
+                    if (numberOfDigits > 2)
+                      e.currentTarget.value = value.slice(0, -1);
+                  }}
+                />
+                <Input
+                  label="PVP €"
                   type="number"
                   id={`product-${product}-${index}-price`}
                   placeholder="product price..."
@@ -85,9 +100,8 @@ export const ProductSection: FunctionComponent = () => {
                   }}
                 />
                 <Input
-                  label="PCB"
+                  label="PCB €"
                   type="number"
-                  disabled
                   id={`product-${product}-${index}-price`}
                   placeholder="product price..."
                   min={0}
