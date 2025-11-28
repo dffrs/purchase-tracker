@@ -3,12 +3,6 @@ import { getNumberOfDecimals } from "@/util";
 import { FunctionComponent, useCallback, useState } from "react";
 import { IoAdd, IoRemoveCircleOutline } from "react-icons/io5";
 
-// TODO:
-// Quantidade
-// PVP - preco de venda ao publico
-// PCB - preco compra boticario
-// Lucro - diferenca entre o PVP e o PCB
-
 export const ProductSection: FunctionComponent = () => {
   const [products, setProducts] = useState<number[]>(() => []);
 
@@ -84,10 +78,10 @@ export const ProductSection: FunctionComponent = () => {
                   }}
                 />
                 <Input
-                  label="PVP €"
+                  label="RRP €"
                   type="number"
-                  id={`product-${product}-${index}-price`}
-                  placeholder="product price..."
+                  id={`product-${product}-${index}-rrp`}
+                  placeholder="recommended retail price..."
                   min={0}
                   max={1_000_000}
                   step="0.01"
@@ -100,10 +94,10 @@ export const ProductSection: FunctionComponent = () => {
                   }}
                 />
                 <Input
-                  label="PCB €"
+                  label="WSP €"
                   type="number"
-                  id={`product-${product}-${index}-price`}
-                  placeholder="product price..."
+                  id={`product-${product}-${index}-wsp`}
+                  placeholder="wholesale purchase price..."
                   min={0}
                   max={1_000_000}
                   step="0.01"
@@ -112,8 +106,8 @@ export const ProductSection: FunctionComponent = () => {
                   label="Profit €"
                   type="number"
                   disabled
-                  id={`product-${product}-${index}-price`}
-                  placeholder="product price..."
+                  id={`product-${product}-${index}-profit`}
+                  defaultValue={0}
                   min={0}
                   max={1_000_000}
                   step="0.01"
