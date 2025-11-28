@@ -100,7 +100,7 @@ export const UserSection: FunctionComponent = () => {
           <Input
             ref={firstNameRef}
             required
-            label="First Name"
+            label="First Name *"
             type="text"
             id="firstName"
             placeholder="e.g., Raquel"
@@ -110,7 +110,7 @@ export const UserSection: FunctionComponent = () => {
           <Input
             ref={lastNameRef}
             required
-            label="Last Name"
+            label="Last Name *"
             type="text"
             id="lastName"
             placeholder="e.g., Canhoto"
