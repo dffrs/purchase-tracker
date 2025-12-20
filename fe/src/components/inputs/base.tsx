@@ -1,4 +1,4 @@
-import { forwardRef, FunctionComponent, InputHTMLAttributes } from "react";
+import { forwardRef, InputHTMLAttributes } from "react";
 
 type InputProps = {
   label: string;
