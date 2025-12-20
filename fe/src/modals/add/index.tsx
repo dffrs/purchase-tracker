@@ -5,7 +5,12 @@ import { UserSection } from "./section/user";
 import { ProductSection } from "./section/product";
 import { PaymentMethodSection } from "./section/payment";
 import { DeliverySection } from "./section/delivery";
-import { getDeliveryValue, getPaymentValue, getUserValues } from "./util";
+import {
+  getDeliveryValue,
+  getPaymentValue,
+  getProductValues,
+  getUserValues,
+} from "./util";
 
 type AddProps = {
   isOpen: boolean;
@@ -30,8 +35,9 @@ export const AddModal: FunctionComponent<AddProps> = ({ isOpen, onClose }) => {
     const user = getUserValues(form);
     const payment = getPaymentValue(form);
     const delivery = getDeliveryValue(form);
+    const products = getProductValues(form);
 
-    const payload = { user, payment, delivery };
+    const payload = { user, payment, delivery, products };
 
     console.log("here", payload);
 
@@ -56,7 +62,7 @@ export const AddModal: FunctionComponent<AddProps> = ({ isOpen, onClose }) => {
             >
               Close
             </Button>
-            <Button type="submit" className="bg-pop px-4">
+            <Button type="submit" className="bg-pop px-5">
               Add
             </Button>
           </div>

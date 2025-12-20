@@ -2,5 +2,8 @@ type Product = {
   id: string;
   name: string;
   code: string;
-  price: number;
+  quantity: number;
+  rrp: number;
+  wsp: number;
+  profit: number;
 };
