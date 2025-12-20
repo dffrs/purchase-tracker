@@ -56,8 +56,8 @@ export const AddModal: FunctionComponent<AddProps> = ({ isOpen, onClose }) => {
             >
               Close
             </Button>
-            <Button type="submit" className="bg-pop p-3">
-              Create
+            <Button type="submit" className="bg-pop px-4">
+              Add
             </Button>
           </div>
         </div>
