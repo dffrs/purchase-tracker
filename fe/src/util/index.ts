@@ -42,3 +42,14 @@ export function getFormElements<T extends Element>(
     (element) => formOrCollection.namedItem(element) as T | null,
   );
 }
+
+export const validateFields = (form: HTMLFormElement) => {
+  const allInputs = getFormElements<HTMLInputElement>(form, "input");
+
+  allInputs.forEach((el) => {
+    if (el == null) return;
+
+    if (el.validity.valid) el.classList.remove("border-rose-500");
+    else el.classList.add("border-rose-500");
+  });
+};

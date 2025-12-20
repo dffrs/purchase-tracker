@@ -1,5 +1,5 @@
 import { Button, Modal, useToast } from "@/components";
-import { getFormElements } from "@/util";
+import { getFormElements, validateFields } from "@/util";
 import { FunctionComponent } from "react";
 import { UserSection } from "./section/user";
 import { ProductSection } from "./section/product";
@@ -14,9 +14,16 @@ type AddProps = {
 export const AddModal: FunctionComponent<AddProps> = ({ isOpen, onClose }) => {
   const createToast = useToast();
 
+  const onInvalid: React.FormEventHandler<HTMLFormElement> = (event) => {
+    event.preventDefault();
+    validateFields(event.currentTarget);
+  };
+
   const onSubmit: React.FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
+
     const form = event.currentTarget;
+    validateFields(form);
 
     const formElements = form.elements;
 
@@ -59,7 +66,7 @@ export const AddModal: FunctionComponent<AddProps> = ({ isOpen, onClose }) => {
 
   return (
     <Modal isOpen={isOpen} className="!w-[45vw]">
-      <form autoComplete="off" onSubmit={onSubmit}>
+      <form autoComplete="off" onSubmit={onSubmit} onInvalid={onInvalid}>
         <div className="flex flex-col gap-y-4 p-8">
           <h1 className="text-contrast">Add order</h1>
 
