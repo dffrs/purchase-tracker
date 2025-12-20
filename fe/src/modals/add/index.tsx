@@ -1,10 +1,11 @@
 import { Button, Modal, useToast } from "@/components";
-import { getFormElements, validateFields } from "@/util";
+import { validateFields } from "@/util";
 import { FunctionComponent } from "react";
 import { UserSection } from "./section/user";
 import { ProductSection } from "./section/product";
 import { PaymentMethodSection } from "./section/payment";
 import { DeliverySection } from "./section/delivery";
+import { getDeliveryValue, getPaymentValue, getUserValues } from "./util";
 
 type AddProps = {
   isOpen: boolean;
@@ -23,45 +24,18 @@ export const AddModal: FunctionComponent<AddProps> = ({ isOpen, onClose }) => {
     event.preventDefault();
 
     const form = event.currentTarget;
+
     validateFields(form);
 
-    const formElements = form.elements;
+    const user = getUserValues(form);
+    const payment = getPaymentValue(form);
+    const delivery = getDeliveryValue(form);
 
-    // user
-    const userElements = getFormElements<HTMLInputElement>(formElements, [
-      "firstName",
-      "lastName",
-      "email",
-      "phone",
-      "street",
-      "streetNumber",
-      "apartment",
-      "city",
-      "zipCode",
-      "country",
-    ]);
+    const payload = { user, payment, delivery };
 
-    // products
-    const pName = getFormElements<HTMLInputElement>(
-      form,
-      "[id^='product'][id$='name']",
-    );
+    console.log("here", payload);
 
-    const pCode = getFormElements<HTMLInputElement>(
-      form,
-      "[id^='product'][id$='code']",
-    );
-
-    const pPrice = getFormElements<HTMLInputElement>(
-      form,
-      "[id^='product'][id$='price']",
-    );
-
-    [...userElements, ...pName, ...pCode, ...pPrice].forEach((element) =>
-      console.log(element?.value),
-    );
-
-    createToast("Hello there");
+    createToast("Registering order...");
   };
 
   return (
