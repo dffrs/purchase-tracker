@@ -8,6 +8,7 @@ export default {
         secondary: "#ffffff",
         contrast: "#E1C3B5",
         pop: "#571029",
+        error: "#f43f5e",
       },
       keyframes: {
         fadeIn: {
