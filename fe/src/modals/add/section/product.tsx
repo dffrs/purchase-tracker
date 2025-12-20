@@ -1,7 +1,102 @@
 import { Button, Icon, Accordion, Autocomplete, Input } from "@/components";
 import { getNumberOfDecimals } from "@/util";
-import { FunctionComponent, useCallback, useState } from "react";
+import { FunctionComponent, useCallback, useEffect, useState } from "react";
 import { IoAdd, IoRemoveCircleOutline } from "react-icons/io5";
+
+type ProductProps = {};
+
+const Product: FunctionComponent<ProductProps> = () => {
+  const [rrp, setRRP] = useState<number>(0);
+  const [wsp, setWSP] = useState<number>(0);
+  const [profit, setProfit] = useState<number>(0);
+
+  useEffect(() => {
+    setProfit(Number((rrp - wsp).toFixed(2)));
+  }, [rrp, wsp]);
+
+  return (
+    <div data-testid="add-product-section" className="flex flex-col gap-y-4">
+      <div className="grid grid-cols-3 gap-4 w-full">
+        <Autocomplete options={[]}>
+          <Input
+            label="Product Name"
+            type="text"
+            id={`product-name`}
+            placeholder="product name..."
+          />
+        </Autocomplete>
+        <Autocomplete options={[]}>
+          <Input
+            label="Code"
+            type="text"
+            id={`product-code`}
+            placeholder="product code..."
+          />
+        </Autocomplete>
+        <Input
+          label="Quantity"
+          type="text"
+          id={`product-quantity`}
+          placeholder="quantity..."
+          min={0}
+          max={1_000_000}
+          step="1"
+          onChange={(e) => {
+            e.target.value = e.target.value.replace(/[^\[\d]/g, "");
+            return;
+          }}
+        />
+        <Input
+          label="RRP €"
+          type="number"
+          id={`product-rrp`}
+          placeholder="recommended retail price..."
+          min={0}
+          max={1_000_000}
+          step="0.01"
+          defaultValue={rrp}
+          onChange={(e) => {
+            const value = e.currentTarget.value;
+            const numberOfDigits = getNumberOfDecimals(value);
+
+            if (numberOfDigits > 2) e.currentTarget.value = value.slice(0, -1);
+
+            setRRP(Number(e.currentTarget.value));
+          }}
+        />
+        <Input
+          label="WSP €"
+          type="number"
+          id={`product-wsp`}
+          placeholder="wholesale purchase price..."
+          min={0}
+          max={1_000_000}
+          step="0.01"
+          defaultValue={wsp}
+          onChange={(e) => {
+            const value = e.currentTarget.value;
+            const numberOfDigits = getNumberOfDecimals(value);
+
+            if (numberOfDigits > 2) e.currentTarget.value = value.slice(0, -1);
+
+            setWSP(Number(e.currentTarget.value));
+          }}
+        />
+        <Input
+          label="Profit €"
+          type="number"
+          disabled
+          id={`product-profit`}
+          min={0}
+          max={1_000_000}
+          step="0.01"
+          value={profit}
+          className="pointer-events-none"
+        />
+      </div>
+    </div>
+  );
+};
 
 export const ProductSection: FunctionComponent = () => {
   const [products, setProducts] = useState<number[]>(() => []);
@@ -39,81 +134,7 @@ export const ProductSection: FunctionComponent = () => {
               </span>
             }
           >
-            <div
-              data-testid="add-product-section"
-              className="flex flex-col gap-y-4"
-            >
-              <div className="grid grid-cols-3 gap-4 w-full">
-                <Autocomplete options={[]}>
-                  <Input
-                    label="Product Name"
-                    type="text"
-                    id={`product-${product}-${index}-name`}
-                    placeholder="product name..."
-                  />
-                </Autocomplete>
-                <Autocomplete options={[]}>
-                  <Input
-                    label="Code"
-                    type="text"
-                    id={`product-${product}-${index}-code`}
-                    placeholder="product code..."
-                  />
-                </Autocomplete>
-                <Input
-                  label="Quantity"
-                  type="number"
-                  id={`product-${product}-${index}-quantity`}
-                  placeholder="quantity..."
-                  min={0}
-                  max={1_000_000}
-                  step="1"
-                  onChange={(e) => {
-                    // TODO: can not allow negative numbers
-                    const value = e.currentTarget.value;
-                    const numberOfDigits = getNumberOfDecimals(value);
-
-                    if (numberOfDigits > 2)
-                      e.currentTarget.value = value.slice(0, -1);
-                  }}
-                />
-                <Input
-                  label="RRP €"
-                  type="number"
-                  id={`product-${product}-${index}-rrp`}
-                  placeholder="recommended retail price..."
-                  min={0}
-                  max={1_000_000}
-                  step="0.01"
-                  onChange={(e) => {
-                    const value = e.currentTarget.value;
-                    const numberOfDigits = getNumberOfDecimals(value);
-
-                    if (numberOfDigits > 2)
-                      e.currentTarget.value = value.slice(0, -1);
-                  }}
-                />
-                <Input
-                  label="WSP €"
-                  type="number"
-                  id={`product-${product}-${index}-wsp`}
-                  placeholder="wholesale purchase price..."
-                  min={0}
-                  max={1_000_000}
-                  step="0.01"
-                />
-                <Input
-                  label="Profit €"
-                  type="number"
-                  disabled
-                  id={`product-${product}-${index}-profit`}
-                  defaultValue={0}
-                  min={0}
-                  max={1_000_000}
-                  step="0.01"
-                />
-              </div>
-            </div>
+            <Product />
           </Accordion>
         ))}
       </div>
