@@ -134,12 +134,13 @@ func insertMockUsers(db *sql.DB, count int, addressIDs []int) []int {
 }
 
 func insertMockProducts(db *sql.DB, count int) []int {
-	stmt := `INSERT INTO products (name, code, price) VALUES (?, ?, ?)`
+	stmt := `INSERT INTO products (name, code, rrp, wsp) VALUES (?, ?, ?, ?)`
 	var ids []int
 	for range count {
 		res, err := db.Exec(stmt,
 			gofakeit.ProductName(),
 			gofakeit.UUID()[:8], // short unique code
+			gofakeit.Price(5, 500),
 			gofakeit.Price(5, 500),
 		)
 		if err != nil {
@@ -154,7 +155,7 @@ func insertMockProducts(db *sql.DB, count int) []int {
 
 func insertMockOrders(db *sql.DB, userIDs []int, productIDs []int, count int) {
 	orderStmt := `INSERT INTO orders (user_id) VALUES (?)`
-	itemStmt := `INSERT INTO order_items (order_id, product_id, quantity) VALUES (?, ?, ?)`
+	itemStmt := `INSERT INTO order_items (order_id, product_id, quantity, rrp_at_purchase, wsp_at_purchase) VALUES (?, ?, ?, ?, ?)`
 
 	for range count {
 		userID := userIDs[rand.Intn(len(userIDs))]
@@ -169,7 +170,10 @@ func insertMockOrders(db *sql.DB, userIDs []int, productIDs []int, count int) {
 		for range numItems {
 			productID := productIDs[rand.Intn(len(productIDs))]
 			qty := rand.Intn(3) + 1
-			_, err := db.Exec(itemStmt, orderID, productID, qty)
+			rrpAtPurchase := gofakeit.Price(5, 5000)
+			wspAtPurchase := gofakeit.Price(5, 5000)
+
+			_, err := db.Exec(itemStmt, orderID, productID, qty, rrpAtPurchase, wspAtPurchase)
 			if err != nil {
 				log.Fatal("insert order item:", err)
 			}
