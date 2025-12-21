@@ -14,7 +14,8 @@ type Product struct {
 	ID        int       `json:"id"`
 	Name      string    `json:"name" binding:"required"`
 	Code      string    `json:"code" binding:"required"`
-	Price     float64   `json:"price" binding:"required"`
+	RRP       float64   `json:"rrp" binding:"required"`
+	WSP       float64   `json:"wsp" binding:"required"`
 	CreatedAt time.Time `json:"created_at"`
 }
 
@@ -22,9 +23,9 @@ func (p *ProductsModel) Insert(product *Product) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	query := "INSERT INTO products (name, code, price, created_at) VALUES ($1, $2, $3, $4)"
+	query := "INSERT INTO products (name, code, rrp, wsp, created_at) VALUES ($1, $2, $3, $4, $5)"
 
-	result, err := p.DB.ExecContext(ctx, query, product.Name, product.Code, product.Price, time.Now().Unix())
+	result, err := p.DB.ExecContext(ctx, query, product.Name, product.Code, product.RRP, product.WSP, time.Now().Unix())
 	if err != nil {
 		return err
 	}
@@ -47,7 +48,7 @@ func (p *ProductsModel) Get(productID int) (*Product, error) {
 
 	query := "SELECT * FROM products WHERE id = $1"
 
-	err := p.DB.QueryRowContext(ctx, query, productID).Scan(&product.ID, &product.Name, &product.Code, &product.Price, &product.CreatedAt)
+	err := p.DB.QueryRowContext(ctx, query, productID).Scan(&product.ID, &product.Name, &product.Code, &product.RRP, &product.WSP, &product.CreatedAt)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, nil
@@ -75,7 +76,7 @@ func (p *ProductsModel) GetAll() ([]*Product, error) {
 	for rows.Next() {
 		product := new(Product)
 
-		err := rows.Scan(&product.ID, &product.Name, &product.Code, &product.Price, &product.CreatedAt)
+		err := rows.Scan(&product.ID, &product.Name, &product.Code, &product.RRP, &product.WSP, &product.CreatedAt)
 		if err != nil {
 			return nil, err
 		}
@@ -94,9 +95,9 @@ func (p *ProductsModel) Update(product *Product) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	query := "UPDATE products SET name = $1, code = $2, price = $3 WHERE id = $4"
+	query := "UPDATE products SET name = $1, code = $2, rrp = $3, wsp = $4 WHERE id = $5"
 
-	_, err := p.DB.ExecContext(ctx, query, product.Name, product.Code, product.Price, product.ID)
+	_, err := p.DB.ExecContext(ctx, query, product.Name, product.Code, product.RRP, product.WSP, product.ID)
 	if err != nil {
 		return err
 	}
