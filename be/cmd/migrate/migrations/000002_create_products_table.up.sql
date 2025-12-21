@@ -2,6 +2,9 @@ CREATE TABLE IF NOT EXISTS products (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   name TEXT NOT NULL,
   code TEXT NOT NULL UNIQUE,
-  price DECIMAL(10, 2) NOT NULL,
+
+  rrp DECIMAL(10, 2) NOT NULL, -- seling price
+  wsp DECIMAL(10, 2) NOT NULL, -- cost price
+
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
