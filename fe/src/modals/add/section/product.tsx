@@ -19,10 +19,9 @@ import {
 } from "react";
 import { IoAdd, IoRemoveCircleOutline } from "react-icons/io5";
 
-type ProductProps = {};
+type ProductProps = { id: string };
 
-// FIX: Duplicated ids. <Product /> must depend on index map.
-const Product: FunctionComponent<ProductProps> = () => {
+const Product: FunctionComponent<ProductProps> = ({ id }) => {
   // TODO: move me to parent
   const [products, isLoading] = useGetAllProducts();
 
@@ -78,7 +77,7 @@ const Product: FunctionComponent<ProductProps> = () => {
               ref={productName}
               label="Product Name"
               type="text"
-              id={`product-name`}
+              id={`${id}-name`}
               placeholder="product name..."
             />
           </Autocomplete>
@@ -87,14 +86,14 @@ const Product: FunctionComponent<ProductProps> = () => {
               ref={productCode}
               label="Code"
               type="text"
-              id={`product-code`}
+              id={`${id}-code`}
               placeholder="product code..."
             />
           </Autocomplete>
           <Input
             label="Quantity"
             type="text"
-            id={`product-quantity`}
+            id={`${id}-quantity`}
             placeholder="quantity..."
             min={0}
             max={1_000_000}
@@ -107,7 +106,7 @@ const Product: FunctionComponent<ProductProps> = () => {
           <Input
             label="RRP €"
             type="number"
-            id={`product-rrp`}
+            id={`${id}-rrp`}
             placeholder="recommended retail price..."
             min={0}
             max={1_000_000}
@@ -126,7 +125,7 @@ const Product: FunctionComponent<ProductProps> = () => {
           <Input
             label="WSP €"
             type="number"
-            id={`product-wsp`}
+            id={`${id}-wsp`}
             placeholder="wholesale purchase price..."
             min={0}
             max={1_000_000}
@@ -146,7 +145,7 @@ const Product: FunctionComponent<ProductProps> = () => {
             label="Profit €"
             type="number"
             disabled
-            id={`product-profit`}
+            id={`${id}-profit`}
             min={0}
             max={1_000_000}
             step="0.01"
@@ -195,7 +194,7 @@ export const ProductSection: FunctionComponent = () => {
               </span>
             }
           >
-            <Product />
+            <Product id={`product-${product}-${index}`} />
           </Accordion>
         ))}
       </div>
