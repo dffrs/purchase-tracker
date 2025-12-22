@@ -1,12 +1,8 @@
 import { ACOption, Autocomplete, Input } from "@/components";
 import { LoadingArea } from "@/components/loadingArea";
 import { useGetAllUsers } from "@/hooks";
+import { EMAIL_VALIDATION, PT_PHONE_NUMBER } from "@/util";
 import { FunctionComponent, useCallback, useMemo, useRef } from "react";
-
-const EMAIL_VALIDATION =
-  /^[\w.!#$%&'*+/=?^`{|}~-]+@[a-z\d](?:[a-z\d-]{0,61}[a-z\d])?(?:\.[a-z\d](?:[a-z\d-]{0,61}[a-z\d])?)*$/i;
-
-const PT_PHONE_NUMBER = /^(\+351)?\d{9|13}$/g;
 
 export const UserSection: FunctionComponent = () => {
   const [users, isLoading] = useGetAllUsers();

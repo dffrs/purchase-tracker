@@ -1,9 +1,11 @@
 import { IoAddCircleOutline, IoHome, IoSearch } from "react-icons/io5";
+import { AiOutlineUserAdd } from "react-icons/ai";
 import { Button, Icon, Layout } from "./components";
 import { Routes, Route, Link } from "react-router";
 import { Home, Search } from "./pages";
 import { useState } from "react";
 import { AddOrderModal } from "./modals";
+import { AddUserModal } from "./modals/addUser";
 
 function App() {
   // TODO: isolate me
@@ -44,6 +46,16 @@ function App() {
                   </Icon>
                 </Button>
               </li>
+              <li className="flex flex-row gap-x-2 items-center">
+                <Button
+                  className="bg-secondary rounded p-3"
+                  onClick={() => setAddUserModal(true)}
+                >
+                  <Icon title="Add" className="text-xl">
+                    <AiOutlineUserAdd />
+                  </Icon>
+                </Button>
+              </li>
             </ul>
           </aside>
           <section className="flex items-center justify-center p-8">
@@ -54,6 +66,10 @@ function App() {
             <AddOrderModal
               isOpen={addOrderModal}
               onClose={() => setAddOrderModal(false)}
+            />
+            <AddUserModal
+              isOpen={addUserModal}
+              onClose={() => setAddUserModal(false)}
             />
           </section>
         </section>
