@@ -2,6 +2,7 @@ import { Button, Input, Modal, useToast } from "@/components";
 import { EMAIL_VALIDATION, PT_PHONE_NUMBER, validateFields } from "@/util";
 import { FunctionComponent } from "react";
 import { getUserValues } from "../";
+import { createUser } from "@/api";
 
 type AddUserProps = {
   isOpen: boolean;
@@ -19,7 +20,7 @@ export const AddUserModal: FunctionComponent<AddUserProps> = ({
     validateFields(event.currentTarget);
   };
 
-  const onSubmit: React.FormEventHandler<HTMLFormElement> = (event) => {
+  const onSubmit: React.FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
 
     const form = event.currentTarget;
@@ -28,11 +29,10 @@ export const AddUserModal: FunctionComponent<AddUserProps> = ({
 
     const user = getUserValues(form);
 
-    const payload = { user };
-
-    console.log("here", payload);
-
     createToast("Registering user...");
+    await createUser(user);
+
+    onClose();
   };
 
   return (

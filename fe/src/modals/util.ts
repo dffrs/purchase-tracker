@@ -1,6 +1,6 @@
 import { getFormElements } from "@/util";
 
-export const getUserValues = (form: HTMLFormElement) => {
+export const getUserValues = (form: HTMLFormElement): UserPayload => {
   // user
   const firstName = getFormElements<HTMLInputElement>(
     form.elements,
