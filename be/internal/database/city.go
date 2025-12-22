@@ -39,15 +39,15 @@ func (c *CityModel) Insert(city *City) error {
 	return nil
 }
 
-func (c *CityModel) Get(cityID int) (*City, error) {
+func (c *CityModel) GetByName(cityName *string) (*City, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
 	city := new(City)
 
-	query := "SELECT * FROM city WHERE id = $1"
+	query := "SELECT * FROM city WHERE name = $1"
 
-	err := c.DB.QueryRowContext(ctx, query, cityID).Scan(&city.ID, &city.Name, &city.ZipCode, &city.CountryID)
+	err := c.DB.QueryRowContext(ctx, query, cityName).Scan(&city.ID, &city.Name, &city.ZipCode, &city.CountryID)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, nil

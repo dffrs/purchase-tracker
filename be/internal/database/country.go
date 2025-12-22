@@ -38,15 +38,15 @@ func (c *CountryModel) Insert(country *Country) error {
 	return nil
 }
 
-func (c *CountryModel) Get(countryID int) (*Country, error) {
+func (c *CountryModel) GetByName(countryName *string) (*Country, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
 	country := new(Country)
 
-	query := "SELECT * FROM country WHERE id = $1"
+	query := "SELECT * FROM country WHERE name = $1"
 
-	err := c.DB.QueryRowContext(ctx, query, countryID).Scan(&country.ID, &country.Code, &country.Name)
+	err := c.DB.QueryRowContext(ctx, query, countryName).Scan(&country.ID, &country.Code, &country.Name)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, nil
