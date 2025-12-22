@@ -16,7 +16,7 @@ type User struct {
 	Name      string
 	Email     string
 	Phone     int
-	AddressID sql.NullInt64
+	AddressID *int
 	CreatedAt time.Time
 }
 
