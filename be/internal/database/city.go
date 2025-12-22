@@ -17,13 +17,13 @@ type City struct {
 	CountryID *int
 }
 
-func (u *CityModel) Insert(city *City) error {
+func (c *CityModel) Insert(city *City) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
 	query := "INSERT INTO city (name, zip_code, country_id) VALUES ($1, $2, $3)"
 
-	result, err := u.DB.ExecContext(ctx, query, city.Name, city.ZipCode, city.CountryID)
+	result, err := c.DB.ExecContext(ctx, query, city.Name, city.ZipCode, city.CountryID)
 	if err != nil {
 		return err
 	}
@@ -37,4 +37,23 @@ func (u *CityModel) Insert(city *City) error {
 	city.ID = &castID
 
 	return nil
+}
+
+func (c *CityModel) Get(cityID int) (*City, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	city := new(City)
+
+	query := "SELECT * FROM city WHERE id = $1"
+
+	err := c.DB.QueryRowContext(ctx, query, cityID).Scan(&city.ID, &city.Name, &city.ZipCode, &city.CountryID)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
+		return nil, err
+	}
+
+	return city, nil
 }
