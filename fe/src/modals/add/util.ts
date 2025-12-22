@@ -100,11 +100,6 @@ export const getProductValues = (form: HTMLFormElement) => {
     "[id^='product'][id$='wsp']",
   );
 
-  const pProfit = getFormElements<HTMLInputElement>(
-    form,
-    "[id^='product'][id$='profit']",
-  );
-
   const products: Array<Omit<Product, "id">> = [];
 
   for (let i = 0; i < pName.length; i++) {
@@ -113,9 +108,8 @@ export const getProductValues = (form: HTMLFormElement) => {
     const quantity = Number(pQuantity[i]?.value);
     const rrp = Number(pRRP[i]?.value);
     const wsp = Number(pWSP[i]?.value);
-    const profit = Number(pProfit[i]?.value);
 
-    products.push({ name, code, quantity, rrp, wsp, profit });
+    products.push({ name, code, quantity, rrp, wsp });
   }
 
   return products;

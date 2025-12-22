@@ -27,6 +27,8 @@ const Product: FunctionComponent<ProductProps> = ({ id }) => {
 
   const productName = useRef<HTMLInputElement>(null);
   const productCode = useRef<HTMLInputElement>(null);
+  const productRRP = useRef<HTMLInputElement>(null);
+  const productWSP = useRef<HTMLInputElement>(null);
 
   const [rrp, setRRP] = useState<number>(0);
   const [wsp, setWSP] = useState<number>(0);
@@ -40,6 +42,8 @@ const Product: FunctionComponent<ProductProps> = ({ id }) => {
     (event: Parameters<ACOption["onClick"]>[0], prop: keyof Product) => {
       if (!productName.current) return;
       if (!productCode.current) return;
+      if (!productRRP.current) return;
+      if (!productWSP.current) return;
 
       const value = event.currentTarget.id;
 
@@ -50,6 +54,8 @@ const Product: FunctionComponent<ProductProps> = ({ id }) => {
 
       productName.current.value = product.name;
       productCode.current.value = product.code;
+      productRRP.current.value = String(product.rrp);
+      productWSP.current.value = String(product.wsp);
     },
     [products],
   );
@@ -65,6 +71,20 @@ const Product: FunctionComponent<ProductProps> = ({ id }) => {
     return products.map((product) => ({
       text: product.code,
       onClick: (event) => onAutoComplete(event, "code"),
+    }));
+  }, [products, onAutoComplete]);
+
+  const productRRPAutoComplete: ACOption[] = useMemo(() => {
+    return products.map((product) => ({
+      text: product.code,
+      onClick: (event) => onAutoComplete(event, "rrp"),
+    }));
+  }, [products, onAutoComplete]);
+
+  const productWSPAutoComplete: ACOption[] = useMemo(() => {
+    return products.map((product) => ({
+      text: product.code,
+      onClick: (event) => onAutoComplete(event, "wsp"),
     }));
   }, [products, onAutoComplete]);
 
@@ -103,44 +123,50 @@ const Product: FunctionComponent<ProductProps> = ({ id }) => {
               return;
             }}
           />
-          <Input
-            label="RRP €"
-            type="number"
-            id={`${id}-rrp`}
-            placeholder="recommended retail price..."
-            min={0}
-            max={1_000_000}
-            step="0.01"
-            defaultValue={rrp}
-            onChange={(e) => {
-              const value = e.currentTarget.value;
-              const numberOfDigits = getNumberOfDecimals(value);
+          <Autocomplete options={productRRPAutoComplete}>
+            <Input
+              ref={productRRP}
+              label="RRP €"
+              type="number"
+              id={`${id}-rrp`}
+              placeholder="recommended retail price..."
+              min={0}
+              max={1_000_000}
+              step="0.01"
+              defaultValue={rrp}
+              onChange={(e) => {
+                const value = e.currentTarget.value;
+                const numberOfDigits = getNumberOfDecimals(value);
 
-              if (numberOfDigits > 2)
-                e.currentTarget.value = value.slice(0, -1);
+                if (numberOfDigits > 2)
+                  e.currentTarget.value = value.slice(0, -1);
 
-              setRRP(Number(e.currentTarget.value));
-            }}
-          />
-          <Input
-            label="WSP €"
-            type="number"
-            id={`${id}-wsp`}
-            placeholder="wholesale purchase price..."
-            min={0}
-            max={1_000_000}
-            step="0.01"
-            defaultValue={wsp}
-            onChange={(e) => {
-              const value = e.currentTarget.value;
-              const numberOfDigits = getNumberOfDecimals(value);
+                setRRP(Number(e.currentTarget.value));
+              }}
+            />
+          </Autocomplete>
+          <Autocomplete options={productWSPAutoComplete}>
+            <Input
+              ref={productWSP}
+              label="WSP €"
+              type="number"
+              id={`${id}-wsp`}
+              placeholder="wholesale purchase price..."
+              min={0}
+              max={1_000_000}
+              step="0.01"
+              defaultValue={wsp}
+              onChange={(e) => {
+                const value = e.currentTarget.value;
+                const numberOfDigits = getNumberOfDecimals(value);
 
-              if (numberOfDigits > 2)
-                e.currentTarget.value = value.slice(0, -1);
+                if (numberOfDigits > 2)
+                  e.currentTarget.value = value.slice(0, -1);
 
-              setWSP(Number(e.currentTarget.value));
-            }}
-          />
+                setWSP(Number(e.currentTarget.value));
+              }}
+            />
+          </Autocomplete>
           <Input
             label="Profit €"
             type="number"

@@ -5,5 +5,4 @@ type Product = {
   quantity: number;
   rrp: number;
   wsp: number;
-  profit: number;
 };
