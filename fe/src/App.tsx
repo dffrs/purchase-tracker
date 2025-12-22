@@ -4,8 +4,7 @@ import { Button, Icon, Layout } from "./components";
 import { Routes, Route, Link } from "react-router";
 import { Home, Search } from "./pages";
 import { useState } from "react";
-import { AddOrderModal } from "./modals";
-import { AddUserModal } from "./modals/addUser";
+import { AddOrderModal, AddUserModal } from "./modals";
 
 function App() {
   // TODO: isolate me
