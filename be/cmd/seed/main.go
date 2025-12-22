@@ -29,9 +29,15 @@ func main() {
 	// Insert users data
 	userIDs := insertMockUsers(db, 10, addressIDs)
 
+	// Insert delivery data (hardcoded values)
+	deliveryIDs := insertMockDeliverys(db)
+
+	// Insert payment data (hardcoded values)
+	paymentIDs := insertMockPayments(db)
+
 	// Insert products data
 	productIDs := insertMockProducts(db, 20)
-	insertMockOrders(db, userIDs, productIDs, 15)
+	insertMockOrders(db, userIDs, productIDs, deliveryIDs, paymentIDs, 15)
 
 	fmt.Println("Mock data inserted successfully!")
 }
@@ -153,13 +159,54 @@ func insertMockProducts(db *sql.DB, count int) []int {
 	return ids
 }
 
-func insertMockOrders(db *sql.DB, userIDs []int, productIDs []int, count int) {
-	orderStmt := `INSERT INTO orders (user_id) VALUES (?)`
+func insertMockDeliverys(db *sql.DB) []int {
+	deliveryStmt := `INSERT INTO delivery (name) VALUES (?)`
+
+	var ids []int
+	deliveryOptions := []string{"Pickup", "Shipping"}
+
+	for _, dlv := range deliveryOptions {
+		res, err := db.Exec(deliveryStmt, dlv)
+		if err != nil {
+			log.Fatal("insert delivery:", err)
+		}
+		id, _ := res.LastInsertId()
+		ids = append(ids, int(id))
+	}
+
+	fmt.Printf("Inserted %d delivery options\n", len(deliveryOptions))
+	return ids
+}
+
+func insertMockPayments(db *sql.DB) []int {
+	paymentStmt := `INSERT INTO payment (name) VALUES (?)`
+
+	var ids []int
+	paymentOptions := []string{"MBWay", "Cash", "Card", "Paypal", "Other"}
+
+	for _, pm := range paymentOptions {
+		res, err := db.Exec(paymentStmt, pm)
+		if err != nil {
+			log.Fatal("insert payment:", err)
+		}
+		id, _ := res.LastInsertId()
+		ids = append(ids, int(id))
+	}
+
+	fmt.Printf("Inserted %d payment options\n", len(paymentOptions))
+	return ids
+}
+
+func insertMockOrders(db *sql.DB, userIDs []int, deliveryIDs []int, paymentIDs []int, productIDs []int, count int) {
+	orderStmt := `INSERT INTO orders (user_id, delivery_id, payment_id) VALUES (?, ?, ?)`
 	itemStmt := `INSERT INTO order_items (order_id, product_id, quantity, rrp_at_purchase, wsp_at_purchase) VALUES (?, ?, ?, ?, ?)`
 
 	for range count {
 		userID := userIDs[rand.Intn(len(userIDs))]
-		res, err := db.Exec(orderStmt, userID)
+		deliveryID := deliveryIDs[rand.Intn(len(deliveryIDs))]
+		paymentID := paymentIDs[rand.Intn(len(paymentIDs))]
+
+		res, err := db.Exec(orderStmt, userID, deliveryID, paymentID)
 		if err != nil {
 			log.Fatal("insert order:", err)
 		}
