@@ -10,7 +10,7 @@ import {
   getPaymentValue,
   getProductValues,
   getUserValues,
-} from "./util";
+} from "../";
 
 type AddOrderProps = {
   isOpen: boolean;

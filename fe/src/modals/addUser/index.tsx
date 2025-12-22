@@ -1,7 +1,7 @@
 import { Button, Input, Modal, useToast } from "@/components";
 import { EMAIL_VALIDATION, PT_PHONE_NUMBER, validateFields } from "@/util";
 import { FunctionComponent } from "react";
-import { getUserValues } from "../addOrder/util";
+import { getUserValues } from "../";
 
 type AddUserProps = {
   isOpen: boolean;
