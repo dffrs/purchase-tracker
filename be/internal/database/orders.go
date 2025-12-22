@@ -11,18 +11,20 @@ type OrdersModel struct {
 }
 
 type Order struct {
-	ID        int       `json:"id"`
-	UserID    int       `json:"userId" binding:"required"`
-	OrderDate time.Time `json:"orderDate"`
+	ID         int       `json:"id"`
+	UserID     int       `json:"userId" binding:"required"`
+	DeliveryID int       `json:"deliveryID" binding:"required"`
+	PaymentID  int       `json:"paymentID" binding:"required"`
+	OrderDate  time.Time `json:"orderDate"`
 }
 
 func (o OrdersModel) Insert(order *Order) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	query := "INSERT INTO orders (user_id, order_date) VALUES ($1, $2)"
+	query := "INSERT INTO orders (user_id, delivery_id, payment_id, order_date) VALUES ($1, $2, $3, $4)"
 
-	result, err := o.DB.ExecContext(ctx, query, order.UserID, time.Now().Unix())
+	result, err := o.DB.ExecContext(ctx, query, order.UserID, order.DeliveryID, order.PaymentID, time.Now().Unix())
 	if err != nil {
 		return err
 	}
@@ -53,7 +55,7 @@ func (o OrdersModel) GetAllOrders() ([]*Order, error) {
 	for rows.Next() {
 		order := new(Order)
 
-		err := rows.Scan(&order.ID, &order.UserID, &order.OrderDate)
+		err := rows.Scan(&order.ID, &order.UserID, &order.DeliveryID, &order.PaymentID, &order.OrderDate)
 		if err != nil {
 			return nil, err
 		}
@@ -72,7 +74,7 @@ func (o OrdersModel) GetOrdersByUserID(userID int) ([]*Order, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	query := "SELECT orders.id, orders.user_id, orders.order_date FROM orders JOIN users ON users.id = orders.user_id WHERE users.id = $1"
+	query := "SELECT orders.id, orders.user_id, orders.delivery_id, orders.payment_id, orders.order_date FROM orders JOIN users ON users.id = orders.user_id WHERE users.id = $1"
 
 	orders := []*Order{}
 
@@ -84,7 +86,7 @@ func (o OrdersModel) GetOrdersByUserID(userID int) ([]*Order, error) {
 	for rows.Next() {
 		order := new(Order)
 
-		err := rows.Scan(&order.ID, &order.UserID, &order.OrderDate)
+		err := rows.Scan(&order.ID, &order.UserID, &order.DeliveryID, &order.PaymentID, &order.OrderDate)
 		if err != nil {
 			return nil, err
 		}
@@ -107,7 +109,7 @@ func (o OrdersModel) Get(orderID int) (*Order, error) {
 
 	order := new(Order)
 
-	err := o.DB.QueryRowContext(ctx, query, orderID).Scan(&order.ID, &order.UserID, &order.OrderDate)
+	err := o.DB.QueryRowContext(ctx, query, orderID).Scan(&order.ID, &order.UserID, &order.DeliveryID, &order.PaymentID, &order.OrderDate)
 	if err != nil {
 		// no rows ?
 		if err == sql.ErrNoRows {

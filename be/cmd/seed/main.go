@@ -198,7 +198,7 @@ func insertMockPayments(db *sql.DB) []int {
 }
 
 func insertMockOrders(db *sql.DB, userIDs []int, deliveryIDs []int, paymentIDs []int, productIDs []int, count int) {
-	orderStmt := `INSERT INTO orders (user_id, delivery, payment) VALUES (?, ?, ?)`
+	orderStmt := `INSERT INTO orders (user_id, delivery_id, payment_id) VALUES (?, ?, ?)`
 	itemStmt := `INSERT INTO order_items (order_id, product_id, quantity, rrp_at_purchase, wsp_at_purchase) VALUES (?, ?, ?, ?, ?)`
 
 	for range count {
