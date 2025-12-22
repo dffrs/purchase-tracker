@@ -1,1 +1,1 @@
-export { AddModal } from "./add";
+export { AddOrderModal } from "./addOrder";

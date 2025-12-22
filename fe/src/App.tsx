@@ -3,11 +3,12 @@ import { Button, Icon, Layout } from "./components";
 import { Routes, Route, Link } from "react-router";
 import { Home, Search } from "./pages";
 import { useState } from "react";
-import { AddModal } from "./modals";
+import { AddOrderModal } from "./modals";
 
 function App() {
   // TODO: isolate me
-  const [modalOpen, setModalOpen] = useState(() => false);
+  const [addOrderModal, setAddOrderModal] = useState(() => false);
+  const [addUserModal, setAddUserModal] = useState(() => false);
 
   return (
     <main className="w-screen h-screen bg-primary">
@@ -36,7 +37,7 @@ function App() {
               <li className="flex flex-row gap-x-2 items-center">
                 <Button
                   className="bg-secondary rounded p-3"
-                  onClick={() => setModalOpen(true)}
+                  onClick={() => setAddOrderModal(true)}
                 >
                   <Icon title="Add" className="text-xl">
                     <IoAddCircleOutline />
@@ -50,7 +51,10 @@ function App() {
               <Route path="/home" element={<Home />} />
               <Route path="/search" element={<Search />} />
             </Routes>
-            <AddModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
+            <AddOrderModal
+              isOpen={addOrderModal}
+              onClose={() => setAddOrderModal(false)}
+            />
           </section>
         </section>
       </Layout>
