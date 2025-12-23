@@ -19,6 +19,11 @@ export const getNumberOfDecimals = (value: unknown): number => {
   }
 };
 
+export const nonEmptyOrNull = (arg: string | undefined | null) => {
+  if (arg === "" || arg == null) return null;
+  return arg;
+};
+
 export function getFormElements<T extends Element>(
   form: HTMLFormElement,
   element: string,
@@ -48,13 +53,35 @@ export function getFormElements<T extends Element>(
   );
 }
 
+const removeError = (el: HTMLInputElement) => {
+  // if radio input, remove highlight from label
+  if (el.tagName === "INPUT" && el.type === "radio") {
+    el.parentElement?.classList.remove("!text-error");
+    return;
+  }
+
+  el.classList.remove("!border-error");
+  return;
+};
+
+const addError = (el: HTMLInputElement) => {
+  // if radio input, highlight label
+  if (el.tagName === "INPUT" && el.type === "radio") {
+    el.parentElement?.classList.add("!text-error");
+    return;
+  }
+
+  el.classList.add("!border-error");
+  return;
+};
+
 export const validateFields = (form: HTMLFormElement) => {
   const allInputs = getFormElements<HTMLInputElement>(form, "input");
 
   allInputs.forEach((el) => {
     if (el == null) return;
 
-    if (el.validity.valid) el.classList.remove("border-error");
-    else el.classList.add("border-error");
+    if (el.validity.valid) removeError(el);
+    else addError(el);
   });
 };

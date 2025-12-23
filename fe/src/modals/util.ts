@@ -1,4 +1,4 @@
-import { getFormElements } from "@/util";
+import { getFormElements, nonEmptyOrNull } from "@/util";
 
 export const getUserValues = (form: HTMLFormElement): UserPayload => {
   // user
@@ -30,26 +30,26 @@ export const getUserValues = (form: HTMLFormElement): UserPayload => {
   const zipCode = getFormElements<HTMLInputElement>(form.elements, "zipCode");
 
   const country: Country = {
-    name: countryField?.value ?? "",
+    name: nonEmptyOrNull(countryField?.value),
     code: "PT", // NOTE: Hardcode for now
   };
 
   const city: City = {
-    name: cityName?.value ?? "",
+    name: nonEmptyOrNull(cityName?.value),
     country: country,
-    zipCode: zipCode?.value ?? "",
+    zipCode: nonEmptyOrNull(zipCode?.value),
   };
 
   const address: Address = {
-    street: street?.value ?? "",
-    streetNumber: streetNumber?.value ?? "",
-    apartment: apartment?.value ?? "",
+    street: nonEmptyOrNull(street?.value),
+    streetNumber: nonEmptyOrNull(streetNumber?.value),
+    apartment: nonEmptyOrNull(apartment?.value),
     city: city,
   };
 
   const user: Omit<User, "id" | "created_at"> = {
     name: [firstName?.value, lastName?.value].join(" "),
-    email: email?.value ?? "",
+    email: nonEmptyOrNull(email?.value),
     phone: Number(phone?.value ?? -1),
     address: address,
   };
@@ -63,7 +63,9 @@ export const getPaymentValue = (form: HTMLFormElement) => {
     "[name='payment']:checked",
   )[0];
 
-  return payment?.id;
+  if (!payment) throw Error("payment field was not found");
+
+  return payment.id;
 };
 
 export const getDeliveryValue = (form: HTMLFormElement) => {
@@ -72,7 +74,9 @@ export const getDeliveryValue = (form: HTMLFormElement) => {
     "[name='delivery']:checked",
   )[0];
 
-  return delivery?.id;
+  if (!delivery) throw Error("delivery field was not found");
+
+  return delivery.id;
 };
 
 export const getProductValues = (form: HTMLFormElement) => {

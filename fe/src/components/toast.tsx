@@ -54,7 +54,7 @@ const Toast: FunctionComponent<PropsWithChildren<ToastProps>> = ({
   return (
     <span
       data-timeout={timer}
-      className="bg-pop rounded-xl p-2 shadow-md flex flex-col items-start shrink-wrapper"
+      className="bg-pop rounded-xl p-2 shadow-md flex flex-col items-start shrink-wrapper border-2 border-solid border-secondary"
     >
       <span ref={timerRef} className="h-1 w-full rounded-xl shrink" />
       <span className="flex items-center">

@@ -17,6 +17,7 @@ export const PaymentMethodSection: FunctionComponent = () => {
           key={id}
           type="radio"
           name="payment"
+          required
           id={id}
           label={label}
           className="accent-pop cursor-pointer"

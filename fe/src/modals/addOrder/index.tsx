@@ -11,6 +11,7 @@ import {
   getProductValues,
   getUserValues,
 } from "../";
+import { createOrder } from "@/api";
 
 type AddOrderProps = {
   isOpen: boolean;
@@ -28,23 +29,32 @@ export const AddOrderModal: FunctionComponent<AddOrderProps> = ({
     validateFields(event.currentTarget);
   };
 
-  const onSubmit: React.FormEventHandler<HTMLFormElement> = (event) => {
+  const onSubmit: React.FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
 
     const form = event.currentTarget;
 
     validateFields(form);
 
-    const user = getUserValues(form);
-    const payment = getPaymentValue(form);
-    const delivery = getDeliveryValue(form);
-    const products = getProductValues(form);
+    try {
+      const user = getUserValues(form);
+      const payment = getPaymentValue(form);
+      const delivery = getDeliveryValue(form);
+      const products = getProductValues(form);
 
-    const payload = { user, payment, delivery, products };
+      createToast("Registering order...");
+      const [_, err] = await createOrder({ user, payment, delivery, products });
+      if (err != null) {
+        createToast(err.message);
+        return;
+      }
 
-    console.log("here", payload);
-
-    createToast("Registering order...");
+      createToast("Order added");
+      onClose();
+    } catch (error) {
+      console.log(error);
+      createToast("Error: " + (error as Error).message);
+    }
   };
 
   return (

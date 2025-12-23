@@ -1,216 +1,84 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 	"purchase-tracker/internal/database"
-	"strconv"
+	m "purchase-tracker/internal/models"
 
 	"github.com/gin-gonic/gin"
 )
 
 func (app *application) createOrderItems(c *gin.Context) {
-	orderItem := new(database.OrdersItem)
+	orderItemPayload := new(m.OrderPayload)
 
-	if err := c.ShouldBindJSON(orderItem); err != nil {
+	if err := c.ShouldBindJSON(orderItemPayload); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to bind order item"})
 		return
 	}
 
-	// verify that product exists
-	product, err := app.models.Products.Get(orderItem.ProductID)
+	// -------------- user related --------------
+	dbCountryID, err := app.models.Country.GetOrCreate(orderItemPayload.User.Address.City.Country.Code, orderItemPayload.User.Address.City.Country.Name)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get product id"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	if product == nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": fmt.Sprintf("Product with id '%d' does not exist", orderItem.ProductID)})
-		return
-	}
-
-	// verify that order exists
-	order, err := app.models.Orders.Get(orderItem.OrderID)
+	dbCityID, err := app.models.City.GetOrCreate(orderItemPayload.User.Address.City.Name, orderItemPayload.User.Address.City.ZipCode, &dbCountryID)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get order id"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	if order == nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": fmt.Sprintf("Order with id '%d' does not exist", orderItem.OrderID)})
-		return
-	}
-
-	err = app.models.OrdersItems.Insert(orderItem)
+	dbAddressID, err := app.models.Address.GetOrCreate(orderItemPayload.User.Address.Street, orderItemPayload.User.Address.StreetNumber, orderItemPayload.User.Address.Apartment, &dbCityID)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create order item"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, orderItem)
-}
-
-func (app *application) getOrderItems(c *gin.Context) {
-	orderItemID, err := strconv.Atoi(c.Param("order_item_id"))
+	dbUserID, err := app.models.Users.GetOrCreate(&orderItemPayload.User.Name, &orderItemPayload.User.Email, &orderItemPayload.User.Phone, &dbAddressID)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to get order item id"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	orderItem, err := app.models.OrdersItems.Get(orderItemID)
+	// -------------- payment related --------------
+	dbPaymentID, err := app.models.Payment.GetOrCreate(&orderItemPayload.Payment)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get order item"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	if orderItem == nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": fmt.Sprintf("Order item with id '%d' not found", orderItemID)})
-		return
-	}
-
-	c.JSON(http.StatusOK, orderItem)
-}
-
-func (app *application) getOrderItemsByOrderID(c *gin.Context) {
-	orderID, err := strconv.Atoi(c.Param("order_id"))
+	// -------------- delivery related --------------
+	dbDeliveryID, err := app.models.Delivery.GetOrCreate(&orderItemPayload.Delivery)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to get order id"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	// verify that order exists
-	order, err := app.models.Orders.Get(orderID)
+	// -------------- create order --------------
+	order := &database.Order{UserID: dbUserID, PaymentID: dbPaymentID, DeliveryID: dbDeliveryID}
+	err = app.models.Orders.Insert(order)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get order"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	if order == nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": fmt.Sprintf("Order with id '%d' not found", orderID)})
-		return
+	// -------------- product related --------------
+	for _, product := range orderItemPayload.Products {
+		dbProductID, err := app.models.Products.GetOrCreate(product.Name, product.Code, product.RRP, product.WSP)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		orderItem := &database.OrdersItem{Quantity: product.Quantity, OrderID: order.ID, ProductID: dbProductID, RRPAtPurchase: product.RRP, WSPAtPurchase: product.WSP}
+		err = app.models.OrdersItems.Insert(orderItem)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
 	}
 
-	orderItem, err := app.models.OrdersItems.GetByOrderID(orderID)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get order item"})
-		return
-	}
-
-	if orderItem == nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": fmt.Sprintf("Order item with order id '%d' not found", orderID)})
-		return
-	}
-
-	c.JSON(http.StatusOK, orderItem)
-}
-
-func (app *application) getOrderItemsByProductID(c *gin.Context) {
-	productID, err := strconv.Atoi(c.Param("product_id"))
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to get order id"})
-		return
-	}
-
-	// verify that product exists
-	product, err := app.models.Products.Get(productID)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get product"})
-		return
-	}
-
-	if product == nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": fmt.Sprintf("Product with id '%d' not found", productID)})
-		return
-	}
-
-	orderItem, err := app.models.OrdersItems.GetByProductID(productID)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get order item"})
-		return
-	}
-
-	if orderItem == nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": fmt.Sprintf("Order item with product id '%d' not found", productID)})
-		return
-	}
-
-	c.JSON(http.StatusOK, orderItem)
-}
-
-func (app *application) getOrderItemsByUserID(c *gin.Context) {
-	userID, err := strconv.Atoi(c.Param("user_id"))
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to get user id"})
-		return
-	}
-
-	user, err := app.models.Users.Get(userID)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get user"})
-		return
-	}
-
-	if user == nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": fmt.Sprintf("User with id '%d' not found", userID)})
-		return
-	}
-
-	ordersByUser, err := app.models.OrdersItems.GetByUserID(userID)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get order items by user id" + err.Error()})
-		return
-	}
-
-	if ordersByUser == nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": fmt.Sprintf("User with id '%d' does not have any order items", userID)})
-		return
-	}
-
-	c.JSON(http.StatusOK, ordersByUser)
-}
-
-func (app *application) getOrderItemsByUserEmail(c *gin.Context) {
-	userEmail := (c.Param("user_email"))
-	if userEmail == "" {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to get user email"})
-		return
-	}
-
-	// TODO: Confirm that user email exists (table user)
-
-	ordersByUser, err := app.models.OrdersItems.GetByUserEmail(userEmail)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get order items by user email"})
-		return
-	}
-
-	if ordersByUser == nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": fmt.Sprintf("User with email '%s' does not have any order items", userEmail)})
-		return
-	}
-
-	c.JSON(http.StatusOK, ordersByUser)
-}
-
-func (app *application) getOrderItemsByUserPhone(c *gin.Context) {
-	userPhone, err := strconv.Atoi(c.Param("user_phone"))
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to get user phone"})
-		return
-	}
-
-	// TODO: Confirm that user phone exists (table user)
-
-	ordersByUser, err := app.models.OrdersItems.GetByUserPhone(userPhone)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get order items by user phone"})
-		return
-	}
-
-	if ordersByUser == nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": fmt.Sprintf("User with phone '%d' does not have any order items", userPhone)})
-		return
-	}
-
-	c.JSON(http.StatusOK, ordersByUser)
+	// TODO: return some model
+	c.JSON(http.StatusOK, nil)
 }
