@@ -54,7 +54,14 @@ export const validateFields = (form: HTMLFormElement) => {
   allInputs.forEach((el) => {
     if (el == null) return;
 
-    if (el.validity.valid) el.classList.remove("border-error");
-    else el.classList.add("border-error");
+    if (el.validity.valid) {
+      if (el.tagName === "INPUT" && el.type === "radio")
+        el.parentElement?.classList.remove("!text-error");
+      else el.classList.remove("border-error");
+    } else {
+      if (el.tagName === "INPUT" && el.type === "radio")
+        el.parentElement?.classList.add("!text-error");
+      else el.classList.add("border-error");
+    }
   });
 };

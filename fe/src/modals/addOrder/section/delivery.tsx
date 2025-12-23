@@ -14,6 +14,7 @@ export const DeliverySection: FunctionComponent = () => {
           key={id}
           type="radio"
           name="delivery"
+          required
           id={id}
           label={label}
           className="accent-pop cursor-pointer"
