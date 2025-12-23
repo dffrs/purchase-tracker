@@ -63,7 +63,9 @@ export const getPaymentValue = (form: HTMLFormElement) => {
     "[name='payment']:checked",
   )[0];
 
-  return payment?.id;
+  if (!payment) throw Error("payment field was not found");
+
+  return payment.id;
 };
 
 export const getDeliveryValue = (form: HTMLFormElement) => {
@@ -72,7 +74,9 @@ export const getDeliveryValue = (form: HTMLFormElement) => {
     "[name='delivery']:checked",
   )[0];
 
-  return delivery?.id;
+  if (!delivery) throw Error("delivery field was not found");
+
+  return delivery.id;
 };
 
 export const getProductValues = (form: HTMLFormElement) => {

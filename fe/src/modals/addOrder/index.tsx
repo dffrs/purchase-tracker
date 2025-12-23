@@ -36,20 +36,25 @@ export const AddOrderModal: FunctionComponent<AddOrderProps> = ({
 
     validateFields(form);
 
-    const user = getUserValues(form);
-    const payment = getPaymentValue(form)!; // FIX:
-    const delivery = getDeliveryValue(form)!; // FIX:
-    const products = getProductValues(form);
+    try {
+      const user = getUserValues(form);
+      const payment = getPaymentValue(form);
+      const delivery = getDeliveryValue(form);
+      const products = getProductValues(form);
 
-    createToast("Registering order...");
-    const [_, err] = await createOrder({ user, payment, delivery, products });
-    if (err != null) {
-      createToast(err.message);
-      return;
+      createToast("Registering order...");
+      const [_, err] = await createOrder({ user, payment, delivery, products });
+      if (err != null) {
+        createToast(err.message);
+        return;
+      }
+
+      createToast("Order added");
+      onClose();
+    } catch (error) {
+      console.log(error);
+      createToast("Error: " + (error as Error).message);
     }
-
-    createToast("Order added");
-    onClose();
   };
 
   return (
