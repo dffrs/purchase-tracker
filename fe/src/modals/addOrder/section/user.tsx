@@ -207,6 +207,8 @@ export const UserSection: FunctionComponent = () => {
             label="Country"
             type="text"
             id="country"
+            disabled
+            className="pointer-events-none"
             defaultValue="Portugal"
             placeholder="e.g., Portugal"
           />
