@@ -19,6 +19,11 @@ export const getNumberOfDecimals = (value: unknown): number => {
   }
 };
 
+export const nonEmptyOrNull = (arg: string | undefined | null) => {
+  if (arg === "" || arg == null) return null;
+  return arg;
+};
+
 export function getFormElements<T extends Element>(
   form: HTMLFormElement,
   element: string,
