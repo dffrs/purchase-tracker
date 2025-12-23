@@ -1,15 +1,18 @@
-import { ACOption, Autocomplete, Input } from "@/components";
+import { ACOption, Autocomplete, Input, useToast } from "@/components";
 import { LoadingArea } from "@/components/loadingArea";
 import { useGetAllUsers } from "@/hooks";
-import { FunctionComponent, useCallback, useMemo, useRef } from "react";
-
-const EMAIL_VALIDATION =
-  /^[\w.!#$%&'*+/=?^`{|}~-]+@[a-z\d](?:[a-z\d-]{0,61}[a-z\d])?(?:\.[a-z\d](?:[a-z\d-]{0,61}[a-z\d])?)*$/i;
-
-const PT_PHONE_NUMBER = /^(\+351)?\d{9|13}$/g;
+import { EMAIL_VALIDATION, PT_PHONE_NUMBER } from "@/util";
+import {
+  FunctionComponent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+} from "react";
 
 export const UserSection: FunctionComponent = () => {
-  const [users, isLoading] = useGetAllUsers();
+  const createToast = useToast();
+  const [users, isLoading, error] = useGetAllUsers();
 
   // user name
   const firstNameRef = useRef<HTMLInputElement>(null);
@@ -92,6 +95,10 @@ export const UserSection: FunctionComponent = () => {
       onClick: (event) => onAutoComplete(event, "phone"),
     }));
   }, [users, onAutoComplete]);
+
+  useEffect(() => {
+    if (error !== null) createToast(error.message);
+  }, [error]);
 
   return (
     <LoadingArea isLoading={isLoading}>
@@ -200,6 +207,8 @@ export const UserSection: FunctionComponent = () => {
             label="Country"
             type="text"
             id="country"
+            disabled
+            className="pointer-events-none"
             defaultValue="Portugal"
             placeholder="e.g., Portugal"
           />

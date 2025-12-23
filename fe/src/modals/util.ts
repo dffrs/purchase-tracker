@@ -1,6 +1,6 @@
 import { getFormElements } from "@/util";
 
-export const getUserValues = (form: HTMLFormElement) => {
+export const getUserValues = (form: HTMLFormElement): UserPayload => {
   // user
   const firstName = getFormElements<HTMLInputElement>(
     form.elements,
@@ -31,7 +31,7 @@ export const getUserValues = (form: HTMLFormElement) => {
 
   const country: Country = {
     name: countryField?.value ?? "",
-    code: "",
+    code: "PT", // NOTE: Hardcode for now
   };
 
   const city: City = {

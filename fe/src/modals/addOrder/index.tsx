@@ -10,14 +10,17 @@ import {
   getPaymentValue,
   getProductValues,
   getUserValues,
-} from "./util";
+} from "../";
 
-type AddProps = {
+type AddOrderProps = {
   isOpen: boolean;
   onClose: () => void;
 };
 
-export const AddModal: FunctionComponent<AddProps> = ({ isOpen, onClose }) => {
+export const AddOrderModal: FunctionComponent<AddOrderProps> = ({
+  isOpen,
+  onClose,
+}) => {
   const createToast = useToast();
 
   const onInvalid: React.FormEventHandler<HTMLFormElement> = (event) => {

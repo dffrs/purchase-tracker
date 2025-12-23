@@ -1,12 +1,10 @@
 package main
 
 import (
-	"database/sql"
 	"fmt"
 	"net/http"
-	"strconv"
-
 	"purchase-tracker/internal/database"
+	m "purchase-tracker/internal/models"
 
 	"github.com/gin-gonic/gin"
 )
@@ -21,95 +19,44 @@ func (app *application) getAllUsers(c *gin.Context) {
 	c.JSON(http.StatusOK, users)
 }
 
-func (app *application) getUser(c *gin.Context) {
-	id, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": fmt.Sprintf("Invalid user id: %s", err.Error())})
-		return
-	}
-
-	user, err := app.models.Users.Get(id)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to get user: %s", err.Error())})
-		return
-	}
-
-	if user == nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
-		return
-	}
-
-	c.JSON(http.StatusOK, user)
-}
-
 func (app *application) createUser(c *gin.Context) {
-	user := database.User{}
+	payloadUser := m.UserResponse{}
 
-	if err := c.ShouldBindJSON(&user); err != nil {
+	if err := c.ShouldBindJSON(&payloadUser); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	err := app.models.Users.Insert(&user)
+	dbCountryID, err := app.models.Country.GetOrCreate(payloadUser.Address.City.Country.Code, payloadUser.Address.City.Country.Name)
 	if err != nil {
-		if err == sql.ErrNoRows {
-			c.JSON(http.StatusCreated, user)
-			return
-		}
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	dbCityID, err := app.models.City.GetOrCreate(payloadUser.Address.City.Name, payloadUser.Address.City.ZipCode, &dbCountryID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	dbAddressID, err := app.models.Address.GetOrCreate(payloadUser.Address.Street, payloadUser.Address.StreetNumber, payloadUser.Address.Apartment, &dbCityID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	userToInsert := database.User{Name: payloadUser.Name, Email: payloadUser.Email, Phone: payloadUser.Phone, AddressID: &dbAddressID}
+	err = app.models.Users.Insert(&userToInsert)
+	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to create user: %s", err.Error())})
 		return
 	}
 
-	c.JSON(http.StatusCreated, user)
-}
-
-func (app *application) updateUser(c *gin.Context) {
-	id, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": fmt.Sprintf("Invalid user id: %s", err.Error())})
-		return
-	}
-
-	existingUser, err := app.models.Users.Get(id)
+	responseUser, err := app.models.Users.Get(userToInsert.ID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to get user: %s", err.Error())})
 		return
 	}
 
-	if existingUser == nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
-		return
-	}
-
-	updatedUser := &database.User{}
-
-	if err := c.ShouldBindJSON(updatedUser); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to bind user: %s", err.Error())})
-		return
-	}
-
-	updatedUser.ID = id
-
-	if err := app.models.Users.Update(updatedUser); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to update user: %s", err.Error())})
-		return
-	}
-
-	c.JSON(http.StatusOK, updatedUser)
-}
-
-func (app *application) deleteUser(c *gin.Context) {
-	id, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": fmt.Sprintf("Invalid user id: %s", err.Error())})
-		return
-	}
-
-	err = app.models.Users.Delete(id)
-	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": fmt.Sprintf("Failed to get user: %s", err.Error())})
-		return
-	}
-
-	c.JSON(http.StatusNoContent, nil)
+	c.JSON(http.StatusCreated, responseUser)
 }

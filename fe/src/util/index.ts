@@ -1,3 +1,8 @@
+export const EMAIL_VALIDATION =
+  /^[\w.!#$%&'*+/=?^`{|}~-]+@[a-z\d](?:[a-z\d-]{0,61}[a-z\d])?(?:\.[a-z\d](?:[a-z\d-]{0,61}[a-z\d])?)*$/i;
+
+export const PT_PHONE_NUMBER = /^(\+351)?\d{9|13}$/g;
+
 export const getNumberOfDecimals = (value: unknown): number => {
   const errorValue = -1;
 

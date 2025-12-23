@@ -48,21 +48,20 @@ func toUserResponse(
 	}
 }
 
-// TODO: Update me with Address
 func (u *UsersModel) Insert(user *User) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	query := "INSERT INTO users (name, email, phone, addressID, created_at) VALUES ($1, $2, $3, $4, $5)"
+	query := "INSERT INTO users (name, email, phone, address_id) VALUES (?, ?, ?, ?)"
 
-	result, err := u.DB.ExecContext(ctx, query, user.Name, user.Email, user.Phone, user.AddressID, time.Now().Unix())
+	result, err := u.DB.ExecContext(ctx, query, user.Name, user.Email, user.Phone, user.AddressID)
 	if err != nil {
 		return err
 	}
 
 	id, err := result.LastInsertId()
 	if err != nil {
-		return nil
+		return err
 	}
 
 	user.ID = int(id)
@@ -160,34 +159,4 @@ func (u *UsersModel) GetAll() ([]*m.UserResponse, error) {
 	}
 
 	return users, nil
-}
-
-// TODO: Update me with Address
-func (u *UsersModel) Update(user *User) error {
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
-	defer cancel()
-
-	query := "UPDATE users SET name = $1, email = $2, phone = $3, addressID = $4 WHERE id = $5"
-
-	_, err := u.DB.ExecContext(ctx, query, user.Name, user.Email, user.Phone, user.AddressID, user.ID)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-// TODO: Update me with Address
-func (u *UsersModel) Delete(userID int) error {
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
-	defer cancel()
-
-	query := "DELETE FROM users WHERE id = $1"
-
-	_, err := u.DB.ExecContext(ctx, query, userID)
-	if err != nil {
-		return err
-	}
-
-	return nil
 }

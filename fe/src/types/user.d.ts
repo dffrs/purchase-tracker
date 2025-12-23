@@ -24,3 +24,5 @@ type Country = {
   code: string;
   name: string;
 };
+
+type UserPayload = Omit<User, "id" | "created_at">;

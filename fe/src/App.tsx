@@ -1,13 +1,15 @@
 import { IoAddCircleOutline, IoHome, IoSearch } from "react-icons/io5";
+import { AiOutlineUserAdd } from "react-icons/ai";
 import { Button, Icon, Layout } from "./components";
 import { Routes, Route, Link } from "react-router";
 import { Home, Search } from "./pages";
 import { useState } from "react";
-import { AddModal } from "./modals";
+import { AddOrderModal, AddUserModal } from "./modals";
 
 function App() {
   // TODO: isolate me
-  const [modalOpen, setModalOpen] = useState(() => false);
+  const [addOrderModal, setAddOrderModal] = useState(() => false);
+  const [addUserModal, setAddUserModal] = useState(() => false);
 
   return (
     <main className="w-screen h-screen bg-primary">
@@ -36,10 +38,20 @@ function App() {
               <li className="flex flex-row gap-x-2 items-center">
                 <Button
                   className="bg-secondary rounded p-3"
-                  onClick={() => setModalOpen(true)}
+                  onClick={() => setAddOrderModal(true)}
                 >
                   <Icon title="Add" className="text-xl">
                     <IoAddCircleOutline />
+                  </Icon>
+                </Button>
+              </li>
+              <li className="flex flex-row gap-x-2 items-center">
+                <Button
+                  className="bg-secondary rounded p-3"
+                  onClick={() => setAddUserModal(true)}
+                >
+                  <Icon title="Add" className="text-xl">
+                    <AiOutlineUserAdd />
                   </Icon>
                 </Button>
               </li>
@@ -50,7 +62,14 @@ function App() {
               <Route path="/home" element={<Home />} />
               <Route path="/search" element={<Search />} />
             </Routes>
-            <AddModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
+            <AddOrderModal
+              isOpen={addOrderModal}
+              onClose={() => setAddOrderModal(false)}
+            />
+            <AddUserModal
+              isOpen={addUserModal}
+              onClose={() => setAddUserModal(false)}
+            />
           </section>
         </section>
       </Layout>
