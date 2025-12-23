@@ -1,2 +1,3 @@
 export * from "./user";
-export { getAllProducts } from "./products";
+export * from "./products";
+export * from "./order";
