@@ -26,7 +26,7 @@ func (p *PaymentModel) GetOrCreate(payment *string) (*string, error) {
 		return nil, err
 	}
 
-	query := "SELECT id FROM payment WHERE id = ?"
+	query := "SELECT id FROM payment WHERE name = ?"
 
 	var pName string
 	err = p.DB.QueryRowContext(ctx, query, payment).Scan(&pName)
