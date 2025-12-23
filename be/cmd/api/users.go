@@ -50,21 +50,18 @@ func (app *application) createUser(c *gin.Context) {
 		return
 	}
 
-	// add country if it does not exist. TODO: Get(c *Country) ??
 	dbCountryID, err := app.models.Country.GetOrCreate(user.Address.City.Country.Code, user.Address.City.Country.Name)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	// add city if it does not exist
 	dbCityID, err := app.models.City.GetOrCreate(user.Address.City.Name, user.Address.City.ZipCode, &dbCountryID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	// add address if it does not exist
 	dbAddressID, err := app.models.Address.GetOrCreate(user.Address.Street, user.Address.StreetNumber, user.Address.Apartment, &dbCityID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
