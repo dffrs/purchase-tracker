@@ -30,7 +30,12 @@ export const AddUserModal: FunctionComponent<AddUserProps> = ({
     const user = getUserValues(form);
 
     createToast("Registering user...");
-    await createUser(user);
+
+    const [_, err] = await createUser(user);
+    if (err != null) {
+      createToast(err.message);
+      return;
+    }
 
     onClose();
   };
