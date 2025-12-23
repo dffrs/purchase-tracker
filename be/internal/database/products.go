@@ -44,13 +44,13 @@ func (p ProductsModel) GetOrCreate(name string, code string, rrp float64, wsp fl
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	insert := "INSERT OR IGNORE INTO product (name, code, rrp, wsp) VALUES (?, ?, ?, ?)"
+	insert := "INSERT OR IGNORE INTO products (name, code, rrp, wsp) VALUES (?, ?, ?, ?)"
 	_, err := p.DB.ExecContext(ctx, insert, name, code, rrp, wsp)
 	if err != nil {
 		return 0, err
 	}
 
-	query := "SELECT id FROM product WHERE name = ? AND code = ?"
+	query := "SELECT id FROM products WHERE name = ? AND code = ?"
 
 	var productID int
 	err = p.DB.QueryRowContext(ctx, query, name, code).Scan(&productID)

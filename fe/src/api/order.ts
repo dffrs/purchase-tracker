@@ -1,7 +1,7 @@
 const BASE = "http://localhost:8080/api/v1/";
 
 export const createOrder = async (user: OrderPayload) => {
-  const url = BASE + "order";
+  const url = BASE + "orderItems";
 
   try {
     const response = await fetch(url, {
