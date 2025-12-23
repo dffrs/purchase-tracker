@@ -69,6 +69,28 @@ func (u *UsersModel) Insert(user *User) error {
 	return nil
 }
 
+func (u *UsersModel) GetOrCreate(user *User) (int, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	insert := "INSERT OR IGNORE INTO users (name, email, phone, address_id) VALUES (?, ?, ?, ?)"
+
+	_, err := u.DB.ExecContext(ctx, insert, user.Name, user.Email, user.Phone, user.AddressID)
+	if err != nil {
+		return 0, err
+	}
+
+	query := "SELECT id FROM users WHERE name = ? AND email = ? AND phone = ? AND address_id = ?"
+
+	var id int
+	err = u.DB.QueryRowContext(ctx, query, user.Name, user.Email, user.Phone, user.AddressID).Scan(&id)
+	if err != nil {
+		return 0, err
+	}
+
+	return id, nil
+}
+
 func (u *UsersModel) Get(userID int) (*m.UserResponse, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
