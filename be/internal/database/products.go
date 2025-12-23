@@ -40,6 +40,27 @@ func (p *ProductsModel) Insert(product *Product) error {
 	return nil
 }
 
+func (p ProductsModel) GetOrCreate(name string, code string, rrp float64, wsp float64) (int, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	insert := "INSERT OR IGNORE INTO product (name, code, rrp, wsp) VALUES (?, ?, ?, ?)"
+	_, err := p.DB.ExecContext(ctx, insert, name, code, rrp, wsp)
+	if err != nil {
+		return 0, err
+	}
+
+	query := "SELECT id FROM product WHERE name = ? AND code = ?"
+
+	var productID int
+	err = p.DB.QueryRowContext(ctx, query, name, code).Scan(&productID)
+	if err != nil {
+		return 0, err
+	}
+
+	return productID, nil
+}
+
 func (p *ProductsModel) Get(productID int) (*Product, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()

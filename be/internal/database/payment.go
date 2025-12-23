@@ -15,7 +15,7 @@ type Payment struct {
 	Name *string
 }
 
-func (p *PaymentModel) GetOrCreate(payment *string) (*string, error) {
+func (p *PaymentModel) GetOrCreate(payment *string) (int, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
@@ -23,16 +23,16 @@ func (p *PaymentModel) GetOrCreate(payment *string) (*string, error) {
 
 	_, err := p.DB.ExecContext(ctx, insert, payment)
 	if err != nil {
-		return nil, err
+		return 0, err
 	}
 
 	query := "SELECT id FROM payment WHERE name = ?"
 
-	var pName string
-	err = p.DB.QueryRowContext(ctx, query, payment).Scan(&pName)
+	var paymentID int
+	err = p.DB.QueryRowContext(ctx, query, payment).Scan(&paymentID)
 	if err != nil {
-		return nil, err
+		return 0, err
 	}
 
-	return &pName, nil
+	return paymentID, nil
 }

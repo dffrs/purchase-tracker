@@ -15,7 +15,7 @@ type Delivery struct {
 	Name *string
 }
 
-func (d *DeliveryModel) GetOrInsert(delivery *string) (*string, error) {
+func (d *DeliveryModel) GetOrCreate(delivery *string) (int, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
@@ -23,16 +23,16 @@ func (d *DeliveryModel) GetOrInsert(delivery *string) (*string, error) {
 
 	_, err := d.DB.ExecContext(ctx, insert, delivery)
 	if err != nil {
-		return nil, err
+		return 0, err
 	}
 
 	query := "SELECT id FROM delivery WHERE name = ?"
 
-	var dName string
-	err = d.DB.QueryRowContext(ctx, query, delivery).Scan(&dName)
+	var deliveryID int
+	err = d.DB.QueryRowContext(ctx, query, delivery).Scan(&deliveryID)
 	if err != nil {
-		return nil, err
+		return 0, err
 	}
 
-	return &dName, nil
+	return deliveryID, nil
 }
