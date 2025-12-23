@@ -1,7 +1,6 @@
 package main
 
 import (
-	"database/sql"
 	"fmt"
 	"net/http"
 	"purchase-tracker/internal/database"
@@ -46,15 +45,16 @@ func (app *application) createUser(c *gin.Context) {
 		return
 	}
 
-	dbUser := database.User{Name: user.Name, Email: user.Email, Phone: user.Phone, AddressID: &dbAddressID}
-
-	err = app.models.Users.Insert(&dbUser)
+	userToInsert := database.User{Name: user.Name, Email: user.Email, Phone: user.Phone, AddressID: &dbAddressID}
+	err = app.models.Users.Insert(&userToInsert)
 	if err != nil {
-		if err == sql.ErrNoRows {
-			c.JSON(http.StatusCreated, &dbUser)
-			return
-		}
 		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to create user: %s", err.Error())})
+		return
+	}
+
+	dbUser, err := app.models.Users.Get(userToInsert.ID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to get user: %s", err.Error())})
 		return
 	}
 

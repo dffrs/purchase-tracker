@@ -52,7 +52,7 @@ func (u *UsersModel) Insert(user *User) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	query := "INSERT INTO users (name, email, phone, address_id, created_at) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)"
+	query := "INSERT INTO users (name, email, phone, address_id) VALUES (?, ?, ?, ?)"
 
 	result, err := u.DB.ExecContext(ctx, query, user.Name, user.Email, user.Phone, user.AddressID)
 	if err != nil {
