@@ -41,11 +41,8 @@ export const AddOrderModal: FunctionComponent<AddOrderProps> = ({
     const delivery = getDeliveryValue(form)!; // FIX:
     const products = getProductValues(form);
 
-    const orderPayload = { user, payment, delivery, products };
-    console.log("here", orderPayload);
-
     createToast("Registering order...");
-    const [_, err] = await createOrder(orderPayload);
+    const [_, err] = await createOrder({ user, payment, delivery, products });
     if (err != null) {
       createToast(err.message);
       return;
