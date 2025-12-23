@@ -45,37 +45,33 @@ func (app *application) getUser(c *gin.Context) {
 func (app *application) createUser(c *gin.Context) {
 	user := m.UserResponse{}
 
-	country := database.Country{}
-	city := database.City{}
-	address := database.Address{}
-
 	if err := c.ShouldBindJSON(&user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
 	// add country if it does not exist. TODO: Get(c *Country) ??
-	dbCountry, err := app.models.Country.GetByName(user.Address.City.Country.Name)
-	if dbCountry == nil && err == nil {
-		country = database.Country{Code: user.Address.City.Country.Code, Name: user.Address.City.Country.Name}
-		app.models.Country.Insert(&country)
+	dbCountryID, err := app.models.Country.GetOrCreate(user.Address.City.Country.Code, user.Address.City.Country.Name)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
 	}
 
 	// add city if it does not exist
-	dbCity, err := app.models.City.GetByName(user.Address.City.Name)
-	if dbCity == nil && err == nil {
-		city = database.City{Name: user.Address.City.Name, ZipCode: user.Address.City.ZipCode, CountryID: country.ID}
-		app.models.City.Insert(&city)
+	dbCityID, err := app.models.City.GetOrCreate(user.Address.City.Name, user.Address.City.ZipCode, &dbCountryID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
 	}
 
 	// add address if it does not exist
-	dbAddress, err := app.models.Address.GetByName(user.Address.City.Name)
-	if dbAddress == nil && err == nil {
-		address = database.Address{Street: user.Address.Street, StreetNumber: user.Address.StreetNumber, Apartment: user.Address.Apartment, CityID: city.ID}
-		app.models.Address.Insert(&address)
+	dbAddressID, err := app.models.Address.GetOrCreate(user.Address.Street, user.Address.StreetNumber, user.Address.Apartment, &dbCityID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
 	}
 
-	dbUser := database.User{Name: user.Name, Email: user.Email, Phone: user.Phone, AddressID: address.ID}
+	dbUser := database.User{Name: user.Name, Email: user.Email, Phone: user.Phone, AddressID: &dbAddressID}
 
 	err = app.models.Users.Insert(&dbUser)
 	if err != nil {
