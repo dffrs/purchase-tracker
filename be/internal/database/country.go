@@ -20,7 +20,7 @@ func (c *CountryModel) Insert(country *Country) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	query := "INSERT INTO country (code, name) VALUES ($1, $2)"
+	query := "INSERT OR IGNORE INTO country (code, name) VALUES ($1, $2)"
 
 	result, err := c.DB.ExecContext(ctx, query, country.Code, country.Name)
 	if err != nil {

@@ -22,7 +22,7 @@ func (a *AddressModel) Insert(address *Address) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	query := "INSERT INTO address (street, street_number, apartment, city_id) VALUES ($1, $2, $3, $4)"
+	query := "INSERT OR IGNORE INTO address (street, street_number, apartment, city_id) VALUES ($1, $2, $3, $4)"
 
 	result, err := a.DB.ExecContext(ctx, query, address.Street, address.StreetNumber, address.Apartment, address.CityID, time.Now().Unix())
 	if err != nil {

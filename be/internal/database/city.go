@@ -21,7 +21,7 @@ func (c *CityModel) Insert(city *City) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	query := "INSERT INTO city (name, zip_code, country_id) VALUES ($1, $2, $3)"
+	query := "INSERT OR IGNORE INTO city (name, zip_code, country_id) VALUES ($1, $2, $3)"
 
 	result, err := c.DB.ExecContext(ctx, query, city.Name, city.ZipCode, city.CountryID)
 	if err != nil {
