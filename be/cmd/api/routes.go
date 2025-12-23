@@ -18,10 +18,6 @@ func (app *application) routes() http.Handler {
 
 		// products
 		v1.GET("/products", app.getAllProducts)
-		v1.GET("/product/:id", app.getProduct)
-		v1.PUT("/product/:id", app.updateProduct)
-		v1.POST("/product", app.createProduct)
-		v1.DELETE("/product/:id", app.deleteProduct)
 
 		// orders
 		v1.GET("/orders", app.getAllOrders)
