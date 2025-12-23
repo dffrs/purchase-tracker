@@ -44,13 +44,15 @@ export const AddOrderModal: FunctionComponent<AddOrderProps> = ({
     const orderPayload = { user, payment, delivery, products };
     console.log("here", orderPayload);
 
+    createToast("Registering order...");
     const [_, err] = await createOrder(orderPayload);
     if (err != null) {
       createToast(err.message);
       return;
     }
 
-    createToast("Registering order...");
+    createToast("Order added");
+    onClose();
   };
 
   return (
