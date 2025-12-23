@@ -16,43 +16,25 @@ type Country struct {
 	Name *string
 }
 
-func (c *CountryModel) Insert(country *Country) error {
+func (c *CountryModel) GetOrCreate(code, name *string) (int, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	query := "INSERT OR IGNORE INTO country (code, name) VALUES ($1, $2)"
+	insert := "INSERT OR IGNORE INTO country (code, name) VALUES (?, ?)"
 
-	result, err := c.DB.ExecContext(ctx, query, country.Code, country.Name)
+	_, err := c.DB.ExecContext(ctx, insert, code, name)
 	if err != nil {
-		return err
+		return 0, err
 	}
 
-	id, err := result.LastInsertId()
+	query := "SELECT id FROM country WHERE code = ?"
+
+	var id int
+
+	err = c.DB.QueryRowContext(ctx, query, code).Scan(&id)
 	if err != nil {
-		return nil
+		return 0, err
 	}
 
-	castID := int(id)
-	country.ID = &castID
-
-	return nil
-}
-
-func (c *CountryModel) GetByName(countryName *string) (*Country, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
-	defer cancel()
-
-	country := new(Country)
-
-	query := "SELECT * FROM country WHERE name = $1"
-
-	err := c.DB.QueryRowContext(ctx, query, countryName).Scan(&country.ID, &country.Code, &country.Name)
-	if err != nil {
-		if err == sql.ErrNoRows {
-			return nil, nil
-		}
-		return nil, err
-	}
-
-	return country, nil
+	return id, nil
 }

@@ -18,43 +18,24 @@ type Address struct {
 	CityID       *int
 }
 
-func (a *AddressModel) Insert(address *Address) error {
+func (a *AddressModel) GetOrCreate(street, streetNumber, apartment *string, cityID *int) (int, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	query := "INSERT OR IGNORE INTO address (street, street_number, apartment, city_id) VALUES ($1, $2, $3, $4)"
+	insert := "INSERT OR IGNORE INTO address (street, street_number, apartment, city_id) VALUES (?, ?, ?, ?)"
 
-	result, err := a.DB.ExecContext(ctx, query, address.Street, address.StreetNumber, address.Apartment, address.CityID, time.Now().Unix())
+	_, err := a.DB.ExecContext(ctx, insert, street, streetNumber, apartment, cityID)
 	if err != nil {
-		return err
+		return 0, err
 	}
 
-	id, err := result.LastInsertId()
+	query := "SELECT id FROM address WHERE street = ? AND street_number = ? AND apartment = ? AND city_id = ?"
+
+	var id int
+	err = a.DB.QueryRowContext(ctx, query, street, streetNumber, apartment, cityID).Scan(&id)
 	if err != nil {
-		return nil
+		return 0, err
 	}
 
-	castID := int(id)
-	address.ID = &castID
-
-	return nil
-}
-
-func (a *AddressModel) Get(addressID int) (*Address, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
-	defer cancel()
-
-	city := new(Address)
-
-	query := "SELECT * FROM address WHERE id = $1"
-
-	err := a.DB.QueryRowContext(ctx, query, addressID).Scan(&city.ID, &city.Street, &city.StreetNumber, &city.Apartment, &city.CityID)
-	if err != nil {
-		if err == sql.ErrNoRows {
-			return nil, nil
-		}
-		return nil, err
-	}
-
-	return city, nil
+	return id, nil
 }

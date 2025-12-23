@@ -17,43 +17,24 @@ type City struct {
 	CountryID *int
 }
 
-func (c *CityModel) Insert(city *City) error {
+func (c *CityModel) GetOrCreate(name, zipCode *string, countryID *int) (int, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	query := "INSERT OR IGNORE INTO city (name, zip_code, country_id) VALUES ($1, $2, $3)"
+	insert := "INSERT OR IGNORE INTO city (name, zip_code, country_id) VALUES (?, ?, ?)"
 
-	result, err := c.DB.ExecContext(ctx, query, city.Name, city.ZipCode, city.CountryID)
+	_, err := c.DB.ExecContext(ctx, insert, name, zipCode, countryID)
 	if err != nil {
-		return err
+		return 0, err
 	}
 
-	id, err := result.LastInsertId()
+	query := "SELECT id FROM city WHERE name = ? AND zip_code = ? AND country_id = ?"
+
+	var id int
+	err = c.DB.QueryRowContext(ctx, query, name, zipCode, countryID).Scan(&id)
 	if err != nil {
-		return nil
+		return 0, err
 	}
 
-	castID := int(id)
-	city.ID = &castID
-
-	return nil
-}
-
-func (c *CityModel) GetByName(cityName *string) (*City, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
-	defer cancel()
-
-	city := new(City)
-
-	query := "SELECT * FROM city WHERE name = $1"
-
-	err := c.DB.QueryRowContext(ctx, query, cityName).Scan(&city.ID, &city.Name, &city.ZipCode, &city.CountryID)
-	if err != nil {
-		if err == sql.ErrNoRows {
-			return nil, nil
-		}
-		return nil, err
-	}
-
-	return city, nil
+	return id, nil
 }
