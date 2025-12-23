@@ -31,7 +31,7 @@ export const getUserValues = (form: HTMLFormElement): UserPayload => {
 
   const country: Country = {
     name: countryField?.value ?? "",
-    code: "",
+    code: "PT", // NOTE: Hardcode for now
   };
 
   const city: City = {

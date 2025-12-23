@@ -48,12 +48,11 @@ func toUserResponse(
 	}
 }
 
-// TODO: Update me with Address
 func (u *UsersModel) Insert(user *User) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	query := "INSERT INTO users (name, email, phone, addressID, created_at) VALUES ($1, $2, $3, $4, $5)"
+	query := "INSERT INTO users (name, email, phone, address_id, created_at) VALUES (?, ?, ?, ?, ?)"
 
 	result, err := u.DB.ExecContext(ctx, query, user.Name, user.Email, user.Phone, user.AddressID, time.Now().Unix())
 	if err != nil {
