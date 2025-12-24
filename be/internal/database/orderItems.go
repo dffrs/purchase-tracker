@@ -30,8 +30,8 @@ type OrdersResponse struct {
 	ProductWSP    float64   `json:"productWSP"`
 	OrderDate     time.Time `json:"orderDate"`
 	Quantity      int       `json:"quantity"`
-	RRPAtPurchase float64   `json:"rrp_at_purchase"`
-	WSPAtPurchase float64   `json:"wsp_at_purchase"`
+	RRPAtPurchase float64   `json:"rrpAtPurchase"`
+	WSPAtPurchase float64   `json:"wspAtPurchase"`
 }
 
 func getByUserProps[T string | int](oi *OrderItemsModel, dbColumn string, value T) ([]*OrdersResponse, error) {
