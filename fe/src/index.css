@@ -204,7 +204,7 @@ input::-webkit-inner-spin-button {
   }
 
   table {
-    @apply w-full border-collapse text-left;
+    @apply w-full h-fit border-collapse text-left;
 
     thead {
       @apply text-pop;

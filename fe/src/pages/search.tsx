@@ -38,34 +38,28 @@ export const Search: FunctionComponent = () => {
   return (
     <div className="card h-full w-full p-8 grid grid-flow-row grid-rows-[auto,1fr] gap-y-8">
       <h1 className="card-header">Orders</h1>
-      <LoadingArea isLoading={isLoading}>
-        <table>
-          <thead>
-            <tr>
-              {columns.map(({ title, key }) => (
-                <th key={key}>{title}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {allOrders.map((orders, index) => {
-              return (
-                <tr key={`${index}`}>
-                  {columns.map(({ key, Renderer }) => (
-                    <td key={`${key}-${index}-${orders[key]}`}>
-                      {Renderer ? (
-                        <Renderer value={orders[key]} />
-                      ) : (
-                        orders[key]
-                      )}
-                    </td>
-                  ))}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </LoadingArea>
+      <table>
+        <thead>
+          <tr>
+            {columns.map(({ title, key }) => (
+              <th key={key}>{title}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {allOrders.map((orders, index) => {
+            return (
+              <tr key={`${index}`}>
+                {columns.map(({ key, Renderer }) => (
+                  <td key={`${key}-${index}-${orders[key]}`}>
+                    {Renderer ? <Renderer value={orders[key]} /> : orders[key]}
+                  </td>
+                ))}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
     </div>
   );
 };
