@@ -166,6 +166,8 @@ func (oi *OrderItemsModel) GetAll() ([]*OrdersResponse, error) {
 		INNER JOIN orders ON orders.user_id = users.id
 		INNER JOIN order_items ON order_items.order_id = orders.id
 		INNER JOIN products ON products.id = order_items.product_id
+	ORDER BY
+		orders.order_date DESC;
 	`
 
 	rows, err := oi.DB.QueryContext(ctx, query)
