@@ -1,9 +1,13 @@
 import { useToast } from "@/components";
 import { LoadingArea } from "@/components/loadingArea";
 import { useGetAllOrders } from "@/hooks/useGetAllOrders";
-import { FunctionComponent, useEffect } from "react";
+import { FC, FunctionComponent, useEffect } from "react";
 
-const columns: { title: string; key: keyof OrderResponse }[] = [
+const columns: {
+  title: string;
+  key: keyof OrderResponse;
+  Renderer?: FC<{ value: unknown }>;
+}[] = [
   { key: "name", title: "User" },
   { key: "email", title: "Email" },
   { key: "phone", title: "Phone" },
@@ -12,7 +16,15 @@ const columns: { title: string; key: keyof OrderResponse }[] = [
   { key: "rrpAtPurchase", title: "RRP" },
   { key: "wspAtPurchase", title: "WSP" },
   { key: "quantity", title: "Quantity" },
-  { key: "orderDate", title: "Date" },
+  {
+    key: "orderDate",
+    title: "Date",
+    Renderer: ({ value }) =>
+      new Intl.DateTimeFormat(undefined, {
+        dateStyle: "short",
+        timeStyle: "short",
+      }).format(new Date(String(value))),
+  },
 ];
 
 export const Search: FunctionComponent = () => {
@@ -39,9 +51,13 @@ export const Search: FunctionComponent = () => {
             {allOrders.map((orders, index) => {
               return (
                 <tr key={`${index}`}>
-                  {columns.map(({ key }) => (
+                  {columns.map(({ key, Renderer }) => (
                     <td key={`${key}-${index}-${orders[key]}`}>
-                      {orders[key]}
+                      {Renderer ? (
+                        <Renderer value={orders[key]} />
+                      ) : (
+                        orders[key]
+                      )}
                     </td>
                   ))}
                 </tr>
