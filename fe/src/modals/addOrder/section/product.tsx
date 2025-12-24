@@ -89,6 +89,7 @@ const Product: FunctionComponent<ProductProps> = ({ id }) => {
           <Autocomplete options={productNameAutoComplete}>
             <Input
               ref={productName}
+              required
               label="Product Name"
               type="text"
               id={`${id}-name`}
@@ -98,6 +99,7 @@ const Product: FunctionComponent<ProductProps> = ({ id }) => {
           <Autocomplete options={productCodeAutoComplete}>
             <Input
               ref={productCode}
+              required
               label="Code"
               type="text"
               id={`${id}-code`}
@@ -107,6 +109,7 @@ const Product: FunctionComponent<ProductProps> = ({ id }) => {
           <Input
             label="Quantity"
             type="text"
+            required
             id={`${id}-quantity`}
             placeholder="quantity..."
             defaultValue={quantity}
@@ -122,6 +125,7 @@ const Product: FunctionComponent<ProductProps> = ({ id }) => {
           />
           <Input
             ref={productRRP}
+            required
             label="RRP €"
             type="number"
             id={`${id}-rrp`}
@@ -143,6 +147,7 @@ const Product: FunctionComponent<ProductProps> = ({ id }) => {
           <Input
             ref={productWSP}
             label="WSP €"
+            required
             type="number"
             id={`${id}-wsp`}
             placeholder="wholesale purchase price..."
@@ -178,7 +183,7 @@ const Product: FunctionComponent<ProductProps> = ({ id }) => {
 };
 
 export const ProductSection: FunctionComponent = () => {
-  const [products, setProducts] = useState<number[]>(() => []);
+  const [products, setProducts] = useState<number[]>(() => [0]);
 
   const onCreateProduct = useCallback(() => {
     setProducts((prev) => [...prev, (prev?.at(-1) || 0) + 1]);
