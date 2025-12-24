@@ -42,6 +42,11 @@ export const AddOrderModal: FunctionComponent<AddOrderProps> = ({
       const delivery = getDeliveryValue(form);
       const products = getProductValues(form);
 
+      if (products.length === 0) {
+        createToast("No products to be registred");
+        return;
+      }
+
       createToast("Registering order...");
       const [_, err] = await createOrder({ user, payment, delivery, products });
       if (err != null) {

@@ -67,7 +67,7 @@ const Toast: FunctionComponent<PropsWithChildren<ToastProps>> = ({
             <IoClose />
           </Icon>
         </Button>
-        <span className="max-w-[25ch] overflow-ellipsis whitespace-nowrap overflow-clip mr-4">
+        <span className="max-w-[30ch] overflow-ellipsis whitespace-nowrap overflow-clip mr-4">
           {children}
         </span>
       </span>
