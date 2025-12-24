@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"purchase-tracker/internal/database"
 	m "purchase-tracker/internal/models"
@@ -81,4 +82,14 @@ func (app *application) createOrderItems(c *gin.Context) {
 
 	// TODO: return some model
 	c.JSON(http.StatusOK, nil)
+}
+
+func (app *application) getAllOrderItems(c *gin.Context) {
+	orderItems, err := app.models.OrdersItems.GetAll()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to get all order items: %s", err.Error())})
+		return
+	}
+
+	c.JSON(http.StatusOK, orderItems)
 }
