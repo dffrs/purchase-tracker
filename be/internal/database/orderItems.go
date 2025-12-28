@@ -167,7 +167,9 @@ func (oi *OrderItemsModel) GetAll() ([]*OrdersResponse, error) {
 		INNER JOIN order_items ON order_items.order_id = orders.id
 		INNER JOIN products ON products.id = order_items.product_id
 	ORDER BY
-		orders.order_date DESC;
+		orders.order_date DESC
+	LIMIT
+		100000;
 	`
 
 	rows, err := oi.DB.QueryContext(ctx, query)
