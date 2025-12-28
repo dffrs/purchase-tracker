@@ -77,6 +77,11 @@
   padding: 0;
 }
 
+html,
+body {
+  height: 100%;
+}
+
 body {
   line-height: 1.5;
 }
@@ -204,23 +209,23 @@ input::-webkit-inner-spin-button {
   }
 
   table {
-    @apply w-full h-fit border-collapse text-left;
+    @apply block w-full h-fit overflow-y-auto border-collapse text-left;
 
     thead {
-      @apply text-pop;
+      @apply text-pop w-full sticky top-0;
 
       tr {
-        @apply bg-contrast;
+        @apply bg-contrast w-full;
       }
     }
 
     tbody {
-      @apply text-pop;
+      @apply text-pop w-full;
     }
 
     th,
     td {
-      @apply px-6 py-5 max-w-[5ch] overflow-ellipsis whitespace-nowrap overflow-clip;
+      @apply w-full  px-6 py-5 overflow-ellipsis whitespace-nowrap overflow-clip;
     }
 
     th {

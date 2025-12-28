@@ -36,9 +36,9 @@ export const Search: FunctionComponent = () => {
   }, [error]);
 
   return (
-    <div className="card h-full w-full p-8 grid grid-flow-row grid-rows-[auto,1fr] gap-y-8">
+    <div className="card h-full w-full p-8 grid grid-flow-row grid-rows-[auto,1fr] gap-y-8 overflow-y-auto">
       <h1 className="card-header">Orders</h1>
-      <table className="animate-fadeAndMoveIn">
+      <table className="animate-fadeAndMoveIn max-h-[75vh]">
         <thead>
           <tr>
             {columns.map(({ title, key }) => (
