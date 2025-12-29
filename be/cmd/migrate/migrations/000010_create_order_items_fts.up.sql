@@ -9,7 +9,6 @@ CREATE VIRTUAL TABLE order_items_fts USING fts5(
   rrp_at_purchase,
   wsp_at_purchase,
   quantity,
-  content = ''
 );
 
 -- triggers (only INSERT for now)
