@@ -20,30 +20,17 @@ type OrdersItem struct {
 }
 
 type OrdersResponse struct {
-	Name          string    `json:"name"`
-	Email         string    `json:"email"`
-	Phone         int       `json:"phone"`
-	ProductName   string    `json:"productName"`
-	ProductCode   string    `json:"productCode"`
-	ProductRRP    float64   `json:"productRRP"`
-	ProductWSP    float64   `json:"productWSP"`
-	OrderDate     time.Time `json:"orderDate"`
-	Quantity      int       `json:"quantity"`
-	RRPAtPurchase float64   `json:"rrpAtPurchase"`
-	WSPAtPurchase float64   `json:"wspAtPurchase"`
-}
-
-type OrdersSearch struct {
-	OrderItemID   int     `json:"orderItemID"`
-	OrderID       int     `json:"orderID"`
-	UserName      string  `json:"userName"`
-	UserEmail     string  `json:"userEmail"`
-	UserPhone     string  `json:"userPhone"`
+	Name          string  `json:"name"`
+	Email         string  `json:"email"`
+	Phone         int     `json:"phone"`
 	ProductName   string  `json:"productName"`
 	ProductCode   string  `json:"productCode"`
+	ProductRRP    float64 `json:"productRRP"`
+	ProductWSP    float64 `json:"productWSP"`
+	OrderDate     string  `json:"orderDate"`
+	Quantity      int     `json:"quantity"`
 	RRPAtPurchase float64 `json:"rrpAtPurchase"`
 	WSPAtPurchase float64 `json:"wspAtPurchase"`
-	Quantity      int     `json:"quantity"`
 }
 
 func (oi *OrderItemsModel) Insert(orderItem *OrdersItem) error {
@@ -158,7 +145,7 @@ func (oi *OrderItemsModel) GetAll() ([]*OrdersResponse, error) {
 	return orderUsers, nil
 }
 
-func (oi OrderItemsModel) FindBy(search string) ([]*OrdersSearch, error) {
+func (oi OrderItemsModel) FindBy(search string) ([]*OrdersResponse, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
@@ -169,29 +156,29 @@ func (oi OrderItemsModel) FindBy(search string) ([]*OrdersSearch, error) {
 		return nil, err
 	}
 
-	ordersSearch := []*OrdersSearch{}
+	ordersSearch := []*OrdersResponse{}
 
 	for rows.Next() {
-		orderSearch := new(OrdersSearch)
+		orSearch := new(OrdersResponse)
 
 		err := rows.Scan(
-			&orderSearch.OrderItemID,
-			&orderSearch.OrderID,
-			&orderSearch.UserName,
-			&orderSearch.UserEmail,
-			&orderSearch.UserPhone,
-			&orderSearch.ProductName,
-			&orderSearch.ProductCode,
-			&orderSearch.RRPAtPurchase,
-			&orderSearch.WSPAtPurchase,
-			&orderSearch.Quantity,
+			&orSearch.Name,
+			&orSearch.Email,
+			&orSearch.Phone,
+			&orSearch.ProductName,
+			&orSearch.ProductCode,
+			&orSearch.ProductRRP,
+			&orSearch.ProductWSP,
+			&orSearch.OrderDate,
+			&orSearch.Quantity,
+			&orSearch.RRPAtPurchase,
+			&orSearch.WSPAtPurchase,
 		)
-
-		ordersSearch = append(ordersSearch, orderSearch)
-
 		if err != nil {
 			return nil, err
 		}
+
+		ordersSearch = append(ordersSearch, orSearch)
 	}
 
 	if err := rows.Err(); err != nil {

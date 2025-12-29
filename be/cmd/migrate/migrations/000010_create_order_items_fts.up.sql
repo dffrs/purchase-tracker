@@ -1,14 +1,15 @@
 CREATE VIRTUAL TABLE order_items_fts USING fts5(
-  order_item_id UNINDEXED,
-  order_id UNINDEXED,
   user_name,
   user_email,
   user_phone,
   product_name,
   product_code,
+  product_rrp,
+  product_wsp,
+  order_date,
+  quantity,
   rrp_at_purchase,
   wsp_at_purchase,
-  quantity,
 );
 
 -- triggers (only INSERT for now)
@@ -16,30 +17,32 @@ CREATE TRIGGER order_items_ai AFTER INSERT ON order_items
 BEGIN
   INSERT INTO order_items_fts (
     rowid,
-    order_item_id,
-    order_id,
     user_name,
     user_email,
     user_phone,
     product_name,
     product_code,
+    product_rrp,
+    product_wsp,
+    order_date,
+    quantity,
     rrp_at_purchase,
-    wsp_at_purchase,
-    quantity
+    wsp_at_purchase
   )
 
 	SELECT 
     new.id,
-    new.id,
-    orders.id AS orderID,
-		users.name AS name,
-		users.email AS email,
-		users.phone AS phone,
-		products.name AS productName,
-		products.code AS productCode,
-		new.rrp_at_purchase AS rrpAtPurchase,
-		new.wsp_at_purchase AS wspAtPurchase,
-		new.quantity AS quantity
+		users.name,
+		users.email,
+		users.phone,
+		products.name,
+		products.code,
+		products.rrp,
+		products.wsp,
+    orders.order_date,
+		new.quantity,
+		new.rrp_at_purchase,
+		new.wsp_at_purchase
 	FROM
 		users
 		JOIN orders ON orders.user_id = users.id
