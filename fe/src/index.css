@@ -77,6 +77,11 @@
   padding: 0;
 }
 
+html,
+body {
+  height: 100%;
+}
+
 body {
   line-height: 1.5;
 }
@@ -200,6 +205,35 @@ input::-webkit-inner-spin-button {
 
     &::before {
       @apply content-[""] fixed inset-0 w-screen h-screen;
+    }
+  }
+
+  table {
+    @apply block w-full h-fit overflow-y-auto border-collapse text-left;
+
+    thead {
+      @apply text-pop w-full sticky top-0;
+
+      tr {
+        @apply bg-contrast w-full;
+      }
+    }
+
+    tbody {
+      @apply text-pop w-full;
+    }
+
+    th,
+    td {
+      @apply w-full  px-6 py-5 overflow-ellipsis whitespace-nowrap overflow-clip;
+    }
+
+    th {
+      @apply first:rounded-s-lg last:rounded-e-lg;
+    }
+
+    td {
+      @apply border-0 border-b-2 border-solid border-contrast;
     }
   }
 
