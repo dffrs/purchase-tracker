@@ -40,7 +40,7 @@ export const Search: FunctionComponent = () => {
       <h1 className="card-header">Orders</h1>
       <LoadingArea isLoading={isLoading}>
         <table className="animate-fadeAndMoveIn max-h-[75vh]">
-          <thead>
+          <thead className="shadow-lg">
             <tr>
               {columns.map(({ title, key }) => (
                 <th key={key}>{title}</th>
