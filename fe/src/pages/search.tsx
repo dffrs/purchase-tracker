@@ -1,7 +1,8 @@
-import { useToast } from "@/components";
+import { Icon, Input, useToast } from "@/components";
 import { LoadingArea } from "@/components/loadingArea";
 import { useGetAllOrders } from "@/hooks/useGetAllOrders";
-import { FC, FunctionComponent, useEffect } from "react";
+import { FC, FunctionComponent, useCallback, useEffect } from "react";
+import { IoSearch } from "react-icons/io5";
 
 const columns: {
   title: string;
@@ -28,8 +29,16 @@ const columns: {
 ];
 
 export const Search: FunctionComponent = () => {
-  const [allOrders, isLoading, error] = useGetAllOrders();
+  const [orders, onSearch, isLoading, error] = useGetAllOrders();
   const createToast = useToast();
+
+  const onKeyDown: React.KeyboardEventHandler<HTMLInputElement> = useCallback(
+    (ev) => {
+      if (ev.key !== "Enter") return;
+      onSearch(ev.currentTarget.value);
+    },
+    [onSearch],
+  );
 
   useEffect(() => {
     if (error != null) createToast(error.message);
@@ -37,7 +46,20 @@ export const Search: FunctionComponent = () => {
 
   return (
     <div className="card h-full w-full p-8 grid grid-flow-row grid-rows-[auto,1fr] gap-y-8">
-      <h1 className="card-header">Orders</h1>
+      <span className="flex justify-between">
+        <h1 className="card-header">Orders</h1>
+        <span className="flex gap-x-3 items-center">
+          <Icon title="Search" className="cursor-auto hover:scale-100">
+            <IoSearch className="text-pop text-xl mt-2"></IoSearch>
+          </Icon>
+          <Input
+            type="search"
+            label=""
+            placeholder="Press Enter to search"
+            onKeyDown={onKeyDown}
+          />
+        </span>
+      </span>
       <LoadingArea isLoading={isLoading}>
         <table className="animate-fadeAndMoveIn max-h-[75vh]">
           <thead className="shadow-lg">
@@ -48,21 +70,15 @@ export const Search: FunctionComponent = () => {
             </tr>
           </thead>
           <tbody>
-            {allOrders.map((orders, index) => {
-              return (
-                <tr key={`${index}`}>
-                  {columns.map(({ key, Renderer }) => (
-                    <td key={`${key}-${index}-${orders[key]}`}>
-                      {Renderer ? (
-                        <Renderer value={orders[key]} />
-                      ) : (
-                        orders[key]
-                      )}
-                    </td>
-                  ))}
-                </tr>
-              );
-            })}
+            {orders.map((orders, index) => (
+              <tr key={`${index}`}>
+                {columns.map(({ key, Renderer }) => (
+                  <td key={`${key}-${index}-${orders[key]}`}>
+                    {Renderer ? <Renderer value={orders[key]} /> : orders[key]}
+                  </td>
+                ))}
+              </tr>
+            ))}
           </tbody>
         </table>
       </LoadingArea>

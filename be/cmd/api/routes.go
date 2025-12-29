@@ -30,6 +30,7 @@ func (app *application) routes() http.Handler {
 		// order items
 		v1.POST("/orderItems", app.createOrderItems)
 		v1.GET("/orderItems", app.getAllOrderItems)
+		v1.POST("/orderItems/search", app.searchOrderItems)
 	}
 
 	return g
