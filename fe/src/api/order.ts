@@ -42,8 +42,6 @@ export const getAllOrders = async () => {
 
     const result = (await response.json()) as OrderResponse[];
 
-    await new Promise((r) => setTimeout(r, 2_000));
-
     return [result, null] as const;
   } catch (e) {
     const error = e as Error;
@@ -67,7 +65,7 @@ export const searchOrders = async (keyword: string) => {
       throw new Error("Failed to get all orders", { cause: err.error });
     }
 
-    const result = (await response.json()) as unknown[];
+    const result = (await response.json()) as OrderResponse[];
 
     // await new Promise((r) => setTimeout(r, 2_000));
 

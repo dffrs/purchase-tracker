@@ -29,13 +29,8 @@ const columns: {
 ];
 
 export const Search: FunctionComponent = () => {
-  const [allOrders, isLoading, error] = useGetAllOrders();
+  const [allOrders, onSearch, isLoading, error] = useGetAllOrders();
   const createToast = useToast();
-
-  const search = async (keyword: string) => {
-    const resp = await searchOrders(keyword);
-    console.log("here", resp);
-  };
 
   useEffect(() => {
     if (error != null) createToast(error.message);
@@ -51,8 +46,7 @@ export const Search: FunctionComponent = () => {
           placeholder="..."
           onKeyDown={(ev) => {
             if (ev.key !== "Enter") return;
-
-            search(ev.currentTarget.value);
+            onSearch(ev.currentTarget.value);
           }}
         />
       </span>

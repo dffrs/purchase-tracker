@@ -1,5 +1,5 @@
-import { getAllOrders } from "@/api";
-import { useEffect, useState } from "react";
+import { getAllOrders, searchOrders } from "@/api";
+import { useCallback, useEffect, useState } from "react";
 
 export const useGetAllOrders = () => {
   const [orders, setOrders] = useState<OrderResponse[]>(() => []);
@@ -24,5 +24,25 @@ export const useGetAllOrders = () => {
     })();
   }, []);
 
-  return [orders, isLoading, error] as const;
+  const onSearch = useCallback(async (keyword: string) => {
+    setIsLoading(true);
+
+    const cb = !keyword
+      ? async () => await getAllOrders()
+      : async () => await searchOrders(keyword);
+
+    const [orders, err] = await cb();
+    if (err != null) {
+      setIsLoading(false);
+      setOrders([]);
+      setError(err);
+      return;
+    }
+
+    setOrders(orders);
+    setIsLoading(false);
+    setError(null);
+  }, []);
+
+  return [orders, onSearch, isLoading, error] as const;
 };
