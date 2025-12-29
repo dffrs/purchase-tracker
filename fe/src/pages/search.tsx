@@ -1,7 +1,8 @@
-import { Input, useToast } from "@/components";
+import { Icon, Input, useToast } from "@/components";
 import { LoadingArea } from "@/components/loadingArea";
 import { useGetAllOrders } from "@/hooks/useGetAllOrders";
 import { FC, FunctionComponent, useEffect } from "react";
+import { IoSearch } from "react-icons/io5";
 
 const columns: {
   title: string;
@@ -39,15 +40,20 @@ export const Search: FunctionComponent = () => {
     <div className="card h-full w-full p-8 grid grid-flow-row grid-rows-[auto,1fr] gap-y-8">
       <span className="flex justify-between">
         <h1 className="card-header">Orders</h1>
-        <Input
-          type="search"
-          label="Search"
-          placeholder="Press Enter to search"
-          onKeyDown={(ev) => {
-            if (ev.key !== "Enter") return;
-            onSearch(ev.currentTarget.value);
-          }}
-        />
+        <span className="flex gap-x-3 items-center">
+          <Icon title="Search" className="cursor-auto hover:scale-100">
+            <IoSearch className="text-pop text-xl mt-2"></IoSearch>
+          </Icon>
+          <Input
+            type="search"
+            label=""
+            placeholder="Press Enter to search"
+            onKeyDown={(ev) => {
+              if (ev.key !== "Enter") return;
+              onSearch(ev.currentTarget.value);
+            }}
+          />
+        </span>
       </span>
       <LoadingArea isLoading={isLoading}>
         <table className="animate-fadeAndMoveIn max-h-[75vh]">
