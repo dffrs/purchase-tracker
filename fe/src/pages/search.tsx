@@ -1,4 +1,3 @@
-import { searchOrders } from "@/api";
 import { Input, useToast } from "@/components";
 import { LoadingArea } from "@/components/loadingArea";
 import { useGetAllOrders } from "@/hooks/useGetAllOrders";
