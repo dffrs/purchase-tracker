@@ -38,12 +38,12 @@ export const Search: FunctionComponent = () => {
 
   return (
     <div className="card h-full w-full p-8 grid grid-flow-row grid-rows-[auto,1fr] gap-y-8">
-      <span className="flex justify-between items-center">
+      <span className="flex justify-between">
         <h1 className="card-header">Orders</h1>
         <Input
           type="search"
           label="Search"
-          placeholder="..."
+          placeholder="Press Enter to search"
           onKeyDown={(ev) => {
             if (ev.key !== "Enter") return;
             onSearch(ev.currentTarget.value);
