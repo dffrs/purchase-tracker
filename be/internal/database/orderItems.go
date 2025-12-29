@@ -3,6 +3,7 @@ package database
 import (
 	"context"
 	"database/sql"
+	internal "purchase-tracker/internal/util"
 	"time"
 )
 
@@ -151,7 +152,7 @@ func (oi OrderItemsModel) FindBy(search string) ([]*OrdersResponse, error) {
 
 	query := "SELECT * FROM order_items_fts WHERE order_items_fts MATCH ?"
 
-	rows, err := oi.DB.QueryContext(ctx, query, search)
+	rows, err := oi.DB.QueryContext(ctx, query, internal.EscapeFTSChars(search))
 	if err != nil {
 		return nil, err
 	}
