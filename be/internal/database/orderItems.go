@@ -34,6 +34,19 @@ type OrdersResponse struct {
 	WSPAtPurchase float64   `json:"wspAtPurchase"`
 }
 
+type OrdersSearch struct {
+	OrderItemID   int     `json:"orderItemID"`
+	OrderID       int     `json:"orderID"`
+	UserName      string  `json:"userName"`
+	UserEmail     string  `json:"userEmail"`
+	UserPhone     string  `json:"userPhone"`
+	ProductName   string  `json:"productName"`
+	ProductCode   string  `json:"productCode"`
+	RRPAtPurchase float64 `json:"rrpAtPurchase"`
+	WSPAtPurchase float64 `json:"wspAtPurchase"`
+	Quantity      int     `json:"quantity"`
+}
+
 func getByUserProps[T string | int](oi *OrderItemsModel, dbColumn string, value T) ([]*OrdersResponse, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
@@ -207,6 +220,49 @@ func (oi *OrderItemsModel) GetAll() ([]*OrdersResponse, error) {
 	}
 
 	return orderUsers, nil
+}
+
+func (oi OrderItemsModel) FindBy(search string) ([]*OrdersSearch, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := "SELECT * FROM order_items_fts WHERE order_items_fts MATCH ?"
+
+	rows, err := oi.DB.QueryContext(ctx, query, search)
+	if err != nil {
+		return nil, err
+	}
+
+	ordersSearch := []*OrdersSearch{}
+
+	for rows.Next() {
+		orderSearch := new(OrdersSearch)
+
+		err := rows.Scan(
+			&orderSearch.OrderItemID,
+			&orderSearch.OrderID,
+			&orderSearch.UserName,
+			&orderSearch.UserEmail,
+			&orderSearch.UserPhone,
+			&orderSearch.ProductName,
+			&orderSearch.ProductCode,
+			&orderSearch.RRPAtPurchase,
+			&orderSearch.WSPAtPurchase,
+			&orderSearch.Quantity,
+		)
+
+		ordersSearch = append(ordersSearch, orderSearch)
+
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return ordersSearch, nil
 }
 
 // NOTE: do I need this ? If so, update to get product.rrp & product.wsp

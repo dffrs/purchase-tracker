@@ -1,4 +1,5 @@
-import { useToast } from "@/components";
+import { searchOrders } from "@/api";
+import { Input, useToast } from "@/components";
 import { LoadingArea } from "@/components/loadingArea";
 import { useGetAllOrders } from "@/hooks/useGetAllOrders";
 import { FC, FunctionComponent, useEffect } from "react";
@@ -31,13 +32,30 @@ export const Search: FunctionComponent = () => {
   const [allOrders, isLoading, error] = useGetAllOrders();
   const createToast = useToast();
 
+  const search = async (keyword: string) => {
+    const resp = await searchOrders(keyword);
+    console.log("here", resp);
+  };
+
   useEffect(() => {
     if (error != null) createToast(error.message);
   }, [error]);
 
   return (
     <div className="card h-full w-full p-8 grid grid-flow-row grid-rows-[auto,1fr] gap-y-8">
-      <h1 className="card-header">Orders</h1>
+      <span className="flex justify-between items-center">
+        <h1 className="card-header">Orders</h1>
+        <Input
+          type="search"
+          label="Search"
+          placeholder="..."
+          onKeyDown={(ev) => {
+            if (ev.key !== "Enter") return;
+
+            search(ev.currentTarget.value);
+          }}
+        />
+      </span>
       <LoadingArea isLoading={isLoading}>
         <table className="animate-fadeAndMoveIn max-h-[75vh]">
           <thead className="shadow-lg">

@@ -93,3 +93,24 @@ func (app *application) getAllOrderItems(c *gin.Context) {
 
 	c.JSON(http.StatusOK, orderItems)
 }
+
+func (app *application) searchOrderItems(c *gin.Context) {
+	type temp struct {
+		Search string
+	}
+
+	t := new(temp)
+
+	if err := c.ShouldBindJSON(t); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to bind search value"})
+		return
+	}
+
+	orderItems, err := app.models.OrdersItems.FindBy(t.Search)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to search for %s: %s", t.Search, err.Error())})
+		return
+	}
+
+	c.JSON(http.StatusOK, orderItems)
+}

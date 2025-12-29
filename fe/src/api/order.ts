@@ -52,3 +52,30 @@ export const getAllOrders = async () => {
     return [null, error] as const;
   }
 };
+
+export const searchOrders = async (keyword: string) => {
+  const url = BASE + "orderItems/search";
+
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      body: JSON.stringify({ search: keyword }),
+    });
+
+    if (!response.ok) {
+      const err = (await response.json()) as Err;
+      throw new Error("Failed to get all orders", { cause: err.error });
+    }
+
+    const result = (await response.json()) as unknown[];
+
+    // await new Promise((r) => setTimeout(r, 2_000));
+
+    return [result, null] as const;
+  } catch (e) {
+    const error = e as Error;
+    console.error(error);
+
+    return [null, error] as const;
+  }
+};
