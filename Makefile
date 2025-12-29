@@ -2,13 +2,15 @@
 
 .PHONY: clean fmt vet build upDB downDB resetDB runBE runFE run
 
+SQLITE_FLAGS=CGO_ENABLED=1 CGO_CFLAGS="-DSQLITE_ENABLE_FTS5" CGO_LDFLAGS="-lm"
+
 upDB:
-			@cd be && go run ./cmd/migrate/main.go up
+			@cd be && $(SQLITE_FLAGS) go run ./cmd/migrate/main.go up
 downDB:
-			@cd be && go run ./cmd/migrate/main.go down
+			@cd be && $(SQLITE_FLAGS) go run ./cmd/migrate/main.go down
 resetDB: downDB upDB
 seedDB:
-			@cd be && go run ./cmd/seed/main.go
+			@cd be && $(SQLITE_FLAGS) go run ./cmd/seed/main.go
 
 clean:
 			@cd be && rm -f main
@@ -17,7 +19,7 @@ fmt: clean
 vet: fmt
 			@cd be && go vet ./cmd/* ./internal/*
 build: vet
-			@cd be && go build -o main ./cmd/api/*
+			@cd be && $(SQLITE_FLAGS) go build -o main ./cmd/api/*
 runBE: build 
 			@cd be && ./main
 runFE:
