@@ -230,7 +230,7 @@ input::-webkit-inner-spin-button {
 
     th,
     td {
-      @apply w-full  p-6 overflow-ellipsis whitespace-nowrap overflow-clip;
+      @apply w-full max-w-[25ch] min-w-[5ch] p-6 overflow-ellipsis whitespace-nowrap overflow-clip;
     }
 
     th {

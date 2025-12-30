@@ -73,3 +73,56 @@ export const searchOrders = async (keyword: string) => {
     return [null, error] as const;
   }
 };
+
+export const getAllOrdersStats = async () => {
+  const url = BASE + "orderItems/stats";
+
+  try {
+    const response = await fetch(url, {
+      method: "GET",
+    });
+
+    if (!response.ok) {
+      const err = (await response.json()) as Err;
+      throw new Error("Failed to get stats for all orders", {
+        cause: err.error,
+      });
+    }
+
+    const result = (await response.json()) as OrderStats;
+
+    return [result, null] as const;
+  } catch (e) {
+    const error = e as Error;
+    console.error(error);
+
+    return [null, error] as const;
+  }
+};
+
+export const getAllOrdersStatsForYear = async (year: string) => {
+  const url = BASE + "orderItems/year/stats";
+
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      body: JSON.stringify({ year }),
+    });
+
+    if (!response.ok) {
+      const err = (await response.json()) as Err;
+      throw new Error("Failed to get year stats for all orders", {
+        cause: err.error,
+      });
+    }
+
+    const result = (await response.json()) as number[];
+
+    return [result, null] as const;
+  } catch (e) {
+    const error = e as Error;
+    console.error(error);
+
+    return [null, error] as const;
+  }
+};

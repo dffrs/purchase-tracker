@@ -1,10 +1,12 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 	"purchase-tracker/internal/database"
 	m "purchase-tracker/internal/models"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -92,6 +94,54 @@ func (app *application) getAllOrderItems(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, orderItems)
+}
+
+func (app *application) getOrderItemsStats(c *gin.Context) {
+	orderItemsStats, err := app.models.OrdersItems.GetAllStats()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to get stats for all ordered items: %s", err.Error())})
+		return
+	}
+
+	c.JSON(http.StatusOK, orderItemsStats)
+}
+
+func (app *application) getOrderItemsStatsForYear(c *gin.Context) {
+	type temp struct {
+		Year string
+	}
+
+	t := new(temp)
+
+	if err := c.ShouldBindJSON(t); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to bind year value"})
+		return
+	}
+
+	orderItemsYearStats, err := app.models.OrdersItems.GetAllStatsForYear(t.Year)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to get stats for all ordered items for year: %s. %s", t.Year, err.Error())})
+		return
+	}
+
+	profits := make([]float64, 12)
+
+	for _, v := range orderItemsYearStats {
+		month, err := strconv.Atoi(v.Month)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to convert month to int: %s", err.Error())})
+			return
+		}
+
+		if month-1 > len(profits) {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to add month: %s", errors.New("index out of bounds"))})
+			return
+		}
+
+		profits[month-1] = v.Profit
+	}
+
+	c.JSON(http.StatusOK, profits)
 }
 
 func (app *application) searchOrderItems(c *gin.Context) {

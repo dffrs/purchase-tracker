@@ -34,6 +34,17 @@ type OrdersResponse struct {
 	WSPAtPurchase float64 `json:"wspAtPurchase"`
 }
 
+type OrdersItemStats struct {
+	Count  int     `json:"count"`
+	Profit float64 `json:"profit"`
+}
+
+type OrderItemYearStats struct {
+	Month  string  `json:"month"`
+	Count  int     `json:"count"`
+	Profit float64 `json:"profit"`
+}
+
 func (oi *OrderItemsModel) Insert(orderItem *OrdersItem) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
@@ -146,11 +157,72 @@ func (oi *OrderItemsModel) GetAll() ([]*OrdersResponse, error) {
 	return orderUsers, nil
 }
 
+func (oi OrderItemsModel) GetAllStats() (*OrdersItemStats, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := "SELECT COUNT(*), COALESCE(SUM((rrp_at_purchase - wsp_at_purchase) * quantity), 0) FROM order_items"
+
+	orderStats := new(OrdersItemStats)
+
+	err := oi.DB.QueryRowContext(ctx, query).Scan(&orderStats.Count, &orderStats.Profit)
+	if err != nil {
+		return nil, err
+	}
+
+	return orderStats, nil
+}
+
+func (oi OrderItemsModel) GetAllStatsForYear(year string) ([]*OrderItemYearStats, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := ` 
+	SELECT 
+		strftime('%m') as month,
+		COUNT(DISTINCT orders.id) AS count,
+		COALESCE(SUM((order_items.rrp_at_purchase - order_items.wsp_at_purchase) * order_items.quantity), 0) AS profit
+	FROM
+		order_items
+	JOIN orders ON orders.id = order_items.order_id
+	WHERE
+		strftime('%Y', orders.order_date) = ?
+	GROUP BY 
+		month
+	ORDER BY 
+		month;
+	`
+
+	orderYearStats := []*OrderItemYearStats{}
+
+	rows, err := oi.DB.QueryContext(ctx, query, year)
+	if err != nil {
+		return nil, err
+	}
+
+	for rows.Next() {
+		oiYearStats := new(OrderItemYearStats)
+
+		err := rows.Scan(&oiYearStats.Month, &oiYearStats.Count, &oiYearStats.Profit)
+		if err != nil {
+			return nil, err
+		}
+
+		orderYearStats = append(orderYearStats, oiYearStats)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return orderYearStats, nil
+}
+
 func (oi OrderItemsModel) FindBy(search string) ([]*OrdersResponse, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	query := "SELECT * FROM order_items_fts WHERE order_items_fts MATCH ?"
+	query := "SELECT * FROM order_items_fts WHERE order_items_fts MATCH ? ORDER BY order_items_fts.order_date DESC"
 
 	rows, err := oi.DB.QueryContext(ctx, query, internal.EscapeFTSChars(search))
 	if err != nil {

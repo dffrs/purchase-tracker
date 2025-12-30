@@ -18,3 +18,8 @@ type OrderResponse = {
   rrpAtPurchase: number;
   wspAtPurchase: number;
 };
+
+type OrderStats = {
+  count: number;
+  profit: number;
+};
