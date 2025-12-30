@@ -5,14 +5,14 @@ export const DateSection: FunctionComponent = () => {
   const [show, setShow] = useState(() => false);
 
   return (
-    <div className="flex items-center gap-x-3 pt-2">
+    <div className="flex items-center gap-x-3">
       <Input
         type="checkbox"
         name="old-order-checkbox"
         id="old-order-checkbox"
         label="Old order ?"
         className="accent-pop cursor-pointer"
-        labelClassName="!flex-row-reverse gap-x-2 cursor-pointer text-contrast"
+        labelClassName="!flex-row-reverse gap-x-2 cursor-pointer text-contrast py-2"
         checked={show}
         onClick={() => {
           setShow((p) => !p);
@@ -25,7 +25,7 @@ export const DateSection: FunctionComponent = () => {
         type="datetime-local"
         step={1}
         label=""
-        className="text-pop accent-pop bg-pop"
+        className="text-pop accent-pop bg-pop animate-fadeAndMoveIn"
       />
       ))
     </div>
