@@ -1,6 +1,6 @@
 import { Graph, useToast } from "@/components";
 import { LoadingArea } from "@/components/loadingArea";
-import { useGetAllOrderStats } from "@/hooks";
+import { useGetAllOrderStats, useGetAllOrderStatsForYear } from "@/hooks";
 import { FunctionComponent, useEffect } from "react";
 
 const mockData = [
@@ -9,11 +9,22 @@ const mockData = [
 
 export const Home: FunctionComponent = () => {
   const [stats, isLoading, error] = useGetAllOrderStats();
+  const [yearStats, isLoadingYear, errorYear] =
+    useGetAllOrderStatsForYear("2025");
+
   const createToast = useToast();
 
   useEffect(() => {
     if (error != null) createToast("Failed to get stats");
   }, [error]);
+
+  useEffect(() => {
+    if (errorYear != null) createToast("Failed to get year stats");
+  }, [errorYear]);
+
+  useEffect(() => {
+    console.log("yearStats", yearStats);
+  }, [yearStats]);
 
   return (
     <div className="h-full w-full grid grid-flow-row grid-rows-[auto,1fr] gap-y-8">
@@ -47,7 +58,9 @@ export const Home: FunctionComponent = () => {
       <div className="card">
         <span className="card-layout">
           <h1 className="card-header">2025</h1>
-          <Graph data={mockData} />
+          <LoadingArea isLoading={isLoadingYear}>
+            <Graph data={mockData} />
+          </LoadingArea>
         </span>
       </div>
     </div>

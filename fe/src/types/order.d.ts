@@ -23,3 +23,9 @@ type OrderStats = {
   count: number;
   profit: number;
 };
+
+type OrderYearStats = {
+  month: string;
+  count: number;
+  profit: number;
+};

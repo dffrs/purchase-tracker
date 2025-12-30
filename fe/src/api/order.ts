@@ -99,3 +99,30 @@ export const getAllOrdersStats = async () => {
     return [null, error] as const;
   }
 };
+
+export const getAllOrdersStatsForYear = async (year: string) => {
+  const url = BASE + "orderItems/year/stats";
+
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      body: JSON.stringify({ year }),
+    });
+
+    if (!response.ok) {
+      const err = (await response.json()) as Err;
+      throw new Error("Failed to get year stats for all orders", {
+        cause: err.error,
+      });
+    }
+
+    const result = (await response.json()) as OrderYearStats[];
+
+    return [result, null] as const;
+  } catch (e) {
+    const error = e as Error;
+    console.error(error);
+
+    return [null, error] as const;
+  }
+};
