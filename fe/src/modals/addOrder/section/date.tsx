@@ -21,6 +21,7 @@ export const DateSection: FunctionComponent = () => {
       <Input
         hidden={!show}
         aria-hidden={!show}
+        required={show}
         type="datetime-local"
         step={1}
         label=""
