@@ -1,8 +1,10 @@
 import { Input } from "@/components";
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent, useCallback, useState } from "react";
 
 export const OldOrderSection: FunctionComponent = () => {
   const [show, setShow] = useState(() => false);
+
+  const onClick = useCallback(() => setShow((p) => !p), []);
 
   return (
     <div className="flex items-center gap-x-3">
@@ -14,9 +16,7 @@ export const OldOrderSection: FunctionComponent = () => {
         className="accent-pop cursor-pointer"
         labelClassName="!flex-row-reverse gap-x-2 cursor-pointer text-contrast py-2"
         defaultChecked={show}
-        onClick={() => {
-          setShow((p) => !p);
-        }}
+        onClick={onClick}
       />
       <Input
         id="old-order-datetime-local"
