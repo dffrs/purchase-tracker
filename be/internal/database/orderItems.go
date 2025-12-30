@@ -38,7 +38,7 @@ func (oi *OrderItemsModel) Insert(orderItem *OrdersItem) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	query := "INSERT INTO order_items (order_id, product_id, quantity, rrp_at_purchase, wsp_at_purchase) VALUES ($1, $2, $3, $4, $5)"
+	query := "INSERT INTO order_items (order_id, product_id, quantity, rrp_at_purchase, wsp_at_purchase) VALUES (?, ?, ?, ?, ?)"
 
 	result, err := oi.DB.ExecContext(ctx, query, orderItem.OrderID, orderItem.ProductID, orderItem.Quantity, orderItem.RRPAtPurchase, orderItem.WSPAtPurchase)
 	if err != nil {
@@ -59,7 +59,7 @@ func (oi *OrderItemsModel) Get(orderItemID int) (*OrdersItem, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	query := "SELECT * FROM order_items WHERE id = $1"
+	query := "SELECT * FROM order_items WHERE id = ?"
 
 	orderItem := new(OrdersItem)
 
@@ -87,17 +87,17 @@ func (oi *OrderItemsModel) GetAll() ([]*OrdersResponse, error) {
 
 	query := ` 
 	SELECT 
-		users.name AS name,
-		users.email AS email,
-		users.phone AS phone,
-		products.name AS productName,
-		products.code AS productCode,
-		products.rrp AS productRRP,
-		products.wsp AS productWSP,
-		orders.order_date AS orderDate,
-		order_items.quantity AS quantity,
-		order_items.rrp_at_purchase AS rrpAtPurchase,
-		order_items.wsp_at_purchase AS wspAtPurchase
+		users.name,
+		users.email,
+		users.phone,
+		products.name,
+		products.code,
+		products.rrp,
+		products.wsp,
+		orders.order_date,
+		order_items.quantity,
+		order_items.rrp_at_purchase,
+		order_items.wsp_at_purchase
 	FROM
 		users
 		INNER JOIN orders ON orders.user_id = users.id
