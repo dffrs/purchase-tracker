@@ -116,7 +116,7 @@ export const getAllOrdersStatsForYear = async (year: string) => {
       });
     }
 
-    const result = (await response.json()) as OrderYearStats[];
+    const result = (await response.json()) as number[];
 
     return [result, null] as const;
   } catch (e) {

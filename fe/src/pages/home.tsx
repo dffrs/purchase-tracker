@@ -3,10 +3,6 @@ import { LoadingArea } from "@/components/loadingArea";
 import { useGetAllOrderStats, useGetAllOrderStatsForYear } from "@/hooks";
 import { FunctionComponent, useEffect } from "react";
 
-const mockData = [
-  34.7, 68.9, 65.1, 130.2, 208.6, 172.8, 155.0, 168.6, 134.4, 52.7, 94.5, 41.5,
-];
-
 export const Home: FunctionComponent = () => {
   const [stats, isLoading, error] = useGetAllOrderStats();
   const [yearStats, isLoadingYear, errorYear] =
@@ -58,9 +54,7 @@ export const Home: FunctionComponent = () => {
       <div className="card">
         <span className="card-layout">
           <h1 className="card-header">2025</h1>
-          <LoadingArea isLoading={isLoadingYear}>
-            <Graph data={mockData} />
-          </LoadingArea>
+          <Graph data={yearStats} />
         </span>
       </div>
     </div>

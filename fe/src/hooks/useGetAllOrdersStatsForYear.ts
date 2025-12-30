@@ -2,7 +2,7 @@ import { getAllOrdersStatsForYear } from "@/api";
 import { useEffect, useState } from "react";
 
 export const useGetAllOrderStatsForYear = (year: string) => {
-  const [stats, setStats] = useState<OrderYearStats[]>(() => []);
+  const [stats, setStats] = useState<number[]>(() => []);
   const [isLoading, setIsLoading] = useState(() => false);
   const [error, setError] = useState<Error | null>(() => null);
 

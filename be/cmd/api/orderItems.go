@@ -1,10 +1,12 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 	"purchase-tracker/internal/database"
 	m "purchase-tracker/internal/models"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -122,7 +124,24 @@ func (app *application) getOrderItemsStatsForYear(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, orderItemsYearStats)
+	profits := make([]float64, 12)
+
+	for _, v := range orderItemsYearStats {
+		month, err := strconv.Atoi(v.Month)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to convert month to int: %s", err.Error())})
+			return
+		}
+
+		if month-1 > len(profits) {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to add month: %s", errors.New("index out of bounds"))})
+			return
+		}
+
+		profits[month-1] = v.Profit
+	}
+
+	c.JSON(http.StatusOK, profits)
 }
 
 func (app *application) searchOrderItems(c *gin.Context) {
