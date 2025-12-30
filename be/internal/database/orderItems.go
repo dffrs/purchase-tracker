@@ -222,7 +222,7 @@ func (oi OrderItemsModel) FindBy(search string) ([]*OrdersResponse, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	query := "SELECT * FROM order_items_fts WHERE order_items_fts MATCH ?"
+	query := "SELECT * FROM order_items_fts WHERE order_items_fts MATCH ? ORDER BY order_items_fts.order_date DESC"
 
 	rows, err := oi.DB.QueryContext(ctx, query, internal.EscapeFTSChars(search))
 	if err != nil {
