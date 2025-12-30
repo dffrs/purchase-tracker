@@ -106,7 +106,7 @@ func (app *application) getOrderItemsStats(c *gin.Context) {
 
 func (app *application) getOrderItemsStatsForYear(c *gin.Context) {
 	type temp struct {
-		Year int
+		Year string
 	}
 
 	t := new(temp)

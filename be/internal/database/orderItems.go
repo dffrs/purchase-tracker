@@ -173,7 +173,7 @@ func (oi OrderItemsModel) GetAllStats() (*OrdersItemStats, error) {
 	return orderStats, nil
 }
 
-func (oi OrderItemsModel) GetAllStatsForYear(year int) (*OrderItemYearStats, error) {
+func (oi OrderItemsModel) GetAllStatsForYear(year string) ([]*OrderItemYearStats, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
@@ -193,10 +193,25 @@ func (oi OrderItemsModel) GetAllStatsForYear(year int) (*OrderItemYearStats, err
 		month;
 	`
 
-	orderYearStats := new(OrderItemYearStats)
+	orderYearStats := []*OrderItemYearStats{}
 
-	err := oi.DB.QueryRowContext(ctx, query, year).Scan(&orderYearStats.Month, &orderYearStats.Count, &orderYearStats.Profit)
+	rows, err := oi.DB.QueryContext(ctx, query, year)
 	if err != nil {
+		return nil, err
+	}
+
+	for rows.Next() {
+		oiYearStats := new(OrderItemYearStats)
+
+		err := rows.Scan(&oiYearStats.Month, &oiYearStats.Count, &oiYearStats.Profit)
+		if err != nil {
+			return nil, err
+		}
+
+		orderYearStats = append(orderYearStats, oiYearStats)
+	}
+
+	if err := rows.Err(); err != nil {
 		return nil, err
 	}
 
