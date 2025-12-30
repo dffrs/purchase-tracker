@@ -50,7 +50,7 @@ export const Search: FunctionComponent = () => {
         <h1 className="card-header">Orders</h1>
         <span className="flex gap-x-3 items-center">
           <Icon title="Search" className="cursor-auto hover:scale-100">
-            <IoSearch className="text-pop text-xl mt-2"></IoSearch>
+            <IoSearch className="text-pop text-2xl mt-2"></IoSearch>
           </Icon>
           <Input
             type="search"

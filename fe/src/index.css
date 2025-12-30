@@ -209,7 +209,7 @@ input::-webkit-inner-spin-button {
   }
 
   table {
-    @apply block w-full h-fit overflow-y-auto border-collapse text-left;
+    @apply block w-full h-fit overflow-y-auto border-collapse text-left text-lg;
 
     thead {
       @apply text-pop w-full sticky top-0 shadow-lg;
@@ -225,7 +225,7 @@ input::-webkit-inner-spin-button {
 
     th,
     td {
-      @apply w-full  px-6 py-5 overflow-ellipsis whitespace-nowrap overflow-clip;
+      @apply w-full  p-6 overflow-ellipsis whitespace-nowrap overflow-clip;
     }
 
     th {
