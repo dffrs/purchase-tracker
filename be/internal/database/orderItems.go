@@ -155,11 +155,11 @@ func (oi OrderItemsModel) GetAllStats() (*OrdersItemStats, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	query := "SELECT COUNT(*) FROM order_items"
+	query := "SELECT COUNT(*), COALESCE(SUM((rrp_at_purchase - wsp_at_purchase) * quantity), 0) FROM order_items"
 
 	orderStats := new(OrdersItemStats)
 
-	err := oi.DB.QueryRowContext(ctx, query).Scan(&orderStats.Count)
+	err := oi.DB.QueryRowContext(ctx, query).Scan(&orderStats.Count, &orderStats.Profit)
 	if err != nil {
 		return nil, err
 	}
