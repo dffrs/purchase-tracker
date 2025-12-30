@@ -19,6 +19,15 @@ export const getNumberOfDecimals = (value: unknown): number => {
   }
 };
 
+export const formatCurrency = (nmb: number) => {
+  return nmb.toLocaleString(undefined, {
+    style: "currency",
+    currency: "EUR",
+    maximumFractionDigits: 2,
+    trailingZeroDisplay: "stripIfInteger",
+  });
+};
+
 export const nonEmptyOrNull = (arg: string | undefined | null) => {
   if (arg === "" || arg == null) return null;
   return arg;

@@ -1,6 +1,7 @@
 import { Graph, useToast } from "@/components";
 import { LoadingArea } from "@/components/loadingArea";
 import { useGetAllOrderStats, useGetAllOrderStatsForYear } from "@/hooks";
+import { formatCurrency } from "@/util";
 import { FunctionComponent, useEffect } from "react";
 
 export const Home: FunctionComponent = () => {
@@ -37,12 +38,7 @@ export const Home: FunctionComponent = () => {
             <h1 className="card-header">Profit</h1>
             <LoadingArea isLoading={isLoading}>
               <p className="card-text animate-fadeAndMoveIn">
-                {stats.profit.toLocaleString("en", {
-                  style: "currency",
-                  currency: "EUR",
-                  maximumFractionDigits: 2,
-                  trailingZeroDisplay: "stripIfInteger",
-                })}
+                {formatCurrency(stats.profit)}
               </p>
             </LoadingArea>
           </span>
