@@ -179,7 +179,7 @@ func (oi OrderItemsModel) GetAllStatsForYear(year string) ([]*OrderItemYearStats
 
 	query := ` 
 	SELECT 
-		strftime('%m') as month,
+		strftime('%m', orders.order_date) as month,
 		COUNT(DISTINCT orders.id) AS count,
 		COALESCE(SUM((order_items.rrp_at_purchase - order_items.wsp_at_purchase) * order_items.quantity), 0) AS profit
 	FROM

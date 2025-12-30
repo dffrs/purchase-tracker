@@ -25,7 +25,6 @@ export const OldOrderSection: FunctionComponent = () => {
         aria-hidden={!show}
         required={show}
         type="datetime-local"
-        step={1}
         label=""
         className="text-pop accent-pop bg-pop animate-fadeAndMoveIn"
       />
