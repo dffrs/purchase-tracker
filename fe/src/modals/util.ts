@@ -79,6 +79,26 @@ export const getDeliveryValue = (form: HTMLFormElement) => {
   return delivery.id;
 };
 
+export const getOldOrderValue = (form: HTMLFormElement) => {
+  const [ooCheckbox, ooDateTime] = getFormElements<HTMLInputElement>(
+    form,
+    "[name^='old-order']",
+  );
+
+  if (ooCheckbox == null || ooDateTime == null)
+    throw Error("old order fields were not found");
+
+  // if not checked, don't bother with ooDateTime value
+  if (!ooCheckbox.checked) return null;
+
+  try {
+    return new Date(ooDateTime.value).toISOString();
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+
 export const getProductValues = (form: HTMLFormElement) => {
   const pName = getFormElements<HTMLFormElement>(
     form,

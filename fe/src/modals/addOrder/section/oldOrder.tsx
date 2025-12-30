@@ -1,7 +1,7 @@
 import { Input } from "@/components";
 import { FunctionComponent, useState } from "react";
 
-export const DateSection: FunctionComponent = () => {
+export const OldOrderSection: FunctionComponent = () => {
   const [show, setShow] = useState(() => false);
 
   return (
@@ -13,12 +13,14 @@ export const DateSection: FunctionComponent = () => {
         label="Old order ?"
         className="accent-pop cursor-pointer"
         labelClassName="!flex-row-reverse gap-x-2 cursor-pointer text-contrast py-2"
-        checked={show}
+        defaultChecked={show}
         onClick={() => {
           setShow((p) => !p);
         }}
       />
       <Input
+        id="old-order-datetime-local"
+        name="old-order-datetime-local"
         hidden={!show}
         aria-hidden={!show}
         required={show}

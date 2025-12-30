@@ -7,12 +7,13 @@ import { PaymentMethodSection } from "./section/payment";
 import { DeliverySection } from "./section/delivery";
 import {
   getDeliveryValue,
+  getOldOrderValue,
   getPaymentValue,
   getProductValues,
   getUserValues,
 } from "../";
 import { createOrder } from "@/api";
-import { DateSection } from "./section/date";
+import { OldOrderSection } from "./section/oldOrder";
 
 type AddOrderProps = {
   isOpen: boolean;
@@ -42,6 +43,7 @@ export const AddOrderModal: FunctionComponent<AddOrderProps> = ({
       const payment = getPaymentValue(form);
       const delivery = getDeliveryValue(form);
       const products = getProductValues(form);
+      const createdAt = getOldOrderValue(form);
 
       if (products.length === 0) {
         createToast("No products to be registred");
@@ -49,7 +51,13 @@ export const AddOrderModal: FunctionComponent<AddOrderProps> = ({
       }
 
       createToast("Registering order...");
-      const [_, err] = await createOrder({ user, payment, delivery, products });
+      const [_, err] = await createOrder({
+        user,
+        payment,
+        delivery,
+        products,
+        createdAt,
+      });
       if (err != null) {
         createToast(err.message);
         return;
@@ -72,7 +80,7 @@ export const AddOrderModal: FunctionComponent<AddOrderProps> = ({
           <UserSection />
           <PaymentMethodSection />
           <DeliverySection />
-          <DateSection />
+          <OldOrderSection />
           <ProductSection />
 
           <div className="flex justify-between">
