@@ -14,8 +14,8 @@ const columns: {
   { key: "phone", title: "Phone" },
   { key: "productName", title: "Product Name" },
   { key: "productCode", title: "Product Code" },
-  { key: "rrpAtPurchase", title: "RRP" },
-  { key: "wspAtPurchase", title: "WSP" },
+  { key: "rrpAtPurchase", title: "RRP €" },
+  { key: "wspAtPurchase", title: "WSP €" },
   { key: "quantity", title: "Quantity" },
   {
     key: "orderDate",
@@ -45,7 +45,7 @@ export const Search: FunctionComponent = () => {
   }, [error]);
 
   return (
-    <div className="card h-full w-full p-8 grid grid-flow-row grid-rows-[auto,1fr] gap-y-8">
+    <div className="card h-full w-full p-8 grid grid-flow-row grid-rows-[auto,1fr] gap-y-8 overflow-hidden">
       <span className="flex justify-between">
         <h1 className="card-header">Orders</h1>
         <span className="flex gap-x-3 items-center">
@@ -62,7 +62,7 @@ export const Search: FunctionComponent = () => {
       </span>
       <LoadingArea isLoading={isLoading}>
         <table className="animate-fadeAndMoveIn max-h-[75vh]">
-          <thead className="shadow-lg">
+          <thead>
             <tr>
               {columns.map(({ title, key }) => (
                 <th key={key}>{title}</th>

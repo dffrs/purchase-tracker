@@ -212,7 +212,7 @@ input::-webkit-inner-spin-button {
     @apply block w-full h-fit overflow-y-auto border-collapse text-left;
 
     thead {
-      @apply text-pop w-full sticky top-0;
+      @apply text-pop w-full sticky top-0 shadow-lg;
 
       tr {
         @apply bg-contrast w-full;
