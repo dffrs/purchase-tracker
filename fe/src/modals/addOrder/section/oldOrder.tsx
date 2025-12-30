@@ -26,7 +26,11 @@ export const OldOrderSection: FunctionComponent = () => {
         required={show}
         type="datetime-local"
         label=""
-        className="text-pop accent-pop bg-pop animate-fadeAndMoveIn"
+        // TODO: clean me up
+        max={
+          show ? new Date().toISOString().split(":", 2).join(":") : undefined
+        }
+        className="text-pop accent-pop bg-pop animate-fadeAndMoveIn invalid:border-error"
       />
       ))
     </div>
