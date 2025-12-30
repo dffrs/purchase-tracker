@@ -225,6 +225,7 @@ input::-webkit-inner-spin-button {
 
     tr {
       @apply animate-fadeAndMoveIn;
+      animation-fill-mode: none;
     }
 
     th,
