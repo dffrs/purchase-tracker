@@ -39,6 +39,12 @@ type OrdersItemStats struct {
 	Profit float64 `json:"profit"`
 }
 
+type OrderItemYearStats struct {
+	Month  string  `json:"month"`
+	Count  int     `json:"count"`
+	Profit float64 `json:"profit"`
+}
+
 func (oi *OrderItemsModel) Insert(orderItem *OrdersItem) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
@@ -165,6 +171,36 @@ func (oi OrderItemsModel) GetAllStats() (*OrdersItemStats, error) {
 	}
 
 	return orderStats, nil
+}
+
+func (oi OrderItemsModel) GetAllStatsForYear(year int) (*OrderItemYearStats, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := ` 
+	SELECT 
+		strftime('%m') as month,
+		COUNT(DISTINCT orders.id) AS count,
+		COALESCE(SUM((order_items.rrp_at_purchase - order_items.wsp_at_purchase) * order_items.quantity), 0) AS profit
+	FROM
+		order_items
+	JOIN orders ON orders.id = order_items.order_id
+	WHERE
+		strftime('%Y', orders.order_date) = ?
+	GROUP BY 
+		month
+	ORDER BY 
+		month;
+	`
+
+	orderYearStats := new(OrderItemYearStats)
+
+	err := oi.DB.QueryRowContext(ctx, query, year).Scan(&orderYearStats.Month, &orderYearStats.Count, &orderYearStats.Profit)
+	if err != nil {
+		return nil, err
+	}
+
+	return orderYearStats, nil
 }
 
 func (oi OrderItemsModel) FindBy(search string) ([]*OrdersResponse, error) {
