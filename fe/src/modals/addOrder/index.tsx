@@ -12,6 +12,7 @@ import {
   getUserValues,
 } from "../";
 import { createOrder } from "@/api";
+import { DateSection } from "./section/date";
 
 type AddOrderProps = {
   isOpen: boolean;
@@ -71,6 +72,7 @@ export const AddOrderModal: FunctionComponent<AddOrderProps> = ({
           <UserSection />
           <PaymentMethodSection />
           <DeliverySection />
+          <DateSection />
           <ProductSection />
 
           <div className="flex justify-between">
