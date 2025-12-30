@@ -10,8 +10,6 @@ export const getAllProducts = async () => {
 
     const result = (await response.json()) as Product[];
 
-    await new Promise((r) => setTimeout(r, 2_000));
-
     return result;
   } catch (error) {
     console.error(error);

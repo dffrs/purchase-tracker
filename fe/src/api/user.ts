@@ -16,8 +16,6 @@ export const createUser = async (user: UserPayload) => {
 
     const result = (await response.json()) as User;
 
-    await new Promise((r) => setTimeout(r, 2_000));
-
     return [result, null] as const;
   } catch (e) {
     const error = e as Error;
@@ -39,8 +37,6 @@ export const getAllUsers = async () => {
     }
 
     const result = (await response.json()) as User[];
-
-    await new Promise((r) => setTimeout(r, 2_000));
 
     return [result, null] as const;
   } catch (e) {

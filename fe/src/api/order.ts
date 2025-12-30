@@ -16,8 +16,6 @@ export const createOrder = async (user: OrderPayload) => {
 
     const result = (await response.json()) as unknown;
 
-    await new Promise((r) => setTimeout(r, 2_000));
-
     return [result, null] as const;
   } catch (e) {
     const error = e as Error;
@@ -66,8 +64,6 @@ export const searchOrders = async (keyword: string) => {
     }
 
     const result = (await response.json()) as OrderResponse[];
-
-    // await new Promise((r) => setTimeout(r, 2_000));
 
     return [result, null] as const;
   } catch (e) {
