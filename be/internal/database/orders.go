@@ -11,20 +11,20 @@ type OrdersModel struct {
 }
 
 type Order struct {
-	ID         int       `json:"id"`
-	UserID     int       `json:"userId" binding:"required"`
-	DeliveryID int       `json:"deliveryID" binding:"required"`
-	PaymentID  int       `json:"paymentID" binding:"required"`
-	OrderDate  time.Time `json:"orderDate"`
+	ID         int        `json:"id"`
+	UserID     int        `json:"userId" binding:"required"`
+	DeliveryID int        `json:"deliveryID" binding:"required"`
+	PaymentID  int        `json:"paymentID" binding:"required"`
+	OrderDate  *time.Time `json:"orderDate"`
 }
 
 func (o OrdersModel) Insert(order *Order) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	query := "INSERT INTO orders (user_id, delivery_id, payment_id) VALUES (?, ?, ?)"
+	query := "INSERT INTO orders (user_id, delivery_id, payment_id, order_date) VALUES (?, ?, ?, COALESCE(?, CURRENT_TIMESTAMP))"
 
-	result, err := o.DB.ExecContext(ctx, query, order.UserID, order.DeliveryID, order.PaymentID)
+	result, err := o.DB.ExecContext(ctx, query, order.UserID, order.DeliveryID, order.PaymentID, order.OrderDate)
 	if err != nil {
 		return err
 	}

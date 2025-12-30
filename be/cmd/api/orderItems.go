@@ -59,7 +59,7 @@ func (app *application) createOrderItems(c *gin.Context) {
 	}
 
 	// -------------- create order --------------
-	order := &database.Order{UserID: dbUserID, PaymentID: dbPaymentID, DeliveryID: dbDeliveryID}
+	order := &database.Order{UserID: dbUserID, PaymentID: dbPaymentID, DeliveryID: dbDeliveryID, OrderDate: orderItemPayload.CreatedAt}
 	err = app.models.Orders.Insert(order)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
