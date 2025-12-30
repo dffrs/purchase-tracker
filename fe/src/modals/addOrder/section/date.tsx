@@ -6,8 +6,8 @@ export const DateSection: FunctionComponent = () => {
     <div className="flex items-center gap-x-3 pt-2">
       <Input
         type="checkbox"
-        name="previus-date-checkbox"
-        id="previus-date-checkbox"
+        name="old-order-checkbox"
+        id="old-order-checkbox"
         label="Old order ?"
         className="accent-pop cursor-pointer"
         labelClassName="!flex-row-reverse gap-x-2 cursor-pointer text-contrast"
