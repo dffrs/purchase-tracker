@@ -3,6 +3,7 @@ type OrderPayload = {
   payment: string;
   delivery: string;
   products: Array<Omit<Product, "id">>;
+  createdAt: string | null;
 };
 
 type OrderResponse = {

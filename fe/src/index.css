@@ -175,6 +175,10 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 
+input[type="datetime-local"] {
+  color-scheme: light;
+}
+
 @layer components {
   fieldset {
     @apply min-w-0;

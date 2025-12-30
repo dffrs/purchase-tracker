@@ -40,8 +40,9 @@ type Product struct {
 }
 
 type OrderPayload struct {
-	User     UserResponse `json:"user" binding:"required"`
-	Payment  string       `json:"payment" binding:"required"`
-	Delivery string       `json:"delivery" binding:"required"`
-	Products []Product    `json:"products" binding:"required"`
+	User      UserResponse `json:"user" binding:"required"`
+	Payment   string       `json:"payment" binding:"required"`
+	Delivery  string       `json:"delivery" binding:"required"`
+	Products  []Product    `json:"products" binding:"required"`
+	CreatedAt *time.Time   `json:"createdAt"`
 }
