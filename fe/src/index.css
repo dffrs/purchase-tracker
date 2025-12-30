@@ -223,6 +223,10 @@ input::-webkit-inner-spin-button {
       @apply text-pop w-full;
     }
 
+    tr {
+      @apply animate-fadeAndMoveIn;
+    }
+
     th,
     td {
       @apply w-full  p-6 overflow-ellipsis whitespace-nowrap overflow-clip;

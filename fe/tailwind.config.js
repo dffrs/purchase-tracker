@@ -44,6 +44,7 @@ export default {
         moveIn: "moveIn 0.25s forwards",
         moveOut: "moveOut 0.25s forwards",
         fadeAndMoveIn: "moveIn 0.25s forwards, fadeIn 0.5s forwards",
+        fadeAndMoveOut: "moveOut 0.25s forwards, fadeOut 0.5s forwards",
       },
     },
     transitionDuration: { DEFAULT: "150ms" },

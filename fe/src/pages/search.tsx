@@ -61,7 +61,7 @@ export const Search: FunctionComponent = () => {
         </span>
       </span>
       <LoadingArea isLoading={isLoading}>
-        <table className="animate-fadeAndMoveIn max-h-[75vh]">
+        <table className="max-h-[75vh]">
           <thead>
             <tr>
               {columns.map(({ title, key }) => (
