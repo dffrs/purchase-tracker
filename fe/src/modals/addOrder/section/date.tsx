@@ -1,7 +1,9 @@
 import { Input } from "@/components";
-import { FunctionComponent } from "react";
+import { FunctionComponent, useState } from "react";
 
 export const DateSection: FunctionComponent = () => {
+  const [show, setShow] = useState(() => false);
+
   return (
     <div className="flex items-center gap-x-3 pt-2">
       <Input
@@ -11,6 +13,18 @@ export const DateSection: FunctionComponent = () => {
         label="Old order ?"
         className="accent-pop cursor-pointer"
         labelClassName="!flex-row-reverse gap-x-2 cursor-pointer text-contrast"
+        checked={show}
+        onClick={() => {
+          setShow((p) => !p);
+        }}
+      />
+      <Input
+        hidden={!show}
+        aria-hidden={!show}
+        type="datetime-local"
+        step={1}
+        label=""
+        className="text-pop accent-pop bg-pop"
       />
       ))
     </div>
