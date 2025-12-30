@@ -94,6 +94,16 @@ func (app *application) getAllOrderItems(c *gin.Context) {
 	c.JSON(http.StatusOK, orderItems)
 }
 
+func (app *application) getOrderItemsStats(c *gin.Context) {
+	orderItemsStats, err := app.models.OrdersItems.GetAllStats()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to get stats for all ordered items: %s", err.Error())})
+		return
+	}
+
+	c.JSON(http.StatusOK, orderItemsStats)
+}
+
 func (app *application) searchOrderItems(c *gin.Context) {
 	type temp struct {
 		Search string

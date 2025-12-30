@@ -34,6 +34,11 @@ type OrdersResponse struct {
 	WSPAtPurchase float64 `json:"wspAtPurchase"`
 }
 
+type OrdersItemStats struct {
+	Count  int     `json:"count"`
+	Profit float64 `json:"profit"`
+}
+
 func (oi *OrderItemsModel) Insert(orderItem *OrdersItem) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
@@ -144,6 +149,22 @@ func (oi *OrderItemsModel) GetAll() ([]*OrdersResponse, error) {
 	}
 
 	return orderUsers, nil
+}
+
+func (oi OrderItemsModel) GetAllStats() (*OrdersItemStats, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := "SELECT COUNT(*) FROM order_items"
+
+	orderStats := new(OrdersItemStats)
+
+	err := oi.DB.QueryRowContext(ctx, query).Scan(&orderStats.Count)
+	if err != nil {
+		return nil, err
+	}
+
+	return orderStats, nil
 }
 
 func (oi OrderItemsModel) FindBy(search string) ([]*OrdersResponse, error) {

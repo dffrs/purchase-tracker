@@ -28,8 +28,9 @@ func (app *application) routes() http.Handler {
 		v1.DELETE("/order/:id", app.deleteOrder)
 
 		// order items
-		v1.POST("/orderItems", app.createOrderItems)
 		v1.GET("/orderItems", app.getAllOrderItems)
+		v1.GET("/orderItems/stats", app.getOrderItemsStats)
+		v1.POST("/orderItems", app.createOrderItems)
 		v1.POST("/orderItems/search", app.searchOrderItems)
 	}
 
