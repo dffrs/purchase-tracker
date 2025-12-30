@@ -5,8 +5,9 @@ import { FunctionComponent, useEffect } from "react";
 
 export const Home: FunctionComponent = () => {
   const [stats, isLoading, error] = useGetAllOrderStats();
-  const [yearStats, isLoadingYear, errorYear] =
-    useGetAllOrderStatsForYear("2025");
+  const [yearStats, _, errorYear] = useGetAllOrderStatsForYear(
+    new Date().getUTCFullYear().toString(),
+  );
 
   const createToast = useToast();
 
@@ -17,10 +18,6 @@ export const Home: FunctionComponent = () => {
   useEffect(() => {
     if (errorYear != null) createToast("Failed to get year stats");
   }, [errorYear]);
-
-  useEffect(() => {
-    console.log("yearStats", yearStats);
-  }, [yearStats]);
 
   return (
     <div className="h-full w-full grid grid-flow-row grid-rows-[auto,1fr] gap-y-8">
