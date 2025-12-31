@@ -2,6 +2,7 @@ import { app, BrowserWindow, shell, ipcMain } from "electron";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 import os from "node:os";
+import fs from "fs";
 import { update } from "./update";
 import { ChildProcessWithoutNullStreams, spawn } from "node:child_process";
 
@@ -48,11 +49,31 @@ let beProcess: ChildProcessWithoutNullStreams | null = null;
 const preload = path.join(__dirname, "../preload/index.mjs");
 const indexHtml = path.join(RENDERER_DIST, "index.html");
 
+function getDBPath() {
+  const userData = app.getPath("userData");
+  const dbDir = path.join(userData, "db");
+  const dbFile = path.join(dbDir, "data.db");
+
+  if (!fs.existsSync(dbDir)) fs.mkdirSync(dbDir, { recursive: true })
+
+  if (!fs.existsSync(dbFile)) {
+    const template = app.isPackaged 
+      ? path.join(process.resourcesPath, "app.asar.unpacked", "db", "data.db")
+      : path.join(process.env.APP_ROOT, "db", "data.db");
+    
+    fs.copyFileSync(template, dbFile)
+  }
+
+  return dbFile;
+}
+
 async function startBE() {
+  const dbPath = getDBPath()
+
   const beExecutable = process.platform === "win32" ? "be.exe" : "be";
   const bePath = path.join(BE_PATH, beExecutable);
 
-  beProcess = spawn(bePath)
+  beProcess = spawn(bePath, ["--db", dbPath])
 
   beProcess.stdout.on("data", (d) => console.log("BE:", d.toString()));
   beProcess.stderr.on("data", (d) => console.error("BE ERR:", d.toString()));
