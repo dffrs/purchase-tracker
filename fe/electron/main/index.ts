@@ -25,7 +25,7 @@ export const VITE_DEV_SERVER_URL = process.env.VITE_DEV_SERVER_URL;
 
 const BE_PATH = app.isPackaged
   ? path.join(process.resourcesPath, "app.asar.unpacked", "bin")
-  : path.join(process.env.APP_ROOT!, "bin");
+  : path.join(process.env.APP_ROOT, "bin");
 
 process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL
   ? path.join(process.env.APP_ROOT, "public")
