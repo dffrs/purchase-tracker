@@ -238,7 +238,7 @@ input[type="datetime-local"] {
     }
 
     th {
-      @apply first:rounded-s-lg last:rounded-e-lg;
+      @apply first:rounded-s-lg last:rounded-e-lg py-9 text-xl;
     }
 
     td {
