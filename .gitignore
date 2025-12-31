@@ -32,3 +32,4 @@ yarn.lock
 .env
 *.db
 main
+bin/
