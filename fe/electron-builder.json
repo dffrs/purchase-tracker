@@ -5,7 +5,7 @@
   "asarUnpack": ["bin/**", "db/**"],
   "files": ["dist-electron", "dist", "bin", "db"],
   "directories": {
-    "output": "release/${version}"
+    "output": "../release/${version}"
   },
   "mac": {
     "artifactName": "${productName}_${version}.${ext}",
