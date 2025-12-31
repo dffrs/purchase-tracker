@@ -23,7 +23,9 @@ export const MAIN_DIST = path.join(process.env.APP_ROOT, "dist-electron");
 export const RENDERER_DIST = path.join(process.env.APP_ROOT, "dist");
 export const VITE_DEV_SERVER_URL = process.env.VITE_DEV_SERVER_URL;
 
-const BE_PATH = path.join(process.env.APP_ROOT, "bin")
+const BE_PATH = app.isPackaged
+  ? path.join(process.resourcesPath, "app.asar.unpacked", "bin")
+  : path.join(process.env.APP_ROOT!, "bin");
 
 process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL
   ? path.join(process.env.APP_ROOT, "public")
@@ -47,21 +49,17 @@ const preload = path.join(__dirname, "../preload/index.mjs");
 const indexHtml = path.join(RENDERER_DIST, "index.html");
 
 async function startBE() {
-  return new Promise((r) => {
-    const bePath = path.join(BE_PATH, "be")
+  const beExecutable = process.platform === "win32" ? "be.exe" : "be";
+  const bePath = path.join(BE_PATH, beExecutable);
 
-    beProcess = spawn(bePath)
-    
-    beProcess.stderr.on("data", (err) => {
-      console.error('BE: ', err.toString())
-    });
+  beProcess = spawn(bePath)
 
-    beProcess.on("exit", (exitCode) => {
-      console.log('BE exit: ', exitCode)
-    });
+  beProcess.stdout.on("data", (d) => console.log("BE:", d.toString()));
+  beProcess.stderr.on("data", (d) => console.error("BE ERR:", d.toString()));
 
-    r(true);
-  })
+  beProcess.on("exit", (code) => {
+    console.log("Backend exited:", code);
+  });
 }
 
 async function createWindow() {

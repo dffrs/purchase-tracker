@@ -2,10 +2,11 @@
   "$schema": "https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json",
   "appId": "purchase-tracker",
   "asar": true,
+  "asarUnpack": ["bin/**"],
+  "files": ["dist-electron", "dist", "bin"],
   "directories": {
     "output": "release/${version}"
   },
-  "files": ["dist-electron", "dist"],
   "mac": {
     "artifactName": "${productName}_${version}.${ext}",
     "target": ["dmg", "zip"]
