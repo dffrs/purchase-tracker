@@ -14,6 +14,7 @@ import {
 } from "../";
 import { createOrder } from "@/api";
 import { OldOrderSection } from "./section/oldOrder";
+import { invalidateTags } from "@/hooks";
 
 type AddOrderProps = {
   isOpen: boolean;
@@ -65,6 +66,8 @@ export const AddOrderModal: FunctionComponent<AddOrderProps> = ({
 
       createToast("Order added");
       onClose();
+
+      invalidateTags(["getAllOrdersStatsTag", "getAllOrdersStatsForYearTag"]);
     } catch (error) {
       console.log(error);
       createToast("Error: " + (error as Error).message);
