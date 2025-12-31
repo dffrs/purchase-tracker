@@ -3,6 +3,7 @@ import { fileURLToPath } from "node:url";
 import path from "node:path";
 import os from "node:os";
 import { update } from "./update";
+import { ChildProcessWithoutNullStreams, spawn } from "node:child_process";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -22,6 +23,8 @@ export const MAIN_DIST = path.join(process.env.APP_ROOT, "dist-electron");
 export const RENDERER_DIST = path.join(process.env.APP_ROOT, "dist");
 export const VITE_DEV_SERVER_URL = process.env.VITE_DEV_SERVER_URL;
 
+const BE_PATH = path.join(process.env.APP_ROOT, "bin")
+
 process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL
   ? path.join(process.env.APP_ROOT, "public")
   : RENDERER_DIST;
@@ -38,8 +41,28 @@ if (!app.requestSingleInstanceLock()) {
 }
 
 let win: BrowserWindow | null = null;
+let beProcess: ChildProcessWithoutNullStreams | null = null;
+
 const preload = path.join(__dirname, "../preload/index.mjs");
 const indexHtml = path.join(RENDERER_DIST, "index.html");
+
+async function startBE() {
+  return new Promise((r) => {
+    const bePath = path.join(BE_PATH, "be")
+
+    beProcess = spawn(bePath)
+    
+    beProcess.stderr.on("data", (err) => {
+      console.error('BE: ', err.toString())
+    });
+
+    beProcess.on("exit", (exitCode) => {
+      console.log('BE exit: ', exitCode)
+    });
+
+    r(true);
+  })
+}
 
 async function createWindow() {
   win = new BrowserWindow({
@@ -87,7 +110,11 @@ async function createWindow() {
   update(win);
 }
 
-app.whenReady().then(createWindow);
+app.whenReady().then(startBE).then(createWindow);
+
+app.on("before-quit", () => {
+  if (beProcess) beProcess.kill();
+})
 
 app.on("window-all-closed", () => {
   win = null;
