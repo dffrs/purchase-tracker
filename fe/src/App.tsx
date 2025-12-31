@@ -18,7 +18,7 @@ function App() {
           <aside className="bg-transparent text-pop px-2 py-8">
             <ul className="grid grid-flow-row gap-y-4">
               <li className="flex flex-row gap-x-2 items-center">
-                <Link to="/home" tabIndex={-1}>
+                <Link to="/" tabIndex={-1}>
                   <Button className="bg-secondary rounded p-3">
                     <Icon title="Home" className="text-xl">
                       <IoHome />
@@ -59,8 +59,10 @@ function App() {
           </aside>
           <section className="flex items-center justify-center p-8">
             <Routes>
-              <Route path="/home" element={<Home />} />
-              <Route path="/search" element={<Search />} />
+              <Route path="/">
+                <Route index element={<Home />} />
+                <Route path="search" element={<Search />} />
+              </Route>
             </Routes>
             <AddOrderModal
               isOpen={addOrderModal}
