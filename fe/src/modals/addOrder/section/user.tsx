@@ -55,7 +55,8 @@ export const UserSection: FunctionComponent = () => {
       lastNameRef.current.value = lastName.join(" ");
 
       // user info
-      emailRef.current.value = user.email;
+      // FIX: BE does not allow for email = null
+      emailRef.current.value = user.email ?? "";
       phoneRef.current.value = String(user.phone);
 
       // user address
@@ -84,7 +85,8 @@ export const UserSection: FunctionComponent = () => {
 
   const userEmailAutoComplete: ACOption[] = useMemo(() => {
     return users.map((user) => ({
-      text: user.email,
+      // FIX: BE does not allow for email = null
+      text: user.email ?? "",
       onClick: (event) => onAutoComplete(event, "email"),
     }));
   }, [users, onAutoComplete]);
