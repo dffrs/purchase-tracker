@@ -12,7 +12,7 @@ function App() {
   const [addUserModal, setAddUserModal] = useState(() => false);
 
   return (
-    <main className="w-screen h-screen bg-primary">
+    <main className="bg-primary">
       <Layout>
         <section className="grid grid-flow-col grid-cols-[auto,1fr]">
           <aside className="bg-transparent text-pop px-2 py-8">

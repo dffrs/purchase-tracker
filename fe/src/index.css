@@ -84,6 +84,23 @@ body {
 
 body {
   line-height: 1.5;
+
+  display: grid;
+  grid-template-rows: 30px 1fr;
+  grid-template-areas:
+    "titlebar"
+    "main";
+}
+
+.titlebar {
+  grid-area: titlebar;
+  app-region: drag;
+  @apply bg-primary;
+}
+
+main {
+  grid-area: main;
+  height: 100%;
 }
 
 img,

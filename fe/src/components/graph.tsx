@@ -15,7 +15,7 @@ export const Graph: FunctionComponent<GraphProps> = ({ data }) => {
   const min = Math.min(...data) * FLOOR;
 
   return (
-    <div className="h-full w-full grid grid-cols-12 items-end gap-x-4 overflow-hidden">
+    <div className="h-full w-full grid grid-cols-12 items-end gap-x-4 overflow-visible">
       {data.map((value, i) => {
         const height = Math.round(100 * ((value - min) / max));
         const currency = hideIfZero(value);
