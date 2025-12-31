@@ -2,7 +2,9 @@ import { app, BrowserWindow, shell, ipcMain } from "electron";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 import os from "node:os";
+import fs from "fs";
 import { update } from "./update";
+import { ChildProcessWithoutNullStreams, spawn } from "node:child_process";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -22,6 +24,10 @@ export const MAIN_DIST = path.join(process.env.APP_ROOT, "dist-electron");
 export const RENDERER_DIST = path.join(process.env.APP_ROOT, "dist");
 export const VITE_DEV_SERVER_URL = process.env.VITE_DEV_SERVER_URL;
 
+const BE_PATH = app.isPackaged
+  ? path.join(process.resourcesPath, "app.asar.unpacked", "bin")
+  : path.join(process.env.APP_ROOT, "bin");
+
 process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL
   ? path.join(process.env.APP_ROOT, "public")
   : RENDERER_DIST;
@@ -38,8 +44,44 @@ if (!app.requestSingleInstanceLock()) {
 }
 
 let win: BrowserWindow | null = null;
+let beProcess: ChildProcessWithoutNullStreams | null = null;
+
 const preload = path.join(__dirname, "../preload/index.mjs");
 const indexHtml = path.join(RENDERER_DIST, "index.html");
+
+function getDBPath() {
+  const userData = app.getPath("userData");
+  const dbDir = path.join(userData, "db");
+  const dbFile = path.join(dbDir, "data.db");
+
+  if (!fs.existsSync(dbDir)) fs.mkdirSync(dbDir, { recursive: true })
+
+  if (!fs.existsSync(dbFile)) {
+    const template = app.isPackaged 
+      ? path.join(process.resourcesPath, "app.asar.unpacked", "db", "data.db")
+      : path.join(process.env.APP_ROOT, "db", "data.db");
+    
+    fs.copyFileSync(template, dbFile)
+  }
+
+  return dbFile;
+}
+
+async function startBE() {
+  const dbPath = getDBPath()
+
+  const beExecutable = process.platform === "win32" ? "be.exe" : "be";
+  const bePath = path.join(BE_PATH, beExecutable);
+
+  beProcess = spawn(bePath, ["--db", dbPath])
+
+  beProcess.stdout.on("data", (d) => console.log("BE:", d.toString()));
+  beProcess.stderr.on("data", (d) => console.error("BE ERR:", d.toString()));
+
+  beProcess.on("exit", (code) => {
+    console.log("Backend exited:", code);
+  });
+}
 
 async function createWindow() {
   win = new BrowserWindow({
@@ -87,7 +129,11 @@ async function createWindow() {
   update(win);
 }
 
-app.whenReady().then(createWindow);
+app.whenReady().then(startBE).then(createWindow);
+
+app.on("before-quit", () => {
+  if (beProcess) beProcess.kill();
+})
 
 app.on("window-all-closed", () => {
   win = null;

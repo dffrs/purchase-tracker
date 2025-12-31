@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"flag"
 	"log"
 	"purchase-tracker/internal/database"
 	"purchase-tracker/internal/env"
@@ -17,7 +18,14 @@ type application struct {
 }
 
 func main() {
-	db, err := sql.Open("sqlite3", "./data.db")
+	dbPath := flag.String("db", "", "Path to sqlite3 db")
+	flag.Parse()
+
+	if *dbPath == "" {
+		log.Fatal("--db path is required")
+	}
+
+	db, err := sql.Open("sqlite3", *dbPath)
 	if err != nil {
 		log.Fatal(err)
 	}
