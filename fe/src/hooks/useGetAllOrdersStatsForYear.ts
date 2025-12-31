@@ -1,6 +1,8 @@
 import { getAllOrdersStatsForYear } from "@/api";
 import { useEffect, useState } from "react";
 
+export const getAllOrdersStatsForYearTag = { count: 0 };
+
 export const useGetAllOrderStatsForYear = (year: string) => {
   const [stats, setStats] = useState<number[]>(() => []);
   const [isLoading, setIsLoading] = useState(() => false);
@@ -22,7 +24,7 @@ export const useGetAllOrderStatsForYear = (year: string) => {
       setIsLoading(false);
       setError(null);
     })();
-  }, [year]);
+  }, [year, getAllOrdersStatsForYearTag.count]);
 
   return [stats, isLoading, error] as const;
 };
