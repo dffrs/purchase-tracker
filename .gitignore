@@ -30,6 +30,5 @@ pnpm-lock.yaml
 yarn.lock
 
 .env
-*.db
 main
 bin/
