@@ -21,6 +21,7 @@ export const Graph: FunctionComponent<GraphProps> = ({ data }) => {
         const currency = hideIfZero(value);
 
         const date = new Date();
+        date.setDate(1); // set to first day, otherwise we might get 'date overflow'
         date.setMonth(i);
 
         return (
@@ -31,7 +32,7 @@ export const Graph: FunctionComponent<GraphProps> = ({ data }) => {
             className="relative bg-pop rounded-t-xl flex items-end animate-fadeAndMoveIn justify-center after:content-[attr(data-value)] after:absolute after:top-[-2rem] after:text-pop"
           >
             <p className={`${currency ? "text-secondary" : "text-pop"}`}>
-              {date.toLocaleString("default", { month: "short" })}
+              {date.toLocaleString(undefined, { month: "short" })}
             </p>
           </div>
         );
