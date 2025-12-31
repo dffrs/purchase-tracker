@@ -1,8 +1,13 @@
-import { getAllOrdersStatsTag, getAllOrdersStatsForYearTag } from ".";
+import {
+  getAllOrdersStatsTag,
+  getAllOrdersStatsForYearTag,
+  getAllOrdersTag,
+} from ".";
 
 const controller = {
   getAllOrdersStatsTag,
   getAllOrdersStatsForYearTag,
+  getAllOrdersTag,
 } as const;
 
 export function invalidateTags(tags: (keyof typeof controller)[]): void;

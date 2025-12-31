@@ -67,7 +67,11 @@ export const AddOrderModal: FunctionComponent<AddOrderProps> = ({
       createToast("Order added");
       onClose();
 
-      invalidateTags(["getAllOrdersStatsTag", "getAllOrdersStatsForYearTag"]);
+      invalidateTags([
+        "getAllOrdersStatsTag",
+        "getAllOrdersStatsForYearTag",
+        "getAllOrdersTag",
+      ]);
     } catch (error) {
       console.log(error);
       createToast("Error: " + (error as Error).message);
