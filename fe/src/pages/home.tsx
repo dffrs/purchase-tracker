@@ -45,7 +45,7 @@ export const Home: FunctionComponent = () => {
         </li>
       </ul>
       <div className="card">
-        <span className="card-layout">
+        <span className="card-layout overflow-hidden">
           <h1 className="card-header">2025</h1>
           <Graph data={yearStats} />
         </span>
