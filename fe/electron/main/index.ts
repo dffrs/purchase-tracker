@@ -172,6 +172,9 @@ app.on("browser-window-focus", () => {
 });
 
 app.on("browser-window-blur", () => {
+  globalShortcut.unregister("CommandOrControl+=")
+  globalShortcut.unregister("CommandOrControl+-")
+
   globalShortcut.unregister("CommandOrControl+Shift+R")
   globalShortcut.unregister("CommandOrControl+R")
   globalShortcut.unregister("F5")
