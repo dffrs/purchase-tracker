@@ -1,10 +1,13 @@
 import { IoAddCircleOutline, IoHome, IoSearch } from "react-icons/io5";
 import { AiOutlineUserAdd } from "react-icons/ai";
 import { Button, Icon, Layout } from "./components";
-import { Routes, Route, Link } from "react-router";
+import { Routes, Route, NavLink, NavLinkRenderProps } from "react-router";
 import { Home, Search } from "./pages";
 import { useState } from "react";
 import { AddOrderModal, AddUserModal } from "./modals";
+
+const LinkclassName = ({ isActive }: NavLinkRenderProps) =>
+  isActive ? "*:bg-pop *:text-primary" : "";
 
 function App() {
   // TODO: isolate me
@@ -18,22 +21,22 @@ function App() {
           <aside className="bg-transparent text-pop">
             <ul className="grid grid-flow-row gap-y-6">
               <li className="flex flex-row gap-x-2 items-center">
-                <Link to="/" tabIndex={-1}>
+                <NavLink to="/" tabIndex={-1} className={LinkclassName}>
                   <Button className="bg-secondary rounded p-3">
                     <Icon title="Home" className="text-xl">
                       <IoHome />
                     </Icon>
                   </Button>
-                </Link>
+                </NavLink>
               </li>
               <li className="flex flex-row gap-x-2 items-center">
-                <Link to="/search" tabIndex={-1}>
+                <NavLink to="/search" tabIndex={-1} className={LinkclassName}>
                   <Button className="bg-secondary rounded p-3">
                     <Icon title="Search" className="text-xl">
                       <IoSearch />
                     </Icon>
                   </Button>
-                </Link>
+                </NavLink>
               </li>
               <li className="flex flex-row gap-x-2 items-center">
                 <Button
