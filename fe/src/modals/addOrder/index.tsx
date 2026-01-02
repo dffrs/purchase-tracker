@@ -79,7 +79,7 @@ export const AddOrderModal: FunctionComponent<AddOrderProps> = ({
   };
 
   return (
-    <Modal isOpen={isOpen} className="!w-[45vw]">
+    <Modal isOpen={isOpen} className="min-w-[50vw] max-w-[80vw]">
       <form autoComplete="off" onSubmit={onSubmit} onInvalid={onInvalid}>
         <div className="flex flex-col gap-y-4 p-8">
           <h1 className="text-contrast">Add order</h1>
