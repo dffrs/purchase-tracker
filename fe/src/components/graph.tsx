@@ -35,7 +35,7 @@ export const Graph: FunctionComponent<GraphProps> = ({ data }) => {
             key={i}
             style={{ height: `${height}%` }}
             data-value={currency}
-            className="relative bg-pop rounded-t-xl flex items-end animate-fadeAndMoveIn justify-center after:content-[attr(data-value)] after:absolute after:top-[-2rem] after:text-pop"
+            className="relative bg-pop rounded-t-xl flex items-end animate-fadeAndMoveIn transition-all justify-center after:content-[attr(data-value)] after:absolute after:top-[-2rem] after:text-pop"
           >
             <p className={`${currency ? "text-secondary" : "text-pop"}`}>
               {date.toLocaleString(undefined, { month: "short" })}
