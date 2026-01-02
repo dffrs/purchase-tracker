@@ -14,7 +14,7 @@ function App() {
   return (
     <main className="bg-primary">
       <Layout>
-        <section className="grid grid-flow-col grid-cols-[auto,1fr] p-6 pt-0 gap-x-6">
+        <section className="grid grid-flow-col grid-cols-[auto,1fr] p-6 pl-4 pt-0 gap-x-6">
           <aside className="bg-transparent text-pop">
             <ul className="grid grid-flow-row gap-y-6">
               <li className="flex flex-row gap-x-2 items-center">
