@@ -21,8 +21,8 @@ export const Home: FunctionComponent = () => {
   }, [errorYear]);
 
   return (
-    <div className="h-full w-full grid grid-flow-row grid-rows-[auto,1fr] gap-y-8">
-      <ul className="grid grid-cols-2 gap-x-8 h-96">
+    <div className="h-full w-full grid grid-flow-row grid-rows-[auto,1fr] gap-y-6">
+      <ul className="grid grid-cols-2 gap-x-6 h-96">
         <li className="card overflow-hidden">
           <span className="card-layout">
             <h1 className="card-header">Orders</h1>

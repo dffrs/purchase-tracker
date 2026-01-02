@@ -14,9 +14,9 @@ function App() {
   return (
     <main className="bg-primary">
       <Layout>
-        <section className="grid grid-flow-col grid-cols-[auto,1fr]">
-          <aside className="bg-transparent text-pop px-2 py-8">
-            <ul className="grid grid-flow-row gap-y-4">
+        <section className="grid grid-flow-col grid-cols-[auto,1fr] p-6 pt-0 gap-x-6">
+          <aside className="bg-transparent text-pop">
+            <ul className="grid grid-flow-row gap-y-6">
               <li className="flex flex-row gap-x-2 items-center">
                 <Link to="/" tabIndex={-1}>
                   <Button className="bg-secondary rounded p-3">
@@ -57,7 +57,7 @@ function App() {
               </li>
             </ul>
           </aside>
-          <section className="flex items-center justify-center p-8">
+          <section className="flex items-center justify-center">
             <Routes>
               <Route path="/">
                 <Route index element={<Home />} />
