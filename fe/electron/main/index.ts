@@ -87,8 +87,11 @@ async function createWindow() {
   win = new BrowserWindow({
     title: "Purchase Tracker",
     icon: path.join(process.env.VITE_PUBLIC, "favicon.ico"),
-    resizable: false,
-    fullscreen: true,
+    width: 1024,
+    height: 800,
+    minWidth: 1024,
+    minHeight: 800,
+    resizable: true,
     titleBarStyle: "hidden",
     ...(process.platform !== "darwin" ? { titleBarOverlay: true } : {}),
     webPreferences: {

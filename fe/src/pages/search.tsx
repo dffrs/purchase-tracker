@@ -60,7 +60,7 @@ export const Search: FunctionComponent = () => {
           />
         </span>
       </span>
-      <LoadingArea isLoading={isLoading}>
+      <LoadingArea isLoading={isLoading} className="overflow-auto">
         <table className="max-h-[75vh]">
           <thead>
             <tr>
