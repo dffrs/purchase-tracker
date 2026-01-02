@@ -1,9 +1,9 @@
-import { Graph, useToast } from "@/components";
+import { Button, Graph, useToast } from "@/components";
 import { LoadingArea } from "@/components/loadingArea";
-import { Tabs } from "@/components/tabs";
 import { useGetAllOrderStats, useGetAllOrderStatsForYear } from "@/hooks";
 import { formatCurrency } from "@/util";
 import { FunctionComponent, useEffect, useState } from "react";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 export const Home: FunctionComponent = () => {
   const [currentYear, setCurrentYear] = useState(() =>
@@ -49,12 +49,20 @@ export const Home: FunctionComponent = () => {
       </ul>
       <div className="card">
         <span className="card-layout overflow-hidden">
-          <Tabs
-            onDecrease={() => setCurrentYear((y) => (Number(y) - 1).toString())}
-            onIncrease={() => setCurrentYear((y) => (Number(y) + 1).toString())}
-          >
+          <span className="flex text-contrast items-center gap-x-2 *:shadow-none">
+            <Button
+              onClick={() => setCurrentYear((y) => (Number(y) - 1).toString())}
+            >
+              <IoIosArrowBack />
+            </Button>
             <h1 className="card-header">{currentYear}</h1>
-          </Tabs>
+            <Button
+              onClick={() => setCurrentYear((y) => (Number(y) + 1).toString())}
+              disabled={currentYear === new Date().getUTCFullYear().toString()}
+            >
+              <IoIosArrowForward />
+            </Button>
+          </span>
           <Graph data={yearStats} />
         </span>
       </div>

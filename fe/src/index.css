@@ -154,6 +154,10 @@ button:focus {
   outline: revert;
 }
 
+button:disabled {
+  @apply cursor-not-allowed text-gray-200;
+}
+
 a {
   text-decoration: none;
 }
