@@ -1,4 +1,4 @@
-import { app, BrowserWindow, shell, ipcMain } from "electron";
+import { app, BrowserWindow, shell, ipcMain, globalShortcut } from "electron";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 import os from "node:os";
@@ -159,6 +159,18 @@ app.on("activate", () => {
     createWindow();
   }
 });
+
+app.on("browser-window-focus", () => {
+  globalShortcut.register("CommandOrControl+Shift+R", () => console.log('shortcut disabled'))
+  globalShortcut.register("CommandOrControl+R", () => console.log('shortcut disabled'))
+  globalShortcut.register("F5", () => console.log('shortcut disabled'))
+});
+
+app.on("browser-window-blur", () => {
+  globalShortcut.unregister("CommandOrControl+Shift+R")
+  globalShortcut.unregister("CommandOrControl+R")
+  globalShortcut.unregister("F5")
+})
 
 // New window example arg: new windows url
 ipcMain.handle("open-win", (_, arg) => {
