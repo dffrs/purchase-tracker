@@ -291,7 +291,7 @@ input[type="datetime-local"] {
   }
 
   .shrink-wrapper {
-    --timeout: attr(data-timeout ms, 1000);
+    --timeout: attr(data-timeout ms, 5000);
     --delay: 1s;
 
     animation:

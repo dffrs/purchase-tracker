@@ -54,6 +54,8 @@ const Toast: FunctionComponent<PropsWithChildren<ToastProps>> = ({
   return (
     <span
       data-timeout={timer}
+      // this is a fix for electron, since it does not recognize --timeout: attr(data-timeout ms, 5000);
+      style={{ "--timeout": timer + "ms" } as React.CSSProperties}
       className="bg-pop rounded-xl p-2 shadow-md flex flex-col items-start shrink-wrapper border-2 border-solid border-secondary"
     >
       <span ref={timerRef} className="h-1 w-full rounded-xl shrink" />
