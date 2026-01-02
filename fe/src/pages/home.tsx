@@ -1,14 +1,17 @@
 import { Graph, useToast } from "@/components";
 import { LoadingArea } from "@/components/loadingArea";
+import { Tabs } from "@/components/tabs";
 import { useGetAllOrderStats, useGetAllOrderStatsForYear } from "@/hooks";
 import { formatCurrency } from "@/util";
-import { FunctionComponent, useEffect } from "react";
+import { FunctionComponent, useEffect, useState } from "react";
 
 export const Home: FunctionComponent = () => {
-  const [stats, isLoading, error] = useGetAllOrderStats();
-  const [yearStats, _, errorYear] = useGetAllOrderStatsForYear(
+  const [currentYear, setCurrentYear] = useState(() =>
     new Date().getUTCFullYear().toString(),
   );
+
+  const [stats, isLoading, error] = useGetAllOrderStats();
+  const [yearStats, _, errorYear] = useGetAllOrderStatsForYear(currentYear);
 
   const createToast = useToast();
 
@@ -46,7 +49,12 @@ export const Home: FunctionComponent = () => {
       </ul>
       <div className="card">
         <span className="card-layout overflow-hidden">
-          <h1 className="card-header">2025</h1>
+          <Tabs
+            onDecrease={() => setCurrentYear((y) => (Number(y) - 1).toString())}
+            onIncrease={() => setCurrentYear((y) => (Number(y) + 1).toString())}
+          >
+            <h1 className="card-header">{currentYear}</h1>
+          </Tabs>
           <Graph data={yearStats} />
         </span>
       </div>
