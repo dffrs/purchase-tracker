@@ -107,6 +107,8 @@ async function createWindow() {
   });
 
   win.setMenu(null);
+  win.webContents.setZoomFactor(1);
+  win.webContents.setVisualZoomLevelLimits(1, 1);
 
   if (VITE_DEV_SERVER_URL) {
     // #298
@@ -161,6 +163,9 @@ app.on("activate", () => {
 });
 
 app.on("browser-window-focus", () => {
+  globalShortcut.register("CommandOrControl+=", () => console.log('shortcut disabled'))
+  globalShortcut.register("CommandOrControl+-", () => console.log('shortcut disabled'))
+
   globalShortcut.register("CommandOrControl+Shift+R", () => console.log('shortcut disabled'))
   globalShortcut.register("CommandOrControl+R", () => console.log('shortcut disabled'))
   globalShortcut.register("F5", () => console.log('shortcut disabled'))
