@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := run
 
-.PHONY: clean fmt vet build-be build-be-win build-fe runBE runFE run desktop
+.PHONY: clean fmt vet build-be build-be-win build-fe run-be-mac run-be-lin run-be-win runFE desktop-lin desktop-win desktop-mac
 
 SQLITE_FLAGS=CGO_ENABLED=1 CGO_CFLAGS="-DSQLITE_ENABLE_FTS5" CGO_LDFLAGS="-lm"
 
@@ -32,10 +32,15 @@ fmt: clean
 vet: fmt
 	cd be && go vet ./cmd/... ./internal/...
 
-# macOS / Linux backend binary
-build-be: vet
-	@echo "Building backend for macOS/Linux..."
+# macOS backend binary
+build-be-mac: vet
+	@echo "Building backend for macOS..."
 	cd be && $(SQLITE_FLAGS) GOOS=darwin GOARCH=amd64 go build -o ../$(BIN_DIR)/be $(BACKEND_SRC)
+
+# linux backend binary
+build-be-lin: vet
+	@echo "Building backend for linux..."
+	cd be && $(SQLITE_FLAGS) GOOS=linux GOARCH=amd64 go build -o ../$(BIN_DIR)/be $(BACKEND_SRC)
 
 # Windows backend binary
 build-be-win: vet
@@ -51,21 +56,26 @@ build-fe:
 
 ### ───────── DEV MODE ─────────
 
-runBE: build-be
+run-be-mac: build-be-mac
+	cd $(BIN_DIR) && ./be
+
+run-be-lin: build-be-lin
+	cd $(BIN_DIR) && ./be
+
+run-be-win: build-be-win
 	cd $(BIN_DIR) && ./be
 
 runFE:
 	cd fe && npm run dev
 
-run:
-	@echo "Starting Backend + Frontend..."
-	@trap 'echo "\nStopping..."; kill 0' SIGINT SIGTERM; \
-	$(MAKE) runBE & \
-	$(MAKE) runFE & \
-	wait
-
 
 ### ───────── DESKTOP PACKAGE ─────────
 
-desktop: build-be build-fe
+desktop-mac: build-be-mac build-fe
+	@echo "Desktop app built"
+
+desktop-lin: build-be-lin build-fe
+	@echo "Desktop app built"
+
+desktop-win: build-be-win build-fe
 	@echo "Desktop app built"
