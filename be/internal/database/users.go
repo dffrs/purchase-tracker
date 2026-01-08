@@ -80,10 +80,10 @@ func (u *UsersModel) GetOrCreate(name, email *string, phone, addressID *int) (in
 		return 0, err
 	}
 
-	query := "SELECT id FROM users WHERE name = ? AND email = ? AND phone = ?"
+	query := "SELECT id FROM users WHERE name = ? AND phone = ?"
 
 	var id int
-	err = u.DB.QueryRowContext(ctx, query, name, email, phone).Scan(&id)
+	err = u.DB.QueryRowContext(ctx, query, name, phone).Scan(&id)
 	if err != nil {
 		return 0, err
 	}
