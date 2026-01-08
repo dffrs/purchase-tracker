@@ -73,7 +73,14 @@ func (u *UsersModel) GetOrCreate(name, email *string, phone, addressID *int) (in
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	insert := "INSERT OR IGNORE INTO users (name, email, phone, address_id) VALUES (?, ?, ?, ?)"
+	insert := `
+	INSERT INTO users (name, email, phone, address_id) VALUES (?, ?, ?, ?)
+	ON CONFLICT (phone)
+	DO UPDATE SET
+		name = EXCLUDED.name,
+		email = EXCLUDED.email,
+		address_id = EXCLUDED.address_id
+	`
 
 	_, err := u.DB.ExecContext(ctx, insert, name, email, phone, addressID)
 	if err != nil {
