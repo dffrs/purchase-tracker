@@ -33,6 +33,9 @@ func (c *CityModel) GetOrCreate(name, zipCode *string, countryID *int) (int, err
 	var id int
 	err = c.DB.QueryRowContext(ctx, query, name, zipCode, countryID).Scan(&id)
 	if err != nil {
+		if err == sql.ErrNoRows {
+			return 0, nil
+		}
 		return 0, err
 	}
 

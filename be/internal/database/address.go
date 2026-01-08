@@ -34,6 +34,9 @@ func (a *AddressModel) GetOrCreate(street, streetNumber, apartment *string, city
 	var id int
 	err = a.DB.QueryRowContext(ctx, query, street, streetNumber, apartment, cityID).Scan(&id)
 	if err != nil {
+		if err == sql.ErrNoRows {
+			return 0, nil
+		}
 		return 0, err
 	}
 
