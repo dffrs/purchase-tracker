@@ -72,6 +72,7 @@ export const AddUserModal: FunctionComponent<AddUserProps> = ({
             />
             <Input
               label="Phone"
+              required
               type="tel"
               id="phone"
               placeholder="e.g., +351 912 345 678"

@@ -139,6 +139,7 @@ export const UserSection: FunctionComponent = () => {
           <Input
             ref={phoneRef}
             label="Phone"
+            required
             type="tel"
             id="phone"
             placeholder="e.g., +351 912 345 678"
