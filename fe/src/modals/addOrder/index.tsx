@@ -51,7 +51,6 @@ export const AddOrderModal: FunctionComponent<AddOrderProps> = ({
         return;
       }
 
-      createToast("Registering order...");
       const [_, err] = await createOrder({
         user,
         payment,
