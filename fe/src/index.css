@@ -227,7 +227,7 @@ input[type="datetime-local"] {
     }
 
     div[role="modal"] {
-      @apply w-full;
+      @apply w-full min-w-[50vw] max-w-[80vw];
       animation: fadeOut 0.25s forwards;
 
       transition:
