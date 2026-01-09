@@ -10,7 +10,7 @@ export const Home: FunctionComponent = () => {
     new Date().getUTCFullYear().toString(),
   );
 
-  const [stats, isLoading, error] = useGetAllOrderStats();
+  const [stats, isLoading, error] = useGetAllOrderStats(currentYear);
   const [yearStats, _, errorYear] = useGetAllOrderStatsForYear(currentYear);
 
   const createToast = useToast();

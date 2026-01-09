@@ -74,12 +74,13 @@ export const searchOrders = async (keyword: string) => {
   }
 };
 
-export const getAllOrdersStats = async () => {
+export const getAllOrdersStats = async (year: string) => {
   const url = BASE + "orderItems/stats";
 
   try {
     const response = await fetch(url, {
-      method: "GET",
+      method: "POST",
+      body: JSON.stringify({ year }),
     });
 
     if (!response.ok) {
