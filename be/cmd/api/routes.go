@@ -29,7 +29,7 @@ func (app *application) routes() http.Handler {
 
 		// order items
 		v1.GET("/orderItems", app.getAllOrderItems)
-		v1.GET("/orderItems/stats", app.getOrderItemsStats)
+		v1.POST("/orderItems/stats", app.getOrderItemsStats)
 		v1.POST("/orderItems/year/stats", app.getOrderItemsStatsForYear)
 		v1.POST("/orderItems", app.createOrderItems)
 		v1.POST("/orderItems/search", app.searchOrderItems)

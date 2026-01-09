@@ -97,7 +97,18 @@ func (app *application) getAllOrderItems(c *gin.Context) {
 }
 
 func (app *application) getOrderItemsStats(c *gin.Context) {
-	orderItemsStats, err := app.models.OrdersItems.GetAllStats()
+	type temp struct {
+		Year string
+	}
+
+	t := new(temp)
+
+	if err := c.ShouldBindJSON(t); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to bind year value"})
+		return
+	}
+
+	orderItemsStats, err := app.models.OrdersItems.GetAllStats(t.Year)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to get stats for all ordered items: %s", err.Error())})
 		return
