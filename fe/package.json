@@ -1,6 +1,6 @@
 {
   "name": "purchase-tracker",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "main": "dist-electron/main/index.js",
   "author": "Daniel Rodrigues",
   "license": "MIT",

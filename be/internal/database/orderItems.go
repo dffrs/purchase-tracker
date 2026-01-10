@@ -157,15 +157,24 @@ func (oi *OrderItemsModel) GetAll() ([]*OrdersResponse, error) {
 	return orderUsers, nil
 }
 
-func (oi OrderItemsModel) GetAllStats() (*OrdersItemStats, error) {
+func (oi OrderItemsModel) GetAllStats(year string) (*OrdersItemStats, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	query := "SELECT COUNT(*), COALESCE(SUM((rrp_at_purchase - wsp_at_purchase) * quantity), 0) FROM order_items"
+	query := `
+	SELECT 
+		COUNT(DISTINCT orders.id),
+		COALESCE(SUM((order_items.rrp_at_purchase - order_items.wsp_at_purchase) * order_items.quantity), 0)
+	FROM
+		order_items
+	JOIN orders ON orders.id = order_items.order_id
+	WHERE
+		strftime('%Y', orders.order_date) = ?;
+	`
 
 	orderStats := new(OrdersItemStats)
 
-	err := oi.DB.QueryRowContext(ctx, query).Scan(&orderStats.Count, &orderStats.Profit)
+	err := oi.DB.QueryRowContext(ctx, query, year).Scan(&orderStats.Count, &orderStats.Profit)
 	if err != nil {
 		return nil, err
 	}
@@ -173,11 +182,11 @@ func (oi OrderItemsModel) GetAllStats() (*OrdersItemStats, error) {
 	return orderStats, nil
 }
 
-func (oi OrderItemsModel) GetAllStatsForYear(year string) ([]*OrderItemYearStats, error) {
+func (oi OrderItemsModel) GetAllStatsPerMonth(year string) ([]*OrderItemYearStats, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	query := ` 
+	query := `
 	SELECT 
 		strftime('%m', orders.order_date) as month,
 		COUNT(DISTINCT orders.id) AS count,

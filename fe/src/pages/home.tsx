@@ -1,6 +1,6 @@
 import { Button, Graph, useToast } from "@/components";
 import { LoadingArea } from "@/components/loadingArea";
-import { useGetAllOrderStats, useGetAllOrderStatsForYear } from "@/hooks";
+import { useGetAllOrderStats, useGetAllOrderStatsPerMonth } from "@/hooks";
 import { formatCurrency } from "@/util";
 import { FunctionComponent, useEffect, useState } from "react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
@@ -10,8 +10,8 @@ export const Home: FunctionComponent = () => {
     new Date().getUTCFullYear().toString(),
   );
 
-  const [stats, isLoading, error] = useGetAllOrderStats();
-  const [yearStats, _, errorYear] = useGetAllOrderStatsForYear(currentYear);
+  const [stats, isLoading, error] = useGetAllOrderStats(currentYear);
+  const [yearStats, _, errorYear] = useGetAllOrderStatsPerMonth(currentYear);
 
   const createToast = useToast();
 

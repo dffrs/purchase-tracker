@@ -46,3 +46,11 @@ type OrderPayload struct {
 	Products  []Product    `json:"products" binding:"required"`
 	CreatedAt *time.Time   `json:"createdAt"`
 }
+
+type YearPayload struct {
+	Year string `json:"year" binding:"required"`
+}
+
+type SearchPayload struct {
+	Search string `json:"search" binding:"required"`
+}

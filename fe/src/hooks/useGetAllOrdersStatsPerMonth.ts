@@ -1,9 +1,9 @@
-import { getAllOrdersStatsForYear } from "@/api";
+import { getAllOrdersStatsPerMonth } from "@/api";
 import { useEffect, useState } from "react";
 
-export const getAllOrdersStatsForYearTag = { count: 0 };
+export const getAllOrdersStatsPerMonthTag = { count: 0 };
 
-export const useGetAllOrderStatsForYear = (year: string) => {
+export const useGetAllOrderStatsPerMonth = (year: string) => {
   const [stats, setStats] = useState<number[]>(() => []);
   const [isLoading, setIsLoading] = useState(() => false);
   const [error, setError] = useState<Error | null>(() => null);
@@ -12,7 +12,7 @@ export const useGetAllOrderStatsForYear = (year: string) => {
     (async () => {
       setIsLoading(true);
 
-      const [stats, err] = await getAllOrdersStatsForYear(year);
+      const [stats, err] = await getAllOrdersStatsPerMonth(year);
       if (err !== null) {
         setError(err);
         setIsLoading(false);
@@ -24,7 +24,7 @@ export const useGetAllOrderStatsForYear = (year: string) => {
       setIsLoading(false);
       setError(null);
     })();
-  }, [year, getAllOrdersStatsForYearTag.count]);
+  }, [year, getAllOrdersStatsPerMonthTag.count]);
 
   return [stats, isLoading, error] as const;
 };
