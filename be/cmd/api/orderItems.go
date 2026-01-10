@@ -97,18 +97,14 @@ func (app *application) getAllOrderItems(c *gin.Context) {
 }
 
 func (app *application) getOrderItemsStats(c *gin.Context) {
-	type temp struct {
-		Year string
-	}
+	yearPayload := new(m.YearPayload)
 
-	t := new(temp)
-
-	if err := c.ShouldBindJSON(t); err != nil {
+	if err := c.ShouldBindJSON(yearPayload); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to bind year value"})
 		return
 	}
 
-	orderItemsStats, err := app.models.OrdersItems.GetAllStats(t.Year)
+	orderItemsStats, err := app.models.OrdersItems.GetAllStats(yearPayload.Year)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to get stats for all ordered items: %s", err.Error())})
 		return
@@ -118,20 +114,16 @@ func (app *application) getOrderItemsStats(c *gin.Context) {
 }
 
 func (app *application) getOrderItemsStatsForYear(c *gin.Context) {
-	type temp struct {
-		Year string
-	}
+	yearPayload := new(m.YearPayload)
 
-	t := new(temp)
-
-	if err := c.ShouldBindJSON(t); err != nil {
+	if err := c.ShouldBindJSON(yearPayload); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to bind year value"})
 		return
 	}
 
-	orderItemsYearStats, err := app.models.OrdersItems.GetAllStatsForYear(t.Year)
+	orderItemsYearStats, err := app.models.OrdersItems.GetAllStatsForYear(yearPayload.Year)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to get stats for all ordered items for year: %s. %s", t.Year, err.Error())})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to get stats for all ordered items for year: %s. %s", yearPayload.Year, err.Error())})
 		return
 	}
 
@@ -156,20 +148,16 @@ func (app *application) getOrderItemsStatsForYear(c *gin.Context) {
 }
 
 func (app *application) searchOrderItems(c *gin.Context) {
-	type temp struct {
-		Search string
-	}
+	searchPayload := new(m.SearchPayload)
 
-	t := new(temp)
-
-	if err := c.ShouldBindJSON(t); err != nil {
+	if err := c.ShouldBindJSON(searchPayload); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to bind search value"})
 		return
 	}
 
-	orderItems, err := app.models.OrdersItems.FindBy(t.Search)
+	orderItems, err := app.models.OrdersItems.FindBy(searchPayload.Search)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to search for %s: %s", t.Search, err.Error())})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to search for %s: %s", searchPayload.Search, err.Error())})
 		return
 	}
 
