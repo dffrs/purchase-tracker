@@ -1,12 +1,12 @@
 import {
   getAllOrdersStatsTag,
-  getAllOrdersStatsForYearTag,
+  getAllOrdersStatsPerMonthTag,
   getAllOrdersTag,
 } from ".";
 
 const controller = {
   getAllOrdersStatsTag,
-  getAllOrdersStatsForYearTag,
+  getAllOrdersStatsPerMonthTag,
   getAllOrdersTag,
 } as const;
 

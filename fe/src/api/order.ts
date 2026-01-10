@@ -101,8 +101,8 @@ export const getAllOrdersStats = async (year: string) => {
   }
 };
 
-export const getAllOrdersStatsForYear = async (year: string) => {
-  const url = BASE + "orderItems/year/stats";
+export const getAllOrdersStatsPerMonth = async (year: string) => {
+  const url = BASE + "orderItems/statsPerMonth";
 
   try {
     const response = await fetch(url, {

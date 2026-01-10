@@ -182,7 +182,7 @@ func (oi OrderItemsModel) GetAllStats(year string) (*OrdersItemStats, error) {
 	return orderStats, nil
 }
 
-func (oi OrderItemsModel) GetAllStatsForYear(year string) ([]*OrderItemYearStats, error) {
+func (oi OrderItemsModel) GetAllStatsPerMonth(year string) ([]*OrderItemYearStats, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 

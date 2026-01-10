@@ -113,7 +113,7 @@ func (app *application) getOrderItemsStats(c *gin.Context) {
 	c.JSON(http.StatusOK, orderItemsStats)
 }
 
-func (app *application) getOrderItemsStatsForYear(c *gin.Context) {
+func (app *application) getOrderItemsStatsPerMonth(c *gin.Context) {
 	yearPayload := new(m.YearPayload)
 
 	if err := c.ShouldBindJSON(yearPayload); err != nil {
@@ -121,7 +121,7 @@ func (app *application) getOrderItemsStatsForYear(c *gin.Context) {
 		return
 	}
 
-	orderItemsYearStats, err := app.models.OrdersItems.GetAllStatsForYear(yearPayload.Year)
+	orderItemsYearStats, err := app.models.OrdersItems.GetAllStatsPerMonth(yearPayload.Year)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to get stats for all ordered items for year: %s. %s", yearPayload.Year, err.Error())})
 		return

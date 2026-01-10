@@ -68,7 +68,7 @@ export const AddOrderModal: FunctionComponent<AddOrderProps> = ({
 
       invalidateTags([
         "getAllOrdersStatsTag",
-        "getAllOrdersStatsForYearTag",
+        "getAllOrdersStatsPerMonthTag",
         "getAllOrdersTag",
       ]);
     } catch (error) {
