@@ -2,6 +2,12 @@
 
 A desktop application for Boticário resellers to log and track customer orders, monitor profit, and search through purchase history. Everything runs locally - no internet connection or external service required.
 
+<p align="center">
+  <img alt="Home page" src="./assets/home.png" width="32%" />
+  <img alt="Search page" src="./assets/search.png" width="32%" />
+  <img alt="Add order" src="./assets/add-order.png" width="32%" />
+</p>
+
 ---
 
 ## What it does
